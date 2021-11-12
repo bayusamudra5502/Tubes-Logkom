@@ -55,6 +55,7 @@ Jabarin
 * Harga-harga dari item 
 * MIkirin item-itemnya apa aja
 * _Harga makananan dan penambahan energinya?_
+* Untuk item-itemnya dipikirin sama yg dapet tiga diatas
 
 # House
 Ini mah implementasi
@@ -79,4 +80,4 @@ o = Air
 # _Alchemist_
 Apa aja potion yg diinginkan
 Harganya? Efeknya berapa lama?
-
+* Potion apa aja bisa dipikirin sama yg dapet diatas
