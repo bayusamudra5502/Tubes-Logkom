@@ -13,7 +13,7 @@ level [0..5]
 |🌽 Jagung | 10 Day | 150 G | 300 G | 80 + 40(level) xp | Summer|
 |🥦 Brokoli | 4 Day | 40 G | 75 G| 20 + 10(level) xp| Fall
 |🍆 Terong | 6 Day | 90 G | 175 G | 40 + 20(level) xp | Fall |
-|🌶 Cabai | 8 Day | 150 G | 275 G | 50 + 25(level) xp | Fall |
+|🌶️ Cabai | 8 Day | 150 G | 275 G | 50 + 25(level) xp | Fall |
 
 ## Farmer Speciality
 
@@ -28,4 +28,4 @@ level [0..5]
 |🌽 Jagung | 10 Day | 150 G | 300 G | 90 + 45(level) xp | Summer|
 |🥦 Brokoli | 4 Day | 40 G | 75 G| 30 + 15(level) xp| Fall
 |🍆 Terong | 6 Day | 90 G | 175 G | 50 + 25(level) xp | Fall |
-|🌶 Cabai | 8 Day | 150 G | 275 G | 60 + 30(level) xp | Fall |
+|🌶️ Cabai | 8 Day | 150 G | 275 G | 60 + 30(level) xp | Fall |
