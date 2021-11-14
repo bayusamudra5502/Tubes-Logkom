@@ -55,3 +55,18 @@ help :- runProgram(_),
         write('\33\[38;5;31m    quest.              \33\[0m: cek progress quest'), nl,
         write('\33\[38;5;31m    cekInventory.       \33\[0m: cek inventory'), nl,!.
 /*sementara itu dulu buat command help*/
+
+% keluar dari program 
+quitGame :- 
+            \+runProgram(_),
+            write('You have not started the game yet!!!'),!.
+
+quitGame :-
+            retract(runProgram(1)),
+            retractall(runProgram(_)),
+            retractall(posisi(_)),
+            retractall(length(_)),
+            retractall(width(_)),
+            write('------------------Thank You For Playing----------------'),nl,
+            write('Please Come and Play Again to Try Other Roles and Items'),nl,
+            write('---------------------SEE YOU AGAIN---------------------'),nl,!.

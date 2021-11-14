@@ -40,6 +40,13 @@ isRanch(X,Y) :-
     X =:= 3,
     Y =:= 17.
 
+
+/* Mengecek apakah kooordinat X,Y posisi Alchemist*/
+isAlchemist(X,Y) :-
+    X =:= 18,
+    Y =:= 11.
+
+
 /* Mengecek apakah kooordinat X,Y posisi Border atau Ujung Map */
 isBorder(X,_) :-
     X =:= 0.
@@ -123,6 +130,12 @@ cetakMap(X,Y) :-
 cetakMap(X,Y) :-
     isRanch(X,Y),
     write('🐄'),
+    NextX is (X+1),
+    cetakMap(NextX,Y).
+
+cetakMap(X,Y) :-
+    isAlchemist(X,Y),
+    write('🧪'),
     NextX is (X+1),
     cetakMap(NextX,Y).
 
