@@ -34,7 +34,7 @@ Ini nanti dulu.
 * Kapan musim tanamnya, pikirin juga klo nambah level
 * Penambahan XP tiap panen tumbuhan
 * Klo dah di dig, bisa ditanem, dan pas udah di harvest, dignya ilang
-* _PIkirin jumlah energi_
+* _PIkirin jumlah energi panen_
 
 # Fisher
 Jabarin
@@ -49,12 +49,12 @@ Jabarin
 * Komoditas hasilnya apa aja
 * Harga beli dan harja jual komoditas dan ternak
 * Waktu siap untuk diambil hasilnya, pikirin juga klo nambah level
-* _Pikirin energi mancing_
+* _Pikirin energi ngambil komoditas_
 
 # Market
 * Harga-harga dari item 
 * MIkirin item-itemnya apa aja
-* _Harga makananan dan penambahan energinya?_
+* _Harga makanan dan penambahan energinya?_
 * Untuk item-itemnya dipikirin sama yg dapet tiga diatas
 
 # House
