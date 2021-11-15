@@ -1,0 +1,12 @@
+story0 :- nama(Username),
+          write('\33\[38;5;76m###################################################################################\33\[0m'),nl,
+          write('HBYG merupakan daerah di selatan pulau canon, disana tinggalah seorang pengangguran'),nl,
+          write('bernama '),write(Username),write('. Kebetulan, iya baru mendapatkan warisan dari'),nl,
+          write('sepeninggal orang tuanya berjumlah 40000 gold. Dari hasil warisan tersebut, dia pun'),nl,
+          write('membuka sebuah usaha di bidang kuliner dengan perantara temannya, akan tetapi......'),nl,
+          write('ternyata iya ditipu oleh temannya dan temannya menghilang meninggalkan HBYG, Canon '),nl,
+          write(Username),write(' kini hidupnya semakin menderita ditambah hutang di bank sebesar '),nl,
+          write('20000 gold yang harus dilunasi dalam jangka waktu 1 tahun. Karena sudah frustasi...'),nl,
+          write(Username),write(' memutuskan pulang ke kampung halamannya dan melanjutkan usaha tani'),nl,
+          write('milik kakeknya untuk melanjutkan hidup dan melunasi hutang-hutangnya...............'),nl,
+          write('\33\[38;5;76m###################################################################################\33\[0m'),nl.

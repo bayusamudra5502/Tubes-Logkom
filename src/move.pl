@@ -3,14 +3,14 @@ w :-
     runProgram(_),
     posisi(A,B),
     isWater(A,B-1),
-    write('Kamu memasuki air, ayo keluar'),nl,
+    write('-------------- \33\[38;5;220mKamu memasuki air, ayo keluar \33\[0m--------------'),nl,
     !.
 
 w :-
     runProgram(_),
     posisi(A,B),
     isBorder(A,B-1),
-    write('Oow kamu nabrak dinding silahkan move ke tempat lain'),nl,
+    write('---\33\[38;5;76mOow kamu nabrak dinding silahkan move ke tempat lain\33\[0m----'),nl,
     !.
 
 
@@ -22,7 +22,7 @@ w :-
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
     /*asserta(inMarket(1)),*/
-    write('Kamu sekarang berada di market'),nl,
+    write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
     write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,
     !.
 
@@ -34,7 +34,7 @@ w :-
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
     /*asserta(inHouse(1)),*/
-    write('Kamu sekarang berada di house'),nl,
+    write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
     write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,
     !.
 
@@ -46,7 +46,7 @@ w :-
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
     /*asserta(inQuest(1)),*/
-    write('Kamu sekarang berada di quest'),nl,
+    write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
     write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,
     !.
 
@@ -58,7 +58,7 @@ w :-
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
     /*asserta(inRanch(1)),*/
-    write('Kamu sekarang berada di ranch'),nl,
+    write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
     write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,
     !.
 
@@ -70,7 +70,7 @@ w :-
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
     /*asserta(inAlchemist(1)),*/
-    write('Kamu sekarang berada di alchemist'),nl,
+    write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
     write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,
     !.
 
@@ -81,7 +81,7 @@ w :-
     retract(posisi(A,B)),
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
-    write('Kamu berpindah 1 langkah ke utara.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke utara. \33\[0m-------------'),nl,
     !.
     /* TODO: retracall semua yang memasuki rumah, market, ternak, dll*/
 
@@ -92,7 +92,7 @@ w :-
     retract(posisi(A,B)),
     Bnew is B-1,
     asserta(posisi(A,Bnew)),
-    write('Kamu berpindah 1 langkah ke utara.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke utara.\33\[0m -------------'),nl,
     !.
 
 /* Final State -> Bergerak ke arah selatan */
@@ -100,14 +100,14 @@ s :-
     runProgram(_),
     posisi(A,B),
     isWater(A,B+1),
-    write('Kamu memasuki air, ayo keluar'),nl,
+    write('-------------- \33\[38;5;220mKamu memasuki air, ayo keluar \33\[0m--------------'),nl,
     !.
 
 s :-
     runProgram(_),
     posisi(A,B),
     isBorder(A,B+1),
-    write('Oow kamu nabrak dinding silahkan move ke tempat lain'),nl,
+    write('---\33\[38;5;76mOow kamu nabrak dinding silahkan move ke tempat lain\33\[0m----'),nl,
     !.
 
 
@@ -119,7 +119,7 @@ s :-
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
     /*asserta(inMarket(1)),*/
-    write('Kamu sekarang berada di market'),nl,
+    write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
     write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,
     !.
 
@@ -131,7 +131,7 @@ s :-
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
     /*asserta(inHouse(1)),*/
-    write('Kamu sekarang berada di house'),nl,
+    write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
     write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,
     !.
 
@@ -143,7 +143,7 @@ s :-
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
     /*asserta(inQuest(1)),*/
-    write('Kamu sekarang berada di quest'),nl,
+    write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
     write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,
     !.
 
@@ -155,7 +155,7 @@ s :-
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
     /*asserta(inRanch(1)),*/
-    write('Kamu sekarang berada di ranch'),nl,
+    write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
     write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,
     !.
 
@@ -167,7 +167,7 @@ s :-
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
     /*asserta(inAlchemist(1)),*/
-    write('Kamu sekarang berada di alchemist'),nl,
+    write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
     write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,
     !.
 
@@ -178,7 +178,7 @@ s :-
     retract(posisi(A,B)),
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
-    write('Kamu berpindah 1 langkah ke selatan.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke selatan.\33\[0m -------------'),nl,
     !.
     /* TODO: retracall semua yang memasuki rumah, market, ternak, dll*/
 
@@ -189,7 +189,7 @@ s :-
     retract(posisi(A,B)),
     Bnew is B+1,
     asserta(posisi(A,Bnew)),
-    write('Kamu berpindah 1 langkah ke selatan.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke selatan.\33\[0m -------------'),nl,
     !.
 
 /* Final State -> Bergerak ke arah timur */
@@ -197,14 +197,14 @@ d :-
     runProgram(_),
     posisi(A,B),
     isWater(A+1,B),
-    write('Kamu memasuki air, ayo keluar'),nl,
+    write('-------------- \33\[38;5;220mKamu memasuki air, ayo keluar \33\[0m--------------'),nl,
     !.
 
 d :-
     runProgram(_),
     posisi(A,B),
     isBorder(A+1,B),
-    write('Oow kamu nabrak dinding silahkan move ke tempat lain'),nl,
+    write('---\33\[38;5;76mOow kamu nabrak dinding silahkan move ke tempat lain\33\[0m----'),nl,
     !.
 
 
@@ -216,7 +216,7 @@ d :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inMarket(1)),*/
-    write('Kamu sekarang berada di market'),nl,
+    write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
     write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,
     !.
 
@@ -228,7 +228,7 @@ d :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inHouse(1)),*/
-    write('Kamu sekarang berada di house'),nl,
+    write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
     write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,
     !.
 
@@ -240,7 +240,7 @@ d :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inQuest(1)),*/
-    write('Kamu sekarang berada di quest'),nl,
+    write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
     write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,
     !.
 
@@ -252,7 +252,7 @@ d :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inRanch(1)),*/
-    write('Kamu sekarang berada di ranch'),nl,
+    write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
     write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,
     !.
 
@@ -264,7 +264,7 @@ d :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inAlchemist(1)),*/
-    write('Kamu sekarang berada di alchemist'),nl,
+    write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
     write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,
     !.
 
@@ -275,7 +275,7 @@ d :-
     retract(posisi(A,B)),
     Anew is A+1,
     asserta(posisi(Anew,B)),
-    write('Kamu berpindah 1 langkah ke timur.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke timur.\33\[0m -------------'),nl,
     !.
     /* TODO: retracall semua yang memasuki rumah, market, ternak, dll*/
 
@@ -286,7 +286,7 @@ d :-
     retract(posisi(A,B)),
     Anew is A+1,
     asserta(posisi(Anew,B)),
-    write('Kamu berpindah 1 langkah ke timur.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke timur.\33\[0m -------------'),nl,
     !.
 
 
@@ -295,14 +295,14 @@ a :-
     runProgram(_),
     posisi(A,B),
     isWater(A-1,B),
-    write('Kamu memasuki air, ayo keluar'),nl,
+    write('-------------- \33\[38;5;220mKamu memasuki air, ayo keluar \33\[0m--------------'),nl,
     !.
 
 a :-
     runProgram(_),
     posisi(A,B),
     isBorder(A-1,B),
-    write('Oow kamu nabrak dinding silahkan move ke tempat lain'),nl,
+    write('---\33\[38;5;76mOow kamu nabrak dinding silahkan move ke tempat lain\33\[0m----'),nl,
     !.
 
 
@@ -314,7 +314,7 @@ a :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inMarket(1)),*/
-    write('Kamu sekarang berada di market'),nl,
+    write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
     write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,
     !.
 
@@ -326,7 +326,7 @@ a :-
     Anew is A-1,
     asserta(posisi(Anew,B)),
     /*asserta(inHouse(1)),*/
-    write('Kamu sekarang berada di house'),nl,
+    write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
     write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,
     !.
 
@@ -338,7 +338,7 @@ a :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inQuest(1)),*/
-    write('Kamu sekarang berada di quest'),nl,
+    write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
     write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,
     !.
 
@@ -350,7 +350,7 @@ a :-
     Anew is A-1,
     asserta(posisi(Anew,B)),
     /*asserta(inRanch(1)),*/
-    write('Kamu sekarang berada di ranch'),nl,
+    write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
     write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,
     !.
 
@@ -362,7 +362,7 @@ a :-
     Anew is A+1,
     asserta(posisi(Anew,B)),
     /*asserta(inAlchemist(1)),*/
-    write('Kamu sekarang berada di alchemist'),nl,
+    write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
     write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,
     !.
 
@@ -373,7 +373,7 @@ a :-
     retract(posisi(A,B)),
     Anew is A-1,
     asserta(posisi(Anew,B)),
-    write('Kamu berpindah 1 langkah ke barat.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke barat.\33\[0m -------------'),nl,
     !.
     /* TODO: retracall semua yang memasuki rumah, market, ternak, dll*/
 
@@ -384,7 +384,7 @@ a :-
     retract(posisi(A,B)),
     Anew is A-1,
     asserta(posisi(Anew,B)),
-    write('Kamu berpindah 1 langkah ke barat.'),nl,
+    write('------------- \33\[38;5;220mKamu berpindah 1 langkah ke barat.\33\[0m -------------'),nl,
     !.
 
 

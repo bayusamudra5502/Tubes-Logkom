@@ -1,9 +1,12 @@
 :- dynamic(runProgram/1).
+:- dynamic(nama/1).
+:- dynamic(posisi/2).
 
 /* include file yang dibutuhkan untuk main */
 :- include('map.pl').
 :- include('move.pl').
-
+:- include('player.pl').
+:- include('story.pl').
 %memulai permainan
 startGame :-
     runProgram(_),
@@ -26,9 +29,7 @@ startGame :-
     write('\33\[38;5;96m2. Load Game.\33\[0m'),nl,nl,
     write('Insert number : '),read(X),
     (X =:= 1 -> newGame ;X =:= 2 -> loadGame),
-
     asserta(runProgram(1)),
-
     write('\nplese type \'help.\' to find out what commands can be used in this game!!!'),!.
 
 % new game
@@ -39,10 +40,9 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           asserta(nama(Username)),nl,
           write('Hi '), write(Username),write('! Enjoy and be the winner of this game!!!.'),nl,nl,
           asserta(runProgram(1)),
-          asserta(chapter(0)),
-          /* TODO : inisialisasi role player dulu*/
-          /* TODO : inisialisasi hal -hal lain yang dibutuhkan*/
+          initPemain,
           initMap,
+          story0,
           !.
 % menampilkan command yang dapat digunakan
 help :- runProgram(_),
@@ -72,6 +72,8 @@ quitGame :-
             retractall(posisi(_)),
             retractall(length(_)),
             retractall(width(_)),
+            retractall(width(_)),
+            retractall(nama(_)),
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,
             write('---------------------SEE YOU AGAIN---------------------'),nl,!.
