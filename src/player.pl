@@ -29,6 +29,7 @@ levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L), I >= J,
           retract(player(A,B,C,D,E,F,G,H,I,J,K,L)), asserta(player(A,Bnew,Cnew,Dnew,Enew,Fnew,Gnew,Hnew,Inew,Jnew,Knew,Lnew)),
           write('Level up from '), write(B), write(' -> '),write(Bnew),nl,!.
 levelUp :-!.
+/* TODO : level up untuk masing2 parameter ranch,farmer, fish, sesuai exp dan levelnya */
 
 status :- player(A,B,C,D,E,F,G,H,I,J,K,L),
 	      write('\33\[38;5;76m####################################################\33\[0m'),nl,
