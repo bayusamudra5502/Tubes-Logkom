@@ -2,6 +2,7 @@
 
 /* include file yang dibutuhkan untuk main */
 :- include('map.pl').
+:- include('move.pl').
 
 %memulai permainan
 startGame :-
@@ -17,7 +18,7 @@ startGame :-
     write('\33\[38;5;96m██║░░██║██║░░██║██║░░██║░░╚██╔╝░░███████╗██████╔╝░░░██║░░░  ██║░░██║██████╦╝░░░██║░░░╚██████╔╝╚█████╔╝██████╔╝\33\[0m'),nl,
     write('\33\[38;5;96m╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═════╝░░░░╚═╝░░░  ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░░╚═════╝░░╚════╝░╚═════╝░\33\[0m'),nl,                                                          
     nl,
-    asserta(quest(0,0,0,0,0)),
+    asserta(quest(0,0,0)),
     repeat,
     write('Welcome to Harvest HBYG03, this game will make your day better!!!'),nl,
     write('************* Enjoy and be the winner of this game *************!'),nl,
@@ -50,6 +51,10 @@ help :- runProgram(_),
         write('\33\[38;5;31m    quitGame.           \33\[0m: keluar dari permainan'), nl,
         write('\33\[38;5;31m    help.               \33\[0m: melihat command apa saja yang dapat digunakan'), nl,
         write('\33\[38;5;31m    map.                \33\[0m: melihat peta game'),nl,
+        write('\33\[38;5;31m    w.                  \33\[0m: gerak ke utara 1 langkah'),nl,
+        write('\33\[38;5;31m    s.                  \33\[0m: gerak ke selatan 1 langkah'),nl,
+        write('\33\[38;5;31m    d.                  \33\[0m: gerak ke timur 1 langkah'),nl,
+        write('\33\[38;5;31m    a.                  \33\[0m: gerak ke barat 1 langkah'),nl,
         write('\33\[38;5;31m    saveGame            \33\[0m: melakukan penyimpanan game'), nl,
       	write('\33\[38;5;31m    status.             \33\[0m: cek status player'), nl,
         write('\33\[38;5;31m    quest.              \33\[0m: cek progress quest'), nl,
