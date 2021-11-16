@@ -14,7 +14,7 @@ initPemain :-
             X =:= 3 ->asserta(player('Rancher', 1,1,56,150,1,76,150,1,56,150,0,250))).
 
 
-levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L,M), I >= J,
+levelUp :- player(A,B,C,D,E,F,G,H,I,J,K,L,M), D >= E, G >= H, J >= K, L >= M,
           Bnew is B+1,
           Cnew is C+1,
           Dnew is D mod E,
