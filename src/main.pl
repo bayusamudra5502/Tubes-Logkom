@@ -1,6 +1,8 @@
 :- dynamic(runProgram/1).
 :- dynamic(nama/1).
 :- dynamic(posisi/2).
+:- dynamic(gold/1).
+:- dynamic(energi/1).
 
 /* include file yang dibutuhkan untuk main */
 :- include('map.pl').
@@ -40,6 +42,8 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           asserta(nama(Username)),nl,
           write('Hi '), write(Username),write('! Enjoy and be the winner of this game!!!.'),nl,nl,
           asserta(runProgram(1)),
+          asserta(gold(100)),
+          asserta(energi(50)),
           initPemain,
           initMap,
           story0,
@@ -74,6 +78,8 @@ quitGame :-
             retractall(width(_)),
             retractall(width(_)),
             retractall(nama(_)),
+            retractall(gold(_)),
+            retractall(energi(_)),
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,
             write('---------------------SEE YOU AGAIN---------------------'),nl,!.
