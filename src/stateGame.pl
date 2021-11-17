@@ -87,4 +87,89 @@ getLocation :- runProgram(_),posisi(X,Y),isAlchemist(X,Y),
 % getter diary -> setelah realisasi rumah selesai
 % getter time dan fungsi timenya -> pikirin lagi caranya
 
+periTidur :- runProgram(_),nama(Nama),
+            write('********** Halo '),write(Nama), write(' Selamat datang di dunia mimpi **********'),nl,
+            write('Aku adalah peri tidur yang akan membuatmu terbangun di posisi yang kamu inginkan'),nl,
+            write('Berikut adalah tempat dan lokasi yang bisa kamu kunjungi:.......................'),nl,
+            commandPeri,
+            write('Selamat terbangun di tempat impian Anda, sampai jumpa di mimpi berikutnya :)))))'),nl,nl,!.
+
+commandPeri :- 
+             write('Silakan inputkan sesuai perintah'),nl,
+             write('1. House'),nl,
+             write('2. Market'),nl,
+             write('3. Ranch'),nl,
+             write('4. Quest'),nl,
+             write('5. Alchemist'),nl,
+             write('6. Lainnya'),nl,
+             write('Insert number: '), read(X),
+        (X =:= 1 -> housePosisi;
+        X =:= 2 -> marketPosisi;
+        X =:= 3 -> ranchPosisi;
+        X =:= 4 -> questPosisi;
+        X =:= 5 -> alchemistPosisi;
+        X =:= 6 -> lainnya),!.
+
+housePosisi :- runProgram(_),
+                posisi(A,B),
+                retract(posisi(A,B)),
+                Anew is 16,
+                Bnew is 4,
+                asserta(posisi(Anew,Bnew)),
+                write('Sekarang Anda berada di rumah'),nl,!.
+
+marketPosisi :- runProgram(_),
+        posisi(A,B),
+        retract(posisi(A,B)),
+        Anew is 15,
+        Bnew is 16,
+        asserta(posisi(Anew,Bnew)),
+        write('Sekarang Anda berada di market'),nl,!.
+
+ranchPosisi :- runProgram(_),
+        posisi(A,B),
+        retract(posisi(A,B)),
+        Anew is 3,
+        Bnew is 17,
+        asserta(posisi(Anew,Bnew)),
+        write('Sekarang Anda berada di peternakan'),nl,!.
+
+questPosisi :- runProgram(_),
+        posisi(A,B),
+        retract(posisi(A,B)),
+        Anew is 8,
+        Bnew is 7,
+        asserta(posisi(Anew,Bnew)),
+        write('Sekarang Anda berada di quest'),nl,!.
+
+alchemistPosisi :- runProgram(_),
+        posisi(A,B),
+        retract(posisi(A,B)),
+        Anew is 18,
+        Bnew is 11,
+        asserta(posisi(Anew,Bnew)),
+        write('Sekarang Anda berada di alchemist'),nl,!.
+
+lainnya :- runProgram(_),posisi(A,B), 
+            write('Silakan masukkan ke posisi mana Anda ingin pergi..............'),nl,
+            write('Jika lokasi tidak dapat dikunjungi maka inputkan lagi X dan Y.'),nl,
+            write('insert X: '), read(X),
+            write('insert Y: '), read(Y),
+            X<20,Y<20,
+            \+isBorder(X,Y),
+            \+isHouse(X,Y),
+            \+isMarket(X,Y),
+            \+isRanch(X,Y),
+            \+isQuest(X,Y),
+            \+isAlchemist(X,Y),
+            \+isWater(X,Y),
+            retract(posisi(A,B)),
+            Anew is X,
+            Bnew is Y,
+            asserta(posisi(Anew,Bnew)),
+            write('Sekarang Anda berada di koordinat '),write(Anew),write(','),write(Bnew),write('.'),nl,!.
+            
+
+    
+
 
