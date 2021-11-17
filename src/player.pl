@@ -1,4 +1,9 @@
 :- dynamic(player/13).
+:- dynamic(inventory/2).
+
+% inventory ([list], length)
+% list elemen : ID, amount
+
 
 % player(Job, level, levelFarming, expFarming, base expFarming, levelFishing, expFishing, base expFishing, levelRanching, expRanching, base expRanching, exp, base exp)
 % player(A,B,C,D,E,F,G,H, I, J, K,L,M)

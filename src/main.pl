@@ -10,6 +10,7 @@
 :- include('player.pl').
 :- include('story.pl').
 :- include('stateGame.pl').
+:- include('farming.pl').
 %memulai permainan
 startGame :-
     runProgram(_),

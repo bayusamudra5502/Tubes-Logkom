@@ -2,6 +2,10 @@
 :- dynamic(length/1).
 :- dynamic(runProgram/1).
 
+/* dynamic map legends */
+:- dynamic(soilTile/2).
+:- dynamic(seedTile/3).
+:- dynamic(plantTile/3).
 /* Menginisialisasi Map */
 initMap:-
     asserta(length(20)),
@@ -148,6 +152,26 @@ cetakMap(X,Y) :-
 cetakMap(X,Y) :-
     isWater(X,Y),
     write('🌊'),
+    NextX is (X+1),
+    cetakMap(NextX,Y).
+
+cetakMap(X,Y) :-
+    soilTile(X,Y),
+    write(' ='),
+    NextX is (X+1),
+    cetakMap(NextX,Y).
+
+cetakMap(X,Y) :-
+    seedTile(X,Y,ID),
+    seed(ID,U,_,_,_,_),
+    write(U),
+    NextX is (X+1),
+    cetakMap(NextX,Y).
+
+cetakMap(X,Y) :-
+    plantTile(X,Y,ID),
+    crops(ID,_,U,_,_,_),
+    write(U),
     NextX is (X+1),
     cetakMap(NextX,Y).
 
