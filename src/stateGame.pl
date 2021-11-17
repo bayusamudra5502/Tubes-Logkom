@@ -69,9 +69,6 @@ getLocation :- runProgram(_),posisi(X,Y),isHouse(X,Y),
         write('Sekarang Anda berada di rumah.'),nl,!.
 
 getLocation :- runProgram(_),posisi(X,Y),isMarket(X,Y),
-        write('Sekarang Anda berada di rumah.'),nl,!.
-
-getLocation :- runProgram(_),posisi(X,Y),isHouse(X,Y),
         write('Sekarang Anda berada di market.'),nl,!.
 
 getLocation :- runProgram(_),posisi(X,Y),isRanch(X,Y),
