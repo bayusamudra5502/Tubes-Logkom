@@ -9,6 +9,7 @@
 :- include('move.pl').
 :- include('player.pl').
 :- include('story.pl').
+:- include('stateGame.pl').
 %memulai permainan
 startGame :-
     runProgram(_),
@@ -61,6 +62,7 @@ help :- runProgram(_),
         write('\33\[38;5;31m    a.                  \33\[0m: gerak ke barat 1 langkah'),nl,
         write('\33\[38;5;31m    saveGame            \33\[0m: melakukan penyimpanan game'), nl,
       	write('\33\[38;5;31m    status.             \33\[0m: cek status player'), nl,
+        write('\33\[38;5;31m    getter.             \33\[0m: Melihat command getter apa saja yang tersedia'), nl,
         write('\33\[38;5;31m    quest.              \33\[0m: cek progress quest'), nl,
         write('\33\[38;5;31m    cekInventory.       \33\[0m: cek inventory'), nl,!.
 /*sementara itu dulu buat command help*/
