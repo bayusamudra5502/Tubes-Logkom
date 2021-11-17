@@ -80,6 +80,7 @@ getLocation :- runProgram(_),posisi(X,Y),isQuest(X,Y),
 getLocation :- runProgram(_),posisi(X,Y),isAlchemist(X,Y),
         write('Sekarang Anda berada di alchemist.'),nl,!.
 
+
 /*TODO: */
 % getter diary -> setelah realisasi rumah selesai
 % getter time dan fungsi timenya -> pikirin lagi caranya
