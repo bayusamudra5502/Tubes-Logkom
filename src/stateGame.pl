@@ -114,7 +114,9 @@ housePosisi :- runProgram(_),
                 Anew is 16,
                 Bnew is 4,
                 asserta(posisi(Anew,Bnew)),
-                write('Sekarang Anda berada di rumah'),nl,!.
+                /*asserta(inHouse(1)),*/
+                write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
+                write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,!.
 
 marketPosisi :- runProgram(_),
         posisi(A,B),
@@ -122,7 +124,9 @@ marketPosisi :- runProgram(_),
         Anew is 15,
         Bnew is 16,
         asserta(posisi(Anew,Bnew)),
-        write('Sekarang Anda berada di market'),nl,!.
+        /*asserta(inMarket(1)),*/
+        write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
+        write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,!.
 
 ranchPosisi :- runProgram(_),
         posisi(A,B),
@@ -130,7 +134,9 @@ ranchPosisi :- runProgram(_),
         Anew is 3,
         Bnew is 17,
         asserta(posisi(Anew,Bnew)),
-        write('Sekarang Anda berada di peternakan'),nl,!.
+        /*asserta(inRanch(1)),*/
+        write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
+        write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,!.
 
 questPosisi :- runProgram(_),
         posisi(A,B),
@@ -138,7 +144,9 @@ questPosisi :- runProgram(_),
         Anew is 8,
         Bnew is 7,
         asserta(posisi(Anew,Bnew)),
-        write('Sekarang Anda berada di quest'),nl,!.
+        /*asserta(inQuest(1)),*/
+        write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
+        write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,!.
 
 alchemistPosisi :- runProgram(_),
         posisi(A,B),
@@ -146,7 +154,9 @@ alchemistPosisi :- runProgram(_),
         Anew is 18,
         Bnew is 11,
         asserta(posisi(Anew,Bnew)),
-        write('Sekarang Anda berada di alchemist'),nl,!.
+         /*asserta(inAlchemist(1)),*/
+        write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
+        write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,!.
 
 lainnya :- runProgram(_),posisi(A,B), 
             write('Silakan masukkan ke posisi mana Anda ingin pergi..............'),nl,
