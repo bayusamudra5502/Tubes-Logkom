@@ -93,7 +93,7 @@ periTidur :- runProgram(_),nama(Nama),
             commandPeri,
             write('Selamat terbangun di tempat impian Anda, sampai jumpa di mimpi berikutnya :)))))'),nl,nl,!.
 
-commandPeri :- 
+commandPeri :- runProgram(_),
              write('Silakan inputkan sesuai perintah'),nl,
              write('1. House'),nl,
              write('2. Market'),nl,
