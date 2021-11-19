@@ -85,6 +85,7 @@ quitGame :-
             retractall(nama(_)),
             retractall(gold(_)),
             retractall(energi(_)),
+            retractall(player(_,_,_,_,_,_,_,_,_,_,_,_,_)),
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,
             write('---------------------SEE YOU AGAIN---------------------'),nl,!.
