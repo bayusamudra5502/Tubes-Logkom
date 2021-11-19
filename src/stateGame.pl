@@ -85,6 +85,7 @@ getLocation :- runProgram(_),posisi(X,Y),isAlchemist(X,Y),
 % getter diary -> setelah realisasi rumah selesai
 % getter time dan fungsi timenya -> pikirin lagi caranya
 
+/* Tambahin keteranngan klo dia sleep dg inSleep(_), untuk semua rules di bawah ini*/
 periTidur :- runProgram(_),nama(Nama),
             write('********** Halo '),write(Nama), write(' Selamat datang di dunia mimpi **********'),nl,
             write('Aku adalah peri tidur yang akan membuatmu terbangun di posisi yang kamu inginkan'),nl,
