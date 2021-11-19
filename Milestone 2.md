@@ -14,7 +14,7 @@
 - [ ] Fish : yg dapet kemaren
 
 - [ ] Market
-
+- [ ] Alchemist
 - [ ] House
 
 - [ ] cekInventory
@@ -88,6 +88,7 @@ ID Product, ada listnya
    - House
    - Quest Fish Randomizer
 
+- Alchemist masuk kemana? kemarin belum ditambahin??
 ## Modal
 
 1. Berupa gold: 100 G
