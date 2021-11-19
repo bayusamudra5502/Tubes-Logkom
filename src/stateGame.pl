@@ -177,7 +177,7 @@ lainnya :- runProgram(_),posisi(A,B),
             Bnew is Y,
             asserta(posisi(Anew,Bnew)),
             write('Sekarang Anda berada di koordinat '),write(Anew),write(','),write(Bnew),write('.'),nl,!.
-            
+
 
     
 

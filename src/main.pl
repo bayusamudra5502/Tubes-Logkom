@@ -49,6 +49,7 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           initPemain,
           initMap,
           story0,
+          levelUp,
           !.
 % menampilkan command yang dapat digunakan
 help :- runProgram(_),
