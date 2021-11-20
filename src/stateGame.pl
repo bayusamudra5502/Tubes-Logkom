@@ -81,7 +81,7 @@ getLocation :- runProgram(_),posisi(X,Y),isQuest(X,Y),
 getLocation :- runProgram(_),posisi(X,Y),isAlchemist(X,Y),
         write('Sekarang Anda berada di alchemist.'),nl,!.
 
-getTime :- runProgram(_),time(A,B,C,D,E),
+getTime :- runProgram(_),time(A,B,C,D,E), 
         write('Kamu sekarang berkegiatan di '), write(A), write(' hari'),nl,
         write('Kamu sekarang berada di day '),write(B),write(', Season ke - '), write(C), write(', Musim '),write(D), write(', Tahun ke - '),write(E),!.
 
@@ -191,25 +191,25 @@ initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum ber
 
 
 /* implementasi gantiTime masi belom dicoba karena sleep belum diimplementasikan */
-gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(jumlah), jumlah >= 5, retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 5, retract(time(A,B,C,D,E)),
                 asserta(time("Malam",B,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(jumlah), jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 asserta(time("Siang",B+1,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(jumlah), jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 1,
                 asserta(time("Siang",Bnew,C+1,"Spring",E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(jumlah), jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 2,
                 asserta(time("Siang",Bnew,C+1,"Fall",E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(jumlah), jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 3,
                 asserta(time("Siang",Bnew,C+1,"Winter",E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(jumlah), jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 C > 4, Cnew is C mod 4, 
                 asserta(time("Siang",B+1,Cnew,"Summer",E+1)),!.
 
