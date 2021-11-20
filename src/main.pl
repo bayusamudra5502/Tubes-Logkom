@@ -3,6 +3,9 @@
 :- dynamic(posisi/2).
 :- dynamic(gold/1).
 :- dynamic(energi/1).
+:- dynamic(sleep/1).
+:- dynamic(kegiatan/1).
+:- dynamic(time/5).
 
 /* include file yang dibutuhkan untuk main */
 :- include('map.pl').
@@ -11,6 +14,7 @@
 :- include('story.pl').
 :- include('stateGame.pl').
 :- include('farming.pl').
+
 %memulai permainan
 startGame :-
     runProgram(_),
@@ -46,10 +50,11 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           asserta(runProgram(1)),
           asserta(gold(100)),
           asserta(energi(50)),
+          asserta(kegiatan(0)),
           initPemain,
+          initTime,
           initMap,
           story0,
-          levelUp,
           !.
 % menampilkan command yang dapat digunakan
 help :- runProgram(_),
@@ -86,6 +91,8 @@ quitGame :-
             retractall(gold(_)),
             retractall(energi(_)),
             retractall(player(_,_,_,_,_,_,_,_,_,_,_,_,_)),
+            retractall(time(_,_,_,_,_)),
+            retractall(kegiatan(_)),
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,
             write('---------------------SEE YOU AGAIN---------------------'),nl,!.
