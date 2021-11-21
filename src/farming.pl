@@ -1,8 +1,6 @@
 /* include file yang dibutuhkan untuk main */
 
 :- dynamic(crops/5).
-:- dynamic(soil/2).
-
 
 /* Farming item */
 % crop (ID,IDSeed, Unicode, nama, harga jual, exp gained)
@@ -27,24 +25,65 @@ seed(e15, '🌱','Bibit Brokoli',4,40,3).
 seed(e16, '🌱','Bibit Terong',6,90,3).
 seed(e17, '🌱','Bibit Cabai',8,150,3).
 
-/* blm kelar */
+/* Farming actions */
+% list ID item seed
+seed_list([e11,e12,e13,e14,e15,e16,e17,e18]).
 
-isSeed(X) :- X is e10;X is e11;X is e12;X is e12;X is e13;X is e14;X is e15;X is e16;X is e17;X is e18.
+% mengecek apakah kooordinat X,Y adalah tile soid/seed/plant
 
 isSoilTile(X,Y) :- soilTile(X,Y).
-isSeedTile(X,Y) :- seedTile(X,Y).
-isPlantTile(X,Y) :- plantTile(X,Y).
+isSeedTile(X,Y) :- seedTile(X,Y,_).
+isPlantTile(X,Y) :- plantTile(X,Y,_).
 
-isSeedExist([]).
-isSeedExist([Item,Amount]) :- isSeed(Item), write(seed(Item,_,_,_,_,_), write(Amount),nl).
-printSeed :- inventory([Head|Tail], _), isSeedExist(Head), printSeed(Tail).
+% print semua seed yang ada di inventory
+
+search_seed([]) :-!.
+search_seed([Head|Tail]) :- inventory(CurrentInventory), 
+    \+is_member(Head,CurrentInventory,Index),
+    search_seed(Tail).
+
+search_seed([Head|Tail]) :- inventory(CurrentInventory), 
+    is_member(Head,CurrentInventory,Index),
+    seed(ID,_,Nama,_,_,_),
+    select_nth(CurrentInventory,Index,[ID,Amount]),
+    write(ID),write('. '), write(Nama), write(' : '), write(Amount), write(' X'),nl,
+    search_seed(Tail).
+
+print_Seed :- seed_list(X),search_seed(X),!.
+
+plant :- runProgram(_),
+    posisi(X,Y),
+    \+isSoilTile(X,Y),
+    write('Tanah ini belum di gali! kamu harus menggalinya dulu dengan command dig'),nl,!.
 
 plant :- runProgram(_),
     posisi(X,Y),
     isSoilTile(X,Y),
-    write('Kamu punya :'),nl,
-    printSeed,nl,
-    write('Apa yang ingin ditanam :').
+    inventory(CurrentInventory),
+    write('Di Inventory Kamu punya :'),nl,
+    print_Seed,nl,
+    write('Apa yang ingin kamu tanam ? ( masukan id )'),nl,
+    read(Input),
+    is_member(Input,CurrentInventory,Index),
+    seed(Input,U,Nama,W,H,M),
+    write('Kamu telah menanam bibit '),write(Nama),nl,
+    w,
+    retract(soilTile(X,Y)),
+    assertz(seedTile(X,Y,Input)),!.
+
+
+plant :- runProgram(_),
+    posisi(X,Y),
+    isSoilTile(X,Y),
+    inventory(CurrentInventory),
+    write('Di Inventory Kamu punya :'),nl,
+    print_Seed,nl,
+    write('Apa yang ingin kamu tanam ? ( masukan id )'),
+    read(Input),
+    \+is_member(Input,CurrentInventory,Index),
+    write('Item dengan id tersebut tidak ada di inventory !'),nl,!.
+
+
 
 
 dig :- runProgram(_),
