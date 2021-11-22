@@ -119,7 +119,5 @@ getFishBuyPrice(X, Price) :- \+ isFish(X), fishPrice(X, Price), !.
 getFishItem(X,Y,Z) :- fishItem(X,Y,Z), !.
 getFishItem(X,Y,Z) :- fishAlias(X,A), fishItem(A,Y,Z), !.
 
-% Mendapatkan lokasi di sekitar fishing pod
-
 /* Fishing */
 fish.
