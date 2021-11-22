@@ -73,22 +73,23 @@ ID Product, ada listnya
 2. Orang 2
 
    - Ranch
-   - Inventrory
+   - Market
    - Quest Ranch Randomizer
    - Equipment Changer
 
 3. Orang 3
 
    - Farm
-   - Market
+   - Inventrory
    - Quest Farm Randomizer
+   - Quest
 
 4. Orang 4
    - Fish
    - House
    - Quest Fish Randomizer
+   - Alchemist
 
-- Alchemist masuk kemana? kemarin belum ditambahin??
 ## Modal
 
 1. Berupa gold: 100 G
