@@ -42,7 +42,7 @@ Level : [0..5]
 
 | Item                | Harga  | Exp per Use | Effect                                        |
 | ------------------- | ------ | ----------- | --------------------------------------------- |
-| 🎣 Iron Fishing Rod | 1000 G | 10 xp       | Menambahkan harga jual ikan                   |
+| 🎣 Iron Fishing Rod | 1000 G | 10 xp       | Menambahkan harga ikan 50%                    |
 | 🎣 Pakan Ikan       | 1000 G | 10 xp       | Menduplikat jumlah ikan stiap kali tertangkap |
 
 Note : Pakan ikan hanya sekali pakai
