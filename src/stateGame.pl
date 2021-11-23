@@ -89,8 +89,8 @@ getTime :- runProgram(_),time(A,B,C,D,E),
 % getter diary -> setelah realisasi rumah selesai
 % getter time dan fungsi timenya -> pikirin lagi caranya
 
-/* Tambahin keteranngan klo dia sleep dg inSleep(_), untuk semua rules di bawah ini*/
-periTidur :- runProgram(_),nama(Nama),
+/* Tambahin keteranngan klo dia sleep dg intidur, untuk semua rules di bawah ini*/
+periTidur :- runProgram(_), tidur, nama(Nama),
             write('********** Halo '),write(Nama), write(' Selamat datang di dunia mimpi **********'),nl,
             write('Aku adalah peri tidur yang akan membuatmu terbangun di posisi yang kamu inginkan'),nl,
             write('Berikut adalah tempat dan lokasi yang bisa kamu kunjungi:.......................'),nl,
@@ -183,35 +183,35 @@ lainnya :- runProgram(_),posisi(A,B),
             write('Sekarang Anda berada di koordinat '),write(Anew),write(','),write(Bnew),write('.'),nl,!.
 
 % time(waktu,hari,season,musim,tahun)
-initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum bermain silakan aktifkan waktu'), nl,
-            write('1. lanjutkan game dengan aktifkan waktu'),nl,
+initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum bermain silakan aktifkan waktu ⏰'), nl,
+            write('1. lanjutkan game dengan aktifkan waktu ⏰'),nl,
             write('Silakan masukkan angka 1 untuk melanjutkan'),nl,
             write('Masukkan angka : '), read(X),nl,
-            (X =:= 1 ->asserta(time('Siang',1,1,'Summer',1))).
+            (X =:= 1 ->asserta(time('Siang',1,1,'Summer ☀️',1))).
 
 
 /* implementasi gantiTime masi belom dicoba karena sleep belum diimplementasikan */
 gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 5, retract(time(A,B,C,D,E)),
-                asserta(time("Malam",B,C,D,E)),!.
+                asserta(time('Malam',B,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
-                asserta(time("Siang",B+1,C,D,E)),!.
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+                asserta(time('Siang',B+1,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 1,
-                asserta(time("Siang",Bnew,C+1,"Spring",E)),!.
+                asserta(time('Siang',Bnew,C+1,'Spring 🍀',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 2,
-                asserta(time("Siang",Bnew,C+1,"Fall",E)),!.
+                asserta(time('Siang',Bnew,C+1,'Fall 🍂',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 3,
-                asserta(time("Siang",Bnew,C+1,"Winter",E)),!.
+                asserta(time('Siang',Bnew,C+1,'Winter ☃️',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), sleep(_),A is "Malam", kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 C > 4, Cnew is C mod 4, 
-                asserta(time("Siang",B+1,Cnew,"Summer",E+1)),!.
+                asserta(time('Siang',B+1,Cnew,'Summer ☀️', E+1)),!.
 
 gantiTime :- !.
 

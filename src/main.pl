@@ -14,6 +14,12 @@
 :- include('story.pl').
 :- include('stateGame.pl').
 :- include('farming.pl').
+:- include('house.pl').
+:- include('ranching.pl').
+:- include('fish.pl').
+:- include('market.pl').
+:- include('alchemist.pl').
+:- include('quest.pl').
 
 %memulai permainan
 startGame :-
@@ -50,7 +56,7 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           asserta(runProgram(1)),
           asserta(gold(100)),
           asserta(energi(50)),
-          asserta(kegiatan(0)),
+          asserta(kegiatan(6)),
           initPemain,
           initTime,
           initMap,
@@ -93,6 +99,7 @@ quitGame :-
             retractall(player(_,_,_,_,_,_,_,_,_,_,_,_,_)),
             retractall(time(_,_,_,_,_)),
             retractall(kegiatan(_)),
+            retractall(inHouse(_)),
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,
             write('---------------------SEE YOU AGAIN---------------------'),nl,!.
