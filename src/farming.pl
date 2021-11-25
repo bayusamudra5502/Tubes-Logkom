@@ -44,15 +44,15 @@ getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
 
 /* Farming actions */
 % list ID item seed
-seed_list([e11,e12,e13,e14,e15,e16,e17,e18]).
+seed_list([e10,e11,e12,e13,e14,e15,e16,e17,e18]).
 
 % mengecek apakah kooordinat X,Y adalah tile soid/seed/plant
 % soilTile(X, Y)
-% seedTile(X, Y, IDSeed)
-% plantTile(X, Y, IDSeed, Time remaining to harvest)
+% seedTile(X, Y, IDSeed,  Time remaining to harvest)
+% plantTile(X, Y, IDSeed)
 
 isSoilTile(X,Y) :- soilTile(X,Y).
-isSeedTile(X,Y) :- seedTile(X,Y,_).
+isSeedTile(X,Y) :- seedTile(X,Y,_,_).
 isPlantTile(X,Y) :- plantTile(X,Y,_).
 
 % print semua seed yang ada di inventory
@@ -91,14 +91,16 @@ plant :- runProgram(_),
     set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
     write('Kamu telah menanam bibit '),write(Nama),nl,
     w,
+    kegiatan(K), K1 = K + 1,
     energi(E), E1 = E-1, 
+    retract(kegiatan(K)),
     retract(soilTile(X,Y)),
     retract(inventory(CurrentInventory)),
     retract(energi(E)),
+    asserta(kegiatan(K1)),
     asserta(energi(E1)),
     assertz(inventory(NewInventory)),
-    assertz(seedTile(X,Y,Input)),!.
-
+    assertz(seedTile(X,Y,Input,W)),!.
 
 plant :- runProgram(_),
     posisi(X,Y),
@@ -111,10 +113,32 @@ plant :- runProgram(_),
     \+is_member(Input,CurrentInventory,Index),
     write('Item dengan id tersebut tidak ada di inventory !'),nl,!.
 
-
-
-
 dig :- runProgram(_),
     posisi(X,Y),
     cekArea(X,Y),
     asserta(soilTile(X,Y)), w,!.
+
+/* Update waktu sisa seed sampai siap panen */
+
+
+update_seed_tile([]) :- !.
+update_seed_tile([Head|Tail]) :- 
+    seedTile(X,Y,Head,W),
+    W > 0,
+    W1 is W - 1,
+    asserta(seedTile(X,Y,Head,W1)),
+    retract(seedTile(X,Y,Head,W)),
+    update_seed_tile(Tail).
+
+update_seed_tile([Head|Tail]) :- 
+    seedTile(X,Y,Head,W),
+    W = 0,
+    crops(ID,Head,_,_,_,_),
+    asserta(plantTile(X,Y,ID)),
+    retract(seedTile(X,Y,Head,W)),
+    update_seed_tile(Tail).
+
+updateSeed :-
+    seed_list(X),
+    update_seed_tile(X), !.
+
