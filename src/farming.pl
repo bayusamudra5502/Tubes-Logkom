@@ -2,7 +2,8 @@
 
 :- dynamic(crops/5).
 
-/* Farming item */
+/* Farming item for Non-Farmer Speciality*/
+
 % crop (ID,IDSeed, Unicode, nama, harga jual, exp gained)
 crops(e1,e10, '🌾', 'Padi',60,10).
 crops(e2,e11, '🥕', 'Wortel',150,20).
@@ -16,20 +17,39 @@ crops(e9,e18, '🌶️', 'Cabai',275,50).
 
 % seed (IDSeed, Unicode, nama, waktu tumbuh,harga bibit, musim)
 seed(e10, '🌱','Bibit Padi',3,30,1).
-seed(e18, '🌱','Bibit Wortel',5,80,1).
-seed(e11, '🌱','Bibit Kentang',7,120,1).
-seed(e12, '🌱','Bibit Tomat',4,45,2).
-seed(e13, '🌱','Bibit Bawang',6,80,2).
-seed(e14, '🌱','Bibit Jagung',10,150,2).
-seed(e15, '🌱','Bibit Brokoli',4,40,3).
-seed(e16, '🌱','Bibit Terong',6,90,3).
-seed(e17, '🌱','Bibit Cabai',8,150,3).
+seed(e11, '🌱','Bibit Wortel',5,80,1).
+seed(e12, '🌱','Bibit Kentang',7,120,1).
+seed(e13, '🌱','Bibit Tomat',4,45,2).
+seed(e14, '🌱','Bibit Bawang',6,80,2).
+seed(e15, '🌱','Bibit Jagung',10,150,2).
+seed(e16, '🌱','Bibit Brokoli',4,40,3).
+seed(e17, '🌱','Bibit Terong',6,90,3).
+seed(e18, '🌱','Bibit Cabai',8,150,3).
+
+/* Farming item exp and selling price info */
+getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
+    player('Fisherman',L,_,_,_,_,_,_,_,_,_,_,_),
+    EXP is E + 5 * L,
+    GOLD is G + 5 * L,!.
+
+getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
+    player('Rancher',L,_,_,_,_,_,_,_,_,_,_,_),
+    EXP is E + 5 * L,
+    GOLD is G + 5 * L,!.
+
+getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
+    player('Farmer',L,FL,_,_,_,_,_,_,_,_,_,_),
+    EXP is E + 5 * (L+FL),
+    GOLD is G + 5 * (L+FL),!.
 
 /* Farming actions */
 % list ID item seed
 seed_list([e11,e12,e13,e14,e15,e16,e17,e18]).
 
 % mengecek apakah kooordinat X,Y adalah tile soid/seed/plant
+% soilTile(X, Y)
+% seedTile(X, Y, IDSeed)
+% plantTile(X, Y, IDSeed, Time remaining to harvest)
 
 isSoilTile(X,Y) :- soilTile(X,Y).
 isSeedTile(X,Y) :- seedTile(X,Y,_).
@@ -66,9 +86,17 @@ plant :- runProgram(_),
     read(Input),
     is_member(Input,CurrentInventory,Index),
     seed(Input,U,Nama,W,H,M),
+    select_nth(CurrentInventory,Index,[ID,N]),
+    N1 is N - 1,
+    set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
     write('Kamu telah menanam bibit '),write(Nama),nl,
     w,
+    energi(E), E1 = E-1, 
     retract(soilTile(X,Y)),
+    retract(inventory(CurrentInventory)),
+    retract(energi(E)),
+    asserta(energi(E1)),
+    assertz(inventory(NewInventory)),
     assertz(seedTile(X,Y,Input)),!.
 
 
