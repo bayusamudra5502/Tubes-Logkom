@@ -91,8 +91,8 @@ plant :- runProgram(_),
     set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
     write('Kamu telah menanam bibit '),write(Nama),nl,
     w,
-    kegiatan(K), K1 = K + 1,
-    energi(E), E1 = E-1, 
+    kegiatan(K), K1 is K + 1,
+    energi(E), E1 is E-1, 
     retract(kegiatan(K)),
     retract(soilTile(X,Y)),
     retract(inventory(CurrentInventory)),
@@ -118,13 +118,46 @@ dig :- runProgram(_),
     cekArea(X,Y),
     asserta(soilTile(X,Y)), w,!.
 
-/* Update waktu sisa seed sampai siap panen */
+harvest :- runProgram(_),
+    posisi(X,Y),
+    plantTile(X,Y,ID),
+    crops(ID,_,U,Nama,_,_),
+    insert_item(ID,1),
+    getHarvestExpGold(ID,EXP,GOLD),
+    kegiatan(K), K1 is K + 1,
+    energi(E), E1 is E-1, 
+    player(_,_,_,D,_,_,_,_,_,_,_,L,_),
+    gold(G),
+    D1 is D + EXP,
+    L1 is L + EXP,
+    G1 is G + GOLD,
+    levelUp,
+    write('Kamu memanen : '), write(Nama), write(' '), write(U), write(' 1 X'),nl,
+    write('+ '), write(GOLD), write(' Gold'),nl,
+    write('+ '), write(EXP), write(' Exp'),nl,
+    asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
+    asserta(gold(G1)),
+    asserta(kegiatan(K1)),
+    asserta(energi(E1)),
+    retract(kegiatan(K)),
+    retract(energi(E)),
+    retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
+    retract(gold(G)),
+    retract(plantTile(X,Y,ID)),!.
 
+
+/* Update waktu sisa seed sampai siap panen */
+/* dipake di ganti time */
 
 update_seed_tile([]) :- !.
+
+update_seed_tile([Head|Tail]) :- 
+    \+seedTile(X,Y,Head,W),
+    update_seed_tile(Tail).
+
 update_seed_tile([Head|Tail]) :- 
     seedTile(X,Y,Head,W),
-    W > 0,
+    W > 1,
     W1 is W - 1,
     asserta(seedTile(X,Y,Head,W1)),
     retract(seedTile(X,Y,Head,W)),
@@ -132,7 +165,7 @@ update_seed_tile([Head|Tail]) :-
 
 update_seed_tile([Head|Tail]) :- 
     seedTile(X,Y,Head,W),
-    W = 0,
+    W = 1,
     crops(ID,Head,_,_,_,_),
     asserta(plantTile(X,Y,ID)),
     retract(seedTile(X,Y,Head,W)),
