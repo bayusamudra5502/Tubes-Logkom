@@ -18,6 +18,7 @@ ranch :-
 	inRanch(_),
 	nl,nl,
 	write('##################  Ranch  ##################'),nl,
+    	write('# Welcome to the ranch!                     #'),nl,
     	write('# 1. Sleep 🌙                               #'),nl,
     	write('# 2. WriteDiary 📚                          #'),nl,
     	write('# 3. ReadDiary 📚                           #'),nl,
