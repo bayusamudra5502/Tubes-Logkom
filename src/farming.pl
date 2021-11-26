@@ -74,20 +74,20 @@ print_Seed :- seed_list(X),search_seed(X),!.
 plant :- runProgram(_),
     posisi(X,Y),
     \+isSoilTile(X,Y),
-    write('Tanah ini belum di gali! kamu harus menggalinya dulu dengan command dig'),nl,!.
+    write('-------------- \33\[38;5;76mTanah ini belum di gali! kamu harus menggalinya dulu dengan command dig\33\[0m -------------- '),nl,!.
 
 plant :- runProgram(_),
     posisi(X,Y),
     isSoilTile(X,Y),
     inventory(CurrentInventory),
     is_empty(CurrentInventory),
-    write('Kamu tidak punya bibit di inventory !'),nl,!.
-    
+    write('-------------- \33\[38;5;202mKamu tidak punya bibit di inventory !\33\[0m -------------- '),nl,!.
+
 plant :- runProgram(_),
     posisi(X,Y),
     isSoilTile(X,Y),
     inventory(CurrentInventory),
-    write('Di Inventory Kamu punya :'),nl,
+    write('\33\[38;5;220mDi Inventory Kamu punya :\33\[0m'),nl,
     print_Seed,nl,
     write('Apa yang ingin kamu tanam ? ( masukan id )'),nl,
     read(Input),
@@ -96,7 +96,7 @@ plant :- runProgram(_),
     select_nth(CurrentInventory,Index,[ID,N]),
     N1 is N - 1,
     set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
-    write('Kamu telah menanam bibit '),write(Nama),nl,
+    write('-------------- \33\[38;5;76mKamu telah menanam : \33\[0m'),write(Nama),write(' --------------'),nl,
     w,
     kegiatan(K), K1 is K + 1,
     energi(E), E1 is E-1, 
@@ -113,7 +113,9 @@ plant :- runProgram(_),
 dig :- runProgram(_),
     posisi(X,Y),
     cekArea(X,Y),
-    asserta(soilTile(X,Y)), w,!.
+    asserta(soilTile(X,Y)),
+    write('-------------- \33\[38;5;76mKamu menggali tanah ini !\33\[0m --------------'),nl, 
+    w,!.
 
 harvest :- runProgram(_),
     posisi(X,Y),
@@ -129,9 +131,8 @@ harvest :- runProgram(_),
     L1 is L + EXP,
     G1 is G + GOLD,
     levelUp,
-    write('Kamu memanen : '), write(Nama), write(' '), write(U), write(' 1 X'),nl,
-    write('+ '), write(GOLD), write(' Gold'),nl,
-    write('+ '), write(EXP), write(' Exp'),nl,
+    write('-------------- \33\[38;5;76mKamu memanen : '), write(Nama), write(' '), write(U), write(' 1 X'),write('\33\[0m --------------'),nl,
+    write('-------------- \33\[38;5;111m+\33\[0m '), write(EXP), write(' \33\[38;5;111mExp\33\[0m --------------'),nl,
     asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
     asserta(gold(G1)),
     asserta(kegiatan(K1)),
