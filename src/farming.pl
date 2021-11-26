@@ -80,6 +80,13 @@ plant :- runProgram(_),
     posisi(X,Y),
     isSoilTile(X,Y),
     inventory(CurrentInventory),
+    is_empty(CurrentInventory),
+    write('Kamu tidak punya bibit di inventory !'),nl,!.
+    
+plant :- runProgram(_),
+    posisi(X,Y),
+    isSoilTile(X,Y),
+    inventory(CurrentInventory),
     write('Di Inventory Kamu punya :'),nl,
     print_Seed,nl,
     write('Apa yang ingin kamu tanam ? ( masukan id )'),nl,
@@ -102,16 +109,6 @@ plant :- runProgram(_),
     assertz(inventory(NewInventory)),
     assertz(seedTile(X,Y,Input,W)),!.
 
-plant :- runProgram(_),
-    posisi(X,Y),
-    isSoilTile(X,Y),
-    inventory(CurrentInventory),
-    write('Di Inventory Kamu punya :'),nl,
-    print_Seed,nl,
-    write('Apa yang ingin kamu tanam ? ( masukan id )'),
-    read(Input),
-    \+is_member(Input,CurrentInventory,Index),
-    write('Item dengan id tersebut tidak ada di inventory !'),nl,!.
 
 dig :- runProgram(_),
     posisi(X,Y),
