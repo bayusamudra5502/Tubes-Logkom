@@ -289,7 +289,7 @@ insert_last(X, [], [X]) :- !.
 insert_last(X, [H|T1], [H|T2]):- insert_last(X,T1, T2).
 
 % delete_at_n( n, list, result)
-delete_at_n(1, [_|T], T) :- !.
+delete_at_n(0, [_|T], T) :- !.
 delete_at_n(N, [H|T1], [H|T2]) :- N1 is N-1, delete_at_n(N1, T1, T2).
 
 % select_nth (list, n, result)
@@ -298,8 +298,8 @@ select_nth([_|T],N, X) :- N1 is N-1, select_nth(T, N1, X).
 
 % set_nth(list, n, newval, updatedlist)
 % update : jika newval = 0 maka akan otomatis dihapus dari inventory
-set_nth([_|T], 0, [A,B], T). :- B =:= 0.
-set_nth([_|T], 0, [A,B], [[A,B]|T]). :- B > 0.
+set_nth([_|T], 0, [A,B], T) :- B =:= 0.
+set_nth([_|T], 0, [A,B], [[A,B]|T]) :- B > 0.
 set_nth([H|T1], N, X, [H|T2]):-N1 is N-1, set_nth(T1, N1, X, T2).
 
 % cek apakah item dengan id ID atau idx Index sudah ada di inventory

@@ -1,8 +1,8 @@
-/* include file yang dibutuhkan untuk main */
+/* Farming */
 
 :- dynamic(crops/5).
 
-/* Farming item for Non-Farmer Speciality*/
+/* Base Farming item for Non-Farmer Speciality*/
 
 % crop (ID,IDSeed, Unicode, nama, harga jual, exp gained)
 crops(e1,e10, '🌾', 'Padi',60,10).
@@ -31,6 +31,7 @@ tool(i1,'⛏','Pick',10,0,0,0).
 tool(i2,'🚛','Harvester', 2500, 1, 0, 500).
 
 /* Farming item exp and selling price info */
+
 getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
     player('Fisherman',L,_,_,_,_,_,_,_,_,_,_,_),
     EXP is E + 5 * L,
@@ -113,7 +114,6 @@ plant :- runProgram(_),
     assertz(inventory(NewInventory)),
     assertz(seedTile(X,Y,Input,W)),!.
 
-
 dig :- runProgram(_),
     inventory(CurrentInventory),
     is_member(i1,CurrentInventory,Index),
@@ -132,6 +132,8 @@ harvest :- runProgram(_),
     posisi(X,Y),
     plantTile(X,Y,ID),
     crops(ID,_,U,Nama,_,_),
+    inventory(CurrentInventory),
+    \+is_member(i2,CurrentInventory,Index),!,
     insert_item(ID,1),
     getHarvestExpGold(ID,EXP,GOLD),
     kegiatan(K), K1 is K + 1,
@@ -144,6 +146,37 @@ harvest :- runProgram(_),
     levelUp,
     write('-------------- \33\[38;5;76mKamu memanen : '), write(Nama), write(' '), write(U), write(' 1 X'),write('\33\[0m --------------'),nl,
     write('-------------- \33\[38;5;111m+\33\[0m '), write(EXP), write(' \33\[38;5;111mExp\33\[0m --------------'),nl,
+    asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
+    asserta(gold(G1)),
+    asserta(kegiatan(K1)),
+    asserta(energi(E1)),
+    retract(kegiatan(K)),
+    retract(energi(E)),
+    retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
+    retract(gold(G)),
+    retract(plantTile(X,Y,ID)),!.
+
+harvest :- runProgram(_),
+    posisi(X,Y),
+    plantTile(X,Y,ID),
+    crops(ID,_,U,Nama,_,_),!,
+    inventory(CurrentInventory),
+    is_member(i2,CurrentInventory,Index),!,
+    tool(i2,_,_,_,LV,_,_),
+    N is 1 + LV,
+    insert_item(ID,N),
+    getHarvestExpGold(ID,EXP,GOLD),
+    kegiatan(K), K1 is K + 1,
+    energi(E), E1 is E-1, 
+    player(_,_,_,D,_,_,_,_,_,_,_,L,_),
+    gold(G),
+    D1 is D + (EXP * N),
+    L1 is L + (EXP * N),
+    G1 is G + (GOLD * N),
+    levelUp,
+    NEXP is EXP * N,
+    write('-------------- \33\[38;5;76mKamu memanen : '), write(Nama), write(' '), write(U),write(' '),write(N), write(' X'),write('\33\[0m --------------'),nl,
+    write('-------------- \33\[38;5;111m+\33\[0m '), write(NEXP), write(' \33\[38;5;111mExp\33\[0m --------------'),nl,
     asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
     asserta(gold(G1)),
     asserta(kegiatan(K1)),
