@@ -4,7 +4,7 @@
 
 /* dynamic map legends */
 :- dynamic(soilTile/2).
-:- dynamic(seedTile/3).
+:- dynamic(seedTile/4).
 :- dynamic(plantTile/3).
 /* Menginisialisasi Map */
 initMap:-
@@ -162,7 +162,7 @@ cetakMap(X,Y) :-
     cetakMap(NextX,Y).
 
 cetakMap(X,Y) :-
-    seedTile(X,Y,ID),
+    seedTile(X,Y,ID,_),
     seed(ID,U,_,_,_,_),
     write(U),
     NextX is (X+1),
