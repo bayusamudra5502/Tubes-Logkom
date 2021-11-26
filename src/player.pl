@@ -15,7 +15,7 @@ initPemain :-
             write('3. Rancher.'),nl,
             write('Masukkan angka : '), read(X),nl,
             (X =:= 1 ->asserta(player('Fisherman', 1,1,56,150,1,76,150,1,56,150,0,250)) ;
-            X =:= 2 ->asserta(player('Farmer', 1,1,56,150,1,76,150,1,56,150,0,250));
+            X =:= 2 ->asserta(player('Farmer', 1,1,56,150,1,76,150,1,56,150,0,250)), insert_item(i1,1);
             X =:= 3 ->asserta(player('Rancher', 1,1,56,150,1,76,150,1,56,150,0,250))).
 
 

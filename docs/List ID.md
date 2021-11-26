@@ -4,27 +4,27 @@ Format ID : i1 -> Item 1. e1 -> Equipment 1
 
 ## Item (Barang)
 
-i1 -> Padi
-i2 -> Wortel
-i3 -> Kentang
-i4 -> Tomat
-i5 -> Bawang
-i6 -> Jagung
-i7 -> Brokoli
-i8 -> Terong
-i9 -> Cabai
+e1 -> Padi
+e2 -> Wortel
+e3 -> Kentang
+e4 -> Tomat
+e5 -> Bawang
+e6 -> Jagung
+e7 -> Brokoli
+e8 -> Terong
+e9 -> Cabai
 
-i10 -> seed Padi
-i11 -> seed Wortel
-i12 -> seed Kentang
-i13 -> seed Tomat
-i14 -> seed Bawang
-i15 -> seed Jagung
-i16 -> seed Brokoli
-i17 -> seed Terong
-i18 -> seed Cabai
+e10 -> seed Padi
+e11 -> seed Wortel
+e12 -> seed Kentang
+e13 -> seed Tomat
+e14 -> seed Bawang
+e15 -> seed Jagung
+e16 -> seed Brokoli
+e17 -> seed Terong
+e18 -> seed Cabai
 
 ## Equipment
 
-e1 -> Shovel
-e2 -> Harvester
+i1 -> Shovel
+i2 -> Harvester

@@ -36,6 +36,7 @@ level [0..5]
 
 level[1..3]
 
-| equipment | harga | Exp/use | efek                                     |
-| --------- | ----- | ------- | ---------------------------------------- |
-| Harvester | 2500G | 50 xp   | obtain 1 + 1(level) more harvested crops |
+| equipment | harga | Exp/use        | efek                                     |
+| --------- | ----- | -------------- | ---------------------------------------- |
+| Pick      | 0G    | tidak berlevel | dig                                      |
+| Harvester | 2500G | 50 xp          | obtain 1 + 1(level) more harvested crops |

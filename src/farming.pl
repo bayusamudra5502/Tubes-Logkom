@@ -26,6 +26,10 @@ seed(e16, '🌱','Bibit Brokoli',4,40,3).
 seed(e17, '🌱','Bibit Terong',6,90,3).
 seed(e18, '🌱','Bibit Cabai',8,150,3).
 
+% equipment (IDeq, Unicode, nama, harga beli, level, exp, base exp,)
+tool(i1,'⛏','Pick',10,0,0,0).
+tool(i2,'🚛','Harvester', 2500, 1, 0, 500).
+
 /* Farming item exp and selling price info */
 getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
     player('Fisherman',L,_,_,_,_,_,_,_,_,_,_,_),
@@ -111,11 +115,18 @@ plant :- runProgram(_),
 
 
 dig :- runProgram(_),
+    inventory(CurrentInventory),
+    is_member(i1,CurrentInventory,Index),
     posisi(X,Y),
     cekArea(X,Y),
     asserta(soilTile(X,Y)),
     write('-------------- \33\[38;5;76mKamu menggali tanah ini !\33\[0m --------------'),nl, 
     w,!.
+
+dig :- runProgram(_),
+    inventory(CurrentInventory),
+    \+is_member(i1,CurrentInventory,Index),
+    write('-------------- \33\[38;5;202mKamu belum punya item Pick di inventory untuk menggali, kamu bisa membelinya di Market !\33\[0m --------------'),nl,!.
 
 harvest :- runProgram(_),
     posisi(X,Y),
