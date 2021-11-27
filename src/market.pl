@@ -87,8 +87,12 @@ buy :-
 		write('# Apa yang ingin Kamu beli ?                   #'),nl,
 		write('#                                              #'),nl,
 		write('##############################################'),nl,nl,
-		write('Masukkan Kode (contoh : e10, e11) : '), read(Pil),
+		write('Masukkan Kode (contoh : e10, e11) : '), nl,
+		write('Ketik 1 untuk kembali'), nl,read(Pil),
 		buyItem(Pil).
+
+sellNambah(1) :-
+	market.
 
 sellNambah(Kode) :-
 	\+is_member(Kode,CurrentInventory,_),
@@ -106,6 +110,22 @@ selllagi(Kode, Amount) :-
 	format('Kamu hanya memiliki ~w ~w :(', [Qty, Nama]).
 
 selllagi(Kode, Amount) :-
+	isFish(Kode),
+	is_member(Kode, CurrentInventory, Idx),
+	getItemAmount(CurrentInventory, Idx, Qty),
+	Amount =< Qty,
+	gold(UangSekarang),
+	getFishSellPrice(Kode, Harga),
+	Baru is UangSekarang + Harga*Qty,
+	NewQty is Qty - Amount,
+	retractall(gold(_)),
+	asserta(gold(Baru)),
+	format('Kamu berhasil menjual write ~w ~w seharga ~w', [Amount, Nama, Baru]), nl,
+	set_nth(CurrentInventory, Idx, NewQty, NewInventory),
+	assertz(inventory(NewInventory)),
+	retract(inventory(CurrentInventory)), !.
+
+selllagi(Kode, Amount) :-
 	is_member(Kode, CurrentInventory, Idx),
 	getItemAmount(CurrentInventory, Idx, Qty),
 	Amount =< Qty,
@@ -119,6 +139,7 @@ selllagi(Kode, Amount) :-
 	set_nth(CurrentInventory, Idx, NewQty, NewInventory),
 	assertz(inventory(NewInventory)),
 	retract(inventory(CurrentInventory)), !.
+
 
 sell :-
 	write('Kamu memiliki item ini :'), nl,

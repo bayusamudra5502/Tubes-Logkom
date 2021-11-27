@@ -1,6 +1,7 @@
 /* Ranching */
 :- dynamic(inRanch/1).
 :- dynamic(ranch/1).
+:- dynamic(code/1).
 
 /*Facts*/
 /*Product Ranching*/
@@ -16,10 +17,10 @@ ranchAnimals(r5, '🐑', 'Domba', 1000).
 ranchAnimals(r6, '🐄', 'Sapi', 1500).
 
 /* Util */
-/*ID Item, icon, nama, price, exp*/
-ranchItem(r7, '📦', 'Crate', 300, 5).
-ranchItem(r8, '✂️', 'Sheer', 600, 5).
-ranchItem(r9, '🪣', 'Bucket', 800, 5).
+/*ID Item, icon, nama, price, level, exp, base exp*/
+ranchItem(r7, '📦', 'Crate', 1, 300, 5, 100).
+ranchItem(r8, '✂️', 'Sheer', 1, 600, 5, 150).
+ranchItem(r9, '🪣', 'Bucket', 1, 800, 5, 200).
 
 /* ranch masih belum sampai */
 ranch :-
@@ -55,13 +56,13 @@ ranch :-
 ranchCountDays([]).
 ranchAll([]).
 
-% isThere(ID, Days, List, Index)
+% isInRanch(ID, Days, List, Index)
 headRanch([H|_], H).
-isThere(ID, D,[H|_], 0) :- headRanch(H, ID).
-isThere(ID, D, [H|_], Index) :- isThere(ID, D, [H|_], Index1), Index is Index1+1.
+isInRanch(ID, D,[H|_], 0) :- headRanch(H, ID).
+isInRanch(ID, D, [H|_], Index) :- isThere(ID, D, [H|_], Index1), Index is Index1+1.
 
-isInRanch(ID, [H|_], 0) :- head(H, ID).
-isInRanch(ID, [_|T], Index) :- isInRanch(ID, T, Index1), Index1 is Index+1.
+isThere(ID, [H|_], 0) :- head(H, ID).
+isThere(ID, [_|T], Index) :- isThere(ID, T, Index1), Index1 is Index+1.
 
 % Append(el, list, listnew)
 append(El, [], [El]) :- !.
@@ -70,21 +71,21 @@ append(El, [H|T1], [H|T2]) :- append(El, T1, T2).
 % yang dipindahin pasti semua, no same id and days so no need buat yang udah ada
 insert_ranchDays(ID, Amount, Days) :-
 	ranchCountDays(Ranch),
-	\+isThere(ID, Days, Ranch, _),
+	\+isInRanch(ID, Days, Ranch, _),
 	append([ID, Amount, Days], Ranch, NewRanch),
 	assertz(ranchCountDays(newRanch)),
 	retract(ranchCountDays(Ranch)).
 
 insert_ranchCount(ID, Amount) :-
 	ranchAll(Ranch),
-	\+isInRanch(ID, Ranch, _),
+	\+isThere(ID, Ranch, _),
 	append([ID, Amount], Ranch, NewRanch),
 	assertz(ranchAll(newRanch)),
 	retract(ranchAll(Ranch)).
 
 insert_ranchCount(ID, Amount) :-
 	ranchAll(Ranch),
-	isInRanch(ID, Ranch, Idx),
+	isThere(ID, Ranch, Idx),
 	select_nth(Ranch, Idx, [ID|Amount]),
 	N1 is N+Amount,
 	set_nth(Ranch, Idx, [ID|N1], newRanch),
@@ -127,10 +128,29 @@ takeHewan(r6) :-
 	\+is_member(r9, CurrentInventory, _),
 	write('Kamu tidak memiliki bucket, silahkan beli dulu!'), nl.
 
+%%% Masih belum bisa iterasi buat cek yg mana yg bisa diambil
 takeHewan(r4) :-
 	ranchCountDays(Ranch),
 	isThere(r4, Ranch, _),
-	is_member(r7, CurrentInventory, _).
+	is_member(r7, CurrentInventory, _),
+	checkRanch(),
+	write('Kamu berhasil mendapatkan xx Telur!'),
+	insert_item([r1, /xx/])
+	kegiatan(K), K1 is K+1,
+	energi(E), E1 is E-1,
+	ranchProduct(_, r4, _, _, _, Ranch, _),
+	player("Rancher",_,_,_,_,_,_,_,_,R,_,E,_),
+	R1 is R+(10*/xx/),
+	E1 is E+(20*/xx/),
+	levelUp,
+	asserta(Player(_, _, _, _, _, _, _, _, _, R1, _, E1, _)),
+	asserta(kegitan(K1)),
+	asserta(energi(E1)),
+	retract(kegiatan(K)),
+	retract(energi(E)),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_).
+
+% checkRanch(List, Total Product, Itung-itung Day, Kode)
 
 take :-
 	write('Kamu memiliki : '), nl,
@@ -138,16 +158,8 @@ take :-
 	printRanch(Ranch),
 	write('Ketik kode hewan yang akan diambil produknya : '), read(Kode),
 	takeHewan(Kode).
-	
-haveCrate :-
-	inventory(CurrentInventory),
-	is_member(r7, CurrentInventory,_), !.
-haveSheer :-
-	inventory(CurrentInventory),
-	is_member(r8, CurrentInventory,_), !.
-haveBucket :-
-	inventory(CurrentInventory),
-	is_member(r9, CurrentInventory,_), !.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 moved :-
 	\+is_member(r1, CurrentInventory, _),
