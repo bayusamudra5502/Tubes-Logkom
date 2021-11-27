@@ -7,7 +7,6 @@ alchemist :-
 	!.
 
 /* pemain sudah di alchemist */
-/* ini diubah lagi ya sesuai menu yang sebenarnya ini cuman dummy ajaa biar program lain jalan hehehehe*/
 
 alchemist :-
 	runProgram(_),
@@ -26,3 +25,4 @@ alchemist :-
         ;X =:= 2 -> write('sleep');
         X =:= 3 -> write('sleep');
         X =:= 4 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
+
