@@ -3,6 +3,7 @@
 :- dynamic(fishingExp/1).
 :- dynamic(fishPrice/1).
 :- dynamic(fishAlias/2).
+:- dynamic(rodLevel/2).
 
 /* Facts */
 /* Item Ikan */
@@ -20,6 +21,13 @@ fishItem(f10, '🐟', 'Ikan Salmon').
 fishItem(f11, '🐟', 'Ikan Sarden').
 fishItem(f12, '🐬', 'Ikan Lumba-Lumba').
 fishItem(f13, '🦈', 'Ikan hiu').
+
+/* Definisi Fish Item */
+fishItem(fu1, '🎣', 'Normal Fishing Rod').
+fishItem(fu2, '🎣', 'Iron Fishing Rod').
+fishItem(fu3, '🎣', 'Gold Fishing Rod').
+fishItem(fu4, '🎣', 'Diamond Fishing Rod').
+
 
 /* Informasi bahwa item tersebut berjenis ikan */
 isFish(f1).
@@ -52,6 +60,12 @@ fishPrice(f10, 200).
 fishPrice(f11, 210).
 fishPrice(f12, 350).
 fishPrice(f13, 350).
+
+/* Harga fish Utiliy */
+fishPrice(fu1, 50).
+fishPrice(fu2, 1000).
+fishPrice(fu3, 2500).
+fishPrice(fu4, 4000).
 
 /* Peluang Memancing */
 fishProbability(f1, 50, 0).
@@ -99,17 +113,6 @@ fishLevelRequirement(f12, 150).
 fishLevelRequirement(f13, 150).
 
 /* Fish Utility */
-/* Definisi Fish Item */
-fishItem(fu1, '🎣', 'Normal Fishing Rod').
-fishItem(fu2, '🎣', 'Iron Fishing Rod').
-fishItem(fu3, '🎣', 'Gold Fishing Rod').
-fishItem(fu4, '🎣', 'Diamond Fishing Rod').
-
-/* Harga fish Utiliy */
-fishPrice(fu1, 100).
-fishPrice(fu2, 1000).
-fishPrice(fu3, 2500).
-fishPrice(fu4, 4000).
 
 /* Utilitas */
 resetFishLevel :- changeFishingLevel(1, 0).
@@ -117,7 +120,6 @@ resetFishLevel :- changeFishingLevel(1, 0).
 changeFishingLevel(X, EXP) :- player(A,B,C,D,E,F,G,H,I,J,K,L,M),
                   retract(player(A,B,C,D,E,F,G,H,I,J,K,L,M)), 
                   asserta(player(A,B,C,D,E,X,EXP,H,I,J,K,L,M)).
-
 
 % Fishing Level
 getLevelFish(X) :- player(_,_,_,_,_,_,_,_,X,_,_,_,_), !.
@@ -155,26 +157,31 @@ getFishItem(X,Y,Z) :- fishAlias(X,A), fishItem(A,Y,Z), !.
 fishItemRandomable(0, [f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13]).
 fishItemRandomable(1, [f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13]).
 getRandomItem(1, [_H|_T], _H).
-getRandomItem(Idx, [H|T], Result) :- _LIdx is Idx - 1, getRandomItem(LIdx, T, Result).
+getRandomItem(Idx, [_|T], Result) :- _LIdx is Idx - 1, getRandomItem(_LIdx, T, Result).
 
-questFishRandomizer(X) :- 
-            random(1,13, _Idx), fishItemRandomable(0, _L), getRandomItem(_Idx, _L, X), !.
+questFishRandomizer(X, Cnt) :- 
+            random(1,13, _Idx), 
+            fishItemRandomable(0, _L), 
+            getRandomItem(_Idx, _L, X), 
+            random(1,4, Cnt), !.
 
+/* Penghitung Jumlah Probabilitas */
 sumCounter([], _, 0).
 sumCounter([H|T], Level, Sum) :- fishLevelRequirement(H, Lvl),
                             Lvl >= Level, sumCounter(T, Level, LastSum),
-                            fishProbability(H, Prob, Multiplier)
+                            fishProbability(H, Prob, Multiplier),
                             Sum is LastSum + Prob + Multiplier * Level, !.
-sumCounter([_|T], Level, Sum) :- sumCounter(T, Level, LastSum), !.
+
+sumCounter([_|T], Level, Sum) :- sumCounter(T, Level, Sum), !.
 
 levelSum(L, Level, Result) :- sumCounter(L, Level, Result).
 
-fishFinder([H|T], Weight, Level, H) :- 
+fishFinder([H|_], Weight, Level, H) :- 
             fishLevelRequirement(H, Lvl),
             Lvl >= Level,
             fishProbability(H, Prob, Multiplier),
             ItemProb is Prob + Multiplier * Level,
-            Weight <= ItemProb, !.
+            Weight =< ItemProb, !.
 
 fishFinder([H|T], Weight, Level, Result) :- 
             fishLevelRequirement(H, Lvl),
@@ -193,7 +200,7 @@ getFishRandom(Result) :-
 
 
 /* Message Util */
-printMessage(f1, Cnt) :- 
+printMessage(f1, _) :- 
       write('Yay sudah dapat...'),nl, nl, sleep(1),
       write('Kamu mendapatkan item berikut'), nl,
       write('Nama Item : 📦 Junk'), nl,
@@ -219,7 +226,42 @@ afterFishing :-
     asserta(kegiatan(KNew)),
     asserta(kegiatan(ENew)).
   
-% Driver Pengubah XP
+% Driver Pengubah XP Equipment
+addRodExp(Item, Exp) :-
+    rodLevel(Item, LastExp),
+    retract(rodLevel(Item, LastExp)),
+    NewExp is Exp + LastExp,
+    asserta(rodLevel(Item, NewExp)), !.
+
+addRodExp(Item, Exp) :-
+    asserta(rodLevel(Item, Exp)).
+
+getEquipmentLevel(Item, Level) :-
+    rodLevel(Item, Exp),
+    Exp < 600,
+    Level is (Exp div 300) + 1, !.
+
+getEquipmentLevel(Item, 3) :- rodLevel(Item, Exp),
+    Exp > 600.
+
+getEquipmentLevel(Item, 1) :- 
+    \+ rodLevel(Item, _).
+
+delayMancing(Item, Delay) :-
+    getEquipmentLevel(Item, 1),
+    Delay is 3, !.
+
+delayMancing(Item, Delay) :-
+    getEquipmentLevel(Item, 2),
+    Delay is 2, !.
+
+delayMancing(Item, Delay) :-
+    getEquipmentLevel(Item, 3),
+    Delay is 1, !.
+
+additionalExp(Item, Additional) :-
+    getEquipmentLevel(Item, Level),
+    Additional is Level * 5, !.
 
 % Driver menambahkan ke inventori
 addFishInventory(f1, _) :- !.
@@ -278,8 +320,41 @@ getAdderXP(Item, Exp) :-
     fishExp(Item, _ExpBase),
     Exp is  _ExpBase + 5 * _L, !.
 
+fishable :-
+    posisi(_X,_Y),
+    isWater(_X,_Y), !.
+
+writeRodData(Item) :-
+    inventory(X),
+    is_member(Item, X, _),
+    fishItem(Item, Icon, Name),
+    getEquipmentLevel(Item, Level),
+    format('~w. ~w ~w (Level ~w)', [Item, Icon, Name, Level]), !.
+
+writeRodData(_) :- !, fail.
+
+validateRod(Item) :-
+    inventory(X),
+    is_member(Item, X, _),
+    fishItem(Item, _, _),
+    !.
+
+validateRod(_) :- !, fail.
+
+selectRod(SelectedRod) :- 
+    write('Pilih alat pancing yang ingin kamu gunakan'), nl,
+    writeRodData(fu1), nl,
+    writeRodData(fu2), nl,
+    writeRodData(fu3), nl,
+    writeRodData(fu4), nl,
+    nl,
+    repeat,
+    write('Masukan kode alat pancing : '),
+    read(X), nl, validateRod(X),
+    SelectedRod is X, !. 
+
 /* Fishing */
-fish :- \+ inWater(_),
+fish :- \+ fishable,
       write('Kamu belum bisa memancing karena tidak berada di sekitar air'),
       nl, !, fail.
 
@@ -288,26 +363,31 @@ fish :- \+ isThereFishingRod,
         nl,  write('Beli dulu sana..'), !, fail.
 
 fish :- runProgram(_),
-        inWater(_),
+        fishable,
         write('--- Daerah Pemancingan ---'), nl,
+        selectRod(Rod),
         write('[Suara Alat Pancing]'), nl,
         write('Tunggu sebentar'),
-        sleep(1),
+        delayMancing(Rod, Time),
+        sleep(Time),
         write('.'),
         sleep(1),
         write('.'),
-        sleep(1),
+        sleep(Time),
         write('.'),
         sleep(1),
         write('.'),
-        sleep(1),
+        sleep(Time),
         write('.'),
         nl, nl,
         fishCatchCount(Cnt),
         getFishRandom(FishID),
         printMessage(FishID, Cnt),
         getAdderXP(FishID, AddExp),
-        addFishingXP(AddExp),
+        additionalExp(Rod, ItemExp),
+        NettoExp is AddExp + ItemExp,
+        addFishingXP(NettoExp),
         addFishInventory(FishID, Cnt),
+        addRodExp(Rod, NettoExp),
         !.
-        
+    

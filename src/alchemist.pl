@@ -8,7 +8,7 @@ alchemistPrice(a1, 2000).
 alchemistPrice(a2, 3000).
 
 isPotionAvailable(ID) :-
-	inventory(CurrentInventory)
+	inventory(CurrentInventory),
 	is_member(ID, CurrentInventory, _).
 
 isAnyPotionInventory :-
@@ -80,7 +80,7 @@ moveOneSeasonBackward :-
 	time(Waktu, Hari, 4, 'Winter', Year),
 	retract(time(Waktu, Hari, 4, 'Winter', Year)),
 	NewYear is Year - 1,
-	asserta(time(Waktu, Hari, 3, 'Fall', Year)), !.
+	asserta(time(Waktu, Hari, 3, 'Fall', NewYear)), !.
 
 timeEffect :-
 	inEffect,
@@ -122,6 +122,10 @@ usePotion :-
 		X =:= 3 -> s,write('Kamu telah berada di luar alchemist')),
 	retract(inEffect),!.
 
+usePotion :-
+	write('Saat ini kamu masih belum punya potion.'),
+	!, fail.
+
 buyPotion(ID) :-
 	alchemistPrice(ID, Price),
 	gold(Gold),
@@ -143,9 +147,6 @@ buyPotion(ID) :-
 	asserta(gold(NewGold)),
 	!.
 
-usePotion :-
-	write('Saat ini kamu masih belum punya potion.'),
-	!, fail.
 
 /* alchemist masih belum sampai */
 alchemist :-

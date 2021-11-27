@@ -6,6 +6,8 @@
 :- dynamic(sleep/1).
 :- dynamic(kegiatan/1).
 :- dynamic(time/5).
+:- dynamic(item/5).
+:- dynamic(sold/5).
 
 /* include file yang dibutuhkan untuk main */
 :- include('map.pl').
@@ -17,6 +19,7 @@
 :- include('house.pl').
 :- include('ranching.pl').
 :- include('fish.pl').
+:- include('items.pl').
 :- include('market.pl').
 :- include('alchemist.pl').
 :- include('quest.pl').
@@ -73,13 +76,19 @@ help :- runProgram(_),
         write('\33\[38;5;31m    s.                  \33\[0m: gerak ke selatan 1 langkah'),nl,
         write('\33\[38;5;31m    d.                  \33\[0m: gerak ke timur 1 langkah'),nl,
         write('\33\[38;5;31m    a.                  \33\[0m: gerak ke barat 1 langkah'),nl,
-        write('\33\[38;5;31m    saveGame            \33\[0m: melakukan penyimpanan game'), nl,
+        write('\33\[38;5;31m    saveGame.           \33\[0m: melakukan penyimpanan game'), nl,
+        write('\33\[38;5;31m    loadGame.           \33\[0m: melakukan load terhadap game'), nl,
       	write('\33\[38;5;31m    status.             \33\[0m: cek status player'), nl,
         write('\33\[38;5;31m    getter.             \33\[0m: Melihat command getter apa saja yang tersedia'), nl,
-        write('\33\[38;5;31m    periTidur.          \33\[0m: Berpindah ke posisi mana saja di map'), nl,
         write('\33\[38;5;31m    quest.              \33\[0m: cek progress quest'), nl,
-        write('\33\[38;5;31m    cekInventory.       \33\[0m: cek inventory'), nl,!.
-/*sementara itu dulu buat command help*/
+        write('\33\[38;5;31m    getFarm.            \33\[0m: Melihat command apa saja yang digunakan pada farming'), nl,
+        write('\33\[38;5;31m    house.              \33\[0m: Melihat apa saja yang dilakukan di house'), nl,
+        write('\33\[38;5;31m    market.             \33\[0m: Melihat apa saja yang dilakukan di market'), nl,
+        write('\33\[38;5;31m    ranch.              \33\[0m: Melihat apa saja yang dilakukan di ranch'), nl,
+        write('\33\[38;5;31m    fish.               \33\[0m: Melihat apa saja yang dilakukan di fish'), nl,
+        write('\33\[38;5;31m    alchemist.          \33\[0m: Melihat apa saja yang dilakukan di alchemist'), nl,
+        write('\33\[38;5;31m    inventory.       \33\[0m: cek inventory'), nl,!.
+
 
 % keluar dari program 
 quitGame :- 

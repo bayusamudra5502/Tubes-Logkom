@@ -25,6 +25,37 @@ market :-
 		X =:= 2 -> sell;
         X =:= 3 -> s,nl,write('Kamu telah berada di luar market')),!.
 
+buyItem(1) :- 
+	market.
+
+buyItem(Pil) :-
+	is_member(Pil, CurrentInventory, _),
+	equipment(Pil, _, _, _, _),
+	write('Kamu sudah memiliki equipment itu! Silakan beli yang lain :D'), nl.
+buyItem(Pil) :- 
+		sold(Pil,Ucode,Nama,Harga,_),
+			write('Berapa banyak?  : '),
+			read(Count),
+			gold(Uang),
+			Totalharga is Harga*Count,
+			(
+				(
+					Uang < Totalharga, !, nl,
+					write('Kamu tidak memiliki uang yang cukup untuk membeli ini :( '), nl,
+					write('Hasilkan lebih banyak uang lalu kembali lagi kesini!'), nl
+				);
+				(
+					Baru is Uang - Totalharga,
+					retractall(gold(_)),
+					asserta(gold(Baru)),
+					write('Kamu telah berhasil membeli '), write(Count), write(' '), write(Nama), write(' Ditunggu pembelian selanjutnya!'), nl,
+					insert_item(Pil, Count), !
+				)
+			), !.
+
+buyItem(_) :- 
+				nl,
+				write('Kode yang kamu masukkan tidak ada!'), nl.
 buy :-
 		gold(Uang),
 		write('##################  Market  ###################'),nl,
@@ -57,70 +88,44 @@ buy :-
 		write('#                                              #'),nl,
 		write('##############################################'),nl,nl,
 		write('Masukkan Kode (contoh : e10, e11) : '), read(Pil),
-		(Pil =:= 1) -> market;
-		(
-			(
-				\+item(Pil,_,_,_,_,_), !, nl.
-				write('Kode yang kamu masukkan tidak ada!'), nl
-			);
-			write('Berapa banyak?'),
-			read(Count),
-			gold(Uang),
-			hargaitem(Pil,Ucode,Nama,Harga,_), yangdijual(Pil),
-			Totalharga is Harga*Count,
-			(
-				(
-					Uang < Totalharga, !, nl,
-					write('Kamu tidak memiliki uang yang cukup untuk membeli ini :('),
-					write('Hasilkan lebih banyak uang lalu kembali lagi kesini!'), nl
-				);
-				(
-					Baru is Uang - Totalharga,
-					retractall(gold(_)),
-					asserta(gold(Baru)),
-					format('Kamu telah berhasil membeli ~w ~w! Ditunggu pembelian selanjutnya!', [Count], [Nama]), nl,
-					insert_item(Pil, Count), !
+		buyItem(Pil).
 
-				)
-			)
-		).
+sellNambah(Kode) :-
+	\+is_member(Kode,CurrentInventory,_),
+	write('Kamu tidak memiliki item itu!'), nl.
+
+sellNambah(Kode) :-
+	write('Masukkan jumlah yang mau dijual : '), read(Amount),
+	sellLagi(Kode, Amount).
+
+selllagi(Kode, Amount) :-
+	is_member(Kode, CurrentInventory, Idx),
+	getItemAmount(CurrentInventory, Idx, Qty),
+	Amount > Qty,
+	item(Kode, _, Nama, _, _),
+	format('Kamu hanya memiliki ~w ~w :(', [Qty, Nama]).
+
+selllagi(Kode, Amount) :-
+	is_member(Kode, CurrentInventory, Idx),
+	getItemAmount(CurrentInventory, Idx, Qty),
+	Amount =< Qty,
+	gold(UangSekarang),
+	item(Kode, _, Nama, _, Harga),
+	Baru is UangSekarang + Harga*Qty,
+	NewQty is Qty - Amount,
+	retractall(gold(_)),
+	asserta(gold(Baru)),
+	format('Kamu berhasil menjual write ~w ~w seharga ~w', [Amount, Nama, Baru]), nl,
+	set_nth(CurrentInventory, Idx, NewQty, NewInventory),
+	assertz(inventory(NewInventory)),
+	retract(inventory(CurrentInventory)), !.
 
 sell :-
 	write('Kamu memiliki item ini :'), nl,
 	print_inventory(CurrentInventory),
 	write('Ketik kode barang yang kamu mau jual (contoh : e1, e2, e3) : '), nl,
-	write('Jika ingin kembali, ketik 1'),
+	write('Jika ingin kembali, ketik 1'), nl,
 	read(Kode),
-	(Kode =:= 1 -> maarket);
-	(
-		(
-			\+item(Kode, _, _, _, _), !,
-			write("Kamu tidak memiliki item itu!"), nl
-		);
-		write('Berapa banyak?'), read(Qty),
-		(
-			(
-				is_member(Kode, CurrentInventory, Idx),
-				getItemAmount(CurrentInventory, Idx, Amount),
-				item(Kode, _, Nama, _, _)
-				Amount < Qty, !,
-				format('Kamu hanya memiliki ~w ~w :(', [Amount], [Nama]), nl
-			);
-			(
-				is_member(Kode, CurrentInventory, Idx),
-				getItemAmount(CurrentInventory, Idx, Amount),
-				gold(UangSekarang),
-				item(Kode, _, Nama, _, Harga),
-				Baru is UangSekarang + Harga*Qty,
-				NewQty is Qty - Amount,
-				retractall(gold(_)),
-				asserta(gold(Baru)),
-				format('Kamu berhasil menjual ~w ~w seharga ~w', [Amount], [Nama], [Baru]), nl,
-				set_nth(CurrentInventory, Idx, NewQty, NewInventory),
-				assertz(inventory(NewInventory)),
-				retract(inventory(CurrentInventory)), !
-			)
-		)
-	).
+	sellNambah(Kode).
 
 

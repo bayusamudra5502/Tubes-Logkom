@@ -14,9 +14,14 @@ getter :- runProgram(_),
         write('\33\[38;5;31m    getLevelFisher.   \33\[0m: melihat level fisher saat ini'),nl,
         write('\33\[38;5;31m    getEnergi.        \33\[0m: melihat energi yang tersisa'),nl,
         write('\33\[38;5;31m    getLocation.      \33\[0m: melihat lokasi pemain saat ini'),nl,
-        write('\33\[38;5;31m    getTime.          \33\[0m: melihat waktu pada game saat ini'),nl,
-        write('\33\[38;5;31m    getDiary.         \33\[0m: melihat diary.'), nl,!.
+        write('\33\[38;5;31m    getTime.          \33\[0m: melihat waktu pada game saat ini'),nl,!.
 
+% getter untuk kegiatan farming
+getFarm :- runProgram(_),
+        write('\33\[38;5;93mCommand: \33\[0m'), nl,
+        write('\33\[38;5;31m    diq.          \33\[0m: Untuk melakukan penggalian pada tanah'), nl,
+        write('\33\[38;5;31m    plant.        \33\[0m: Untuk melakukan penanaman pada bibit'), nl,
+        write('\33\[38;5;31m    harvest.      \33\[0m: Untuk melakukan panen terhadap hasil farming'), nl,!.
 
 % getter untuk role
 getRole :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
@@ -85,12 +90,8 @@ getTime :- runProgram(_),time(A,B,C,D,E),
         write('Kamu sekarang berkegiatan di '), write(A), write(' hari'),nl,
         write('Kamu sekarang berada di day '),write(B),write(', Season ke - '), write(C), write(', Musim '),write(D), write(', Tahun ke - '),write(E),!.
 
-/*TODO: */
-% getter diary -> setelah realisasi rumah selesai
-% getter time dan fungsi timenya -> pikirin lagi caranya
-
 /* Tambahin keteranngan klo dia sleep dg intidur, untuk semua rules di bawah ini*/
-periTidur :- runProgram(_), tidur, nama(Nama),
+periTidur :- runProgram(_), nama(Nama), inHouse(_),
             write('********** Halo '),write(Nama), write(' Selamat datang di dunia mimpi **********'),nl,
             write('Aku adalah peri tidur yang akan membuatmu terbangun di posisi yang kamu inginkan'),nl,
             write('Berikut adalah tempat dan lokasi yang bisa kamu kunjungi:.......................'),nl,
@@ -119,7 +120,7 @@ housePosisi :- runProgram(_),
                 Anew is 16,
                 Bnew is 4,
                 asserta(posisi(Anew,Bnew)),
-                /*asserta(inHouse(1)),*/
+                asserta(inHouse(1)),
                 write('--------------------- \33\[38;5;10mKamu sekarang berada di house \33\[0m----------------------'),nl,
                 write('Masukkan \'house.\' untuk melihat aktivitas yang dapat dilakukan di rumah.'),nl,!.
 
@@ -129,7 +130,7 @@ marketPosisi :- runProgram(_),
         Anew is 15,
         Bnew is 16,
         asserta(posisi(Anew,Bnew)),
-        /*asserta(inMarket(1)),*/
+        asserta(inMarket(1)),
         write('----------------- \33\[38;5;207mKamu sekarang berada di market \33\[0m---------------'),nl,
         write('Masukkan \'market.\' untuk melihat item dan melakukan pembelian.'),nl,!.
 
@@ -139,7 +140,7 @@ ranchPosisi :- runProgram(_),
         Anew is 3,
         Bnew is 17,
         asserta(posisi(Anew,Bnew)),
-        /*asserta(inRanch(1)),*/
+        asserta(inRanch(1)),
         write('------------ \33\[38;5;10mKamu sekarang berada di ranch \33\[0m--------------'),nl,
         write('Masukkan \'ranch.\' untuk melihat kegiatan di peternakan.'),nl,!.
 
@@ -149,7 +150,7 @@ questPosisi :- runProgram(_),
         Anew is 8,
         Bnew is 7,
         asserta(posisi(Anew,Bnew)),
-        /*asserta(inQuest(1)),*/
+        asserta(inQuest(1)),
         write('------------------ \33\[38;5;10mKamu sekarang berada di quest \33\[0m-------------------'),nl,
         write('Masukkan \'quest.\' untuk melihat hal yang dapat dilakukan di quest.'),nl,!.
 
@@ -159,7 +160,7 @@ alchemistPosisi :- runProgram(_),
         Anew is 18,
         Bnew is 11,
         asserta(posisi(Anew,Bnew)),
-         /*asserta(inAlchemist(1)),*/
+        asserta(inAlchemist(1)),
         write('------------- \33\[38;5;10mKamu sekarang berada di alchemist \33\[0m------------'),nl,
         write('Masukkan \'alchemist.\' untuk melihat kegiatan di alchemist.'),nl,!.
 
@@ -187,8 +188,7 @@ initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum ber
             write('1. lanjutkan game dengan aktifkan waktu ⏰'),nl,
             write('Silakan masukkan angka 1 untuk melanjutkan'),nl,
             write('Masukkan angka : '), read(X),nl,
-            (X =:= 1 ->asserta(time('Siang',1,1,'Summer ☀️',1))).
-
+            (X =:= 1 ->asserta(time('Siang',1,1,'Summer',1))).
 
 /* implementasi gantiTime masi belom dicoba karena sleep belum diimplementasikan */
 gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 5, retract(time(A,B,C,D,E)),
@@ -215,6 +215,6 @@ gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah)
 
 gantiTime :- !.
 
-    
+updater :- updateSeed.
 
-
+updateKegiatan :- kegiatan(Jumlah), retract(kegiatan(_)), New is Jumlah + 1, asserta(kegiatan(New)),!.

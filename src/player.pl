@@ -355,9 +355,8 @@ print_first_item:-
 getItemAmount(List, Idx, Amount) :- select_nth(List, Idx, [_, Amount]).
 
 print_inventory([]).
-print_inventory([H|T]) :-
-    getItemAmount([H|T], 0, Amount),
-    item(H, UCode, Nama, _, Harga)
-    format('- ~w. ~w ~w ~w (~w / satuan)', [H], [Amount], [UCode], [Nama], [Harga]),nl,
+print_inventory([[ID, Amount]|T]) :-
+    item(ID, UCode, Nama, _, Harga),
+    format('- ~w. ~w ~w ~w (~w / satuan)', [ID, Amount, Ucode, Nama, Harga]), nl,
     print_inventory(T).
 

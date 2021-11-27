@@ -41,27 +41,21 @@ traverseQuest([[ID,N]|T]) :-
 traversePrintQuest([]) :- !.
 traversePrintQuest([[ID,N]|T]) :-
 	crops(ID,_,U,Nama,_,_),
-	\+fishItem(ID,UF,NamaF),
-	\+ranchProduct(ID,_,UR,NamaR,_,_,_),
 	write(ID),write('. '), write(Nama), write(' : '), write(N), write(' X'),nl,
 	traversePrintQuest(T).
 
 traversePrintQuest([[ID,N]|T]) :-
-	\+crops(ID,_,U,Nama,_,_),
 	fishItem(ID,UF,NamaF),
-	\+ranchProduct(ID,_,UR,NamaR,_,_,_),
 	write(ID),write('. '), write(NamaF), write(' : '), write(N), write(' X'),nl,
 	traversePrintQuest(T).
 
 traversePrintQuest([[ID,N]|T]) :-
-	\+crops(ID,_,U,Nama,_,_),
-	\+fishItem(ID,UF,NamaF),
 	ranchProduct(ID,_,UR,NamaR,_,_,_),
 	write(ID),write('. '), write(NamaR), write(' : '), write(N), write(' X'),nl,
 	traversePrintQuest(T).
 
 printQuest :-
-	write('-------------- \33\[38;5;202mKamu harus mengumpulkan :\33\[0m -------------- '),
+	write('-------------- \33\[38;5;202mKamu harus mengumpulkan :\33\[0m -------------- '),nl,
 	questList(X),
 	traversePrintQuest(X),!.
 	
@@ -81,17 +75,10 @@ questValue(Sum) :-
 	questList(X),
 	traverseValueQuest(X,Sum), !.
 
-takeItemFromInv :- 
-	questList(X),
-	traverseTakeItem(X),
-	retract(questList(X)),
-	assertz(questList([])),!.
 
 traverseTakeItem([]) :- !.
-traverseTakeItem([[ID,N|T]]) :-
+traverseTakeItem([[ID,N]|T]) :-
 	crops(ID,_,U,Nama,_,_),
-	\+fishItem(ID,UF,NamaF),
-	\+ranchProduct(ID,_,UR,NamaR,_,_,_),
 	inventory(CurrentInventory),
 	is_member(ID,CurrentInventory,Index),
 	select_nth(CurrentInventory,Index,[ID,M]),
@@ -101,10 +88,8 @@ traverseTakeItem([[ID,N|T]]) :-
 	assertz(inventory(NewInventory)),
 	traverseTakeItem(T).
 
-traverseTakeItem([[ID,N|T]]) :-
-	\+crops(ID,_,U,Nama,_,_),
+traverseTakeItem([[ID,N]|T]) :-
 	fishItem(ID,UF,NamaF),
-	\+ranchProduct(ID,_,UR,NamaR,_,_,_),
 	inventory(CurrentInventory),
 	is_member(ID,CurrentInventory,Index),
 	select_nth(CurrentInventory,Index,[ID,M]),
@@ -114,9 +99,7 @@ traverseTakeItem([[ID,N|T]]) :-
 	assertz(inventory(NewInventory)),
 	traverseTakeItem(T).
 	
-traverseTakeItem([[ID,N|T]]) :-
-	\+crops(ID,_,U,Nama,_,_),
-	\+fishItem(ID,UF,NamaF),
+traverseTakeItem([[ID,N]|T]) :-
 	ranchProduct(ID,_,UR,NamaR,_,_,_),
 	inventory(CurrentInventory),
 	is_member(ID,CurrentInventory,Index),
@@ -128,13 +111,40 @@ traverseTakeItem([[ID,N|T]]) :-
 	traverseTakeItem(T).
 
 /* TODO : takeQuest using randomizer? */
+takeItemFromInv :- 
+	questList(X),
+	traverseTakeItem(X),
+	retract(questList(X)),
+	assertz(questList([])),!.
 
-takeQuest.
+takeQuest :- 
+	questFarmRandomizer(A,B),
+	questFishRandomizer(C,D),
+	questRanchRandomizer(E,F),
+	questList(List),
+	insert_quest(A,B),
+	insert_quest(C,D),
+	insert_quest(E,F),!.
+
 submitQuest :-
 	checkQuest,
-	questList,
 	takeItemFromInv,
 	questValue(Sum).
 
 /* TODO : get total gold from quest */
 
+
+% menambah item yang belum ada ke questlist
+insert_quest(ID, Amount) :- questList(List), 
+	\+is_member(ID,List,_),
+    insert_last([ID,Amount],List,NList),
+    assertz(questList(NList)),
+    retract(questList(List)), !.
+
+insert_quest(ID, Amount) :- questList(List), 
+    is_member(ID,List,Index),
+    select_nth(List, Index, [X,N]),
+    N1 is N + Amount,
+    set_nth(List, Index, [ID,N1], NewList),
+    assertz(questList(NewList)),
+    retract(questList(List)), !.

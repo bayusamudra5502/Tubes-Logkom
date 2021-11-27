@@ -1,7 +1,7 @@
 % List item(ID, Unicode, Nama, Harga beli, harga jual)
 
-item(i1, '⛏', 'Pick', 10, 0)
-item(i2, '🚛', 'Harvester', 2500, 0)
+item(i1, '⛏', 'Pick', 10, 0).
+item(i2, '🚛', 'Harvester', 2500, 0).
 item(e1, '🌾', 'Padi',0,60).
 item(e2, '🥕', 'Wortel',0,150).
 item(e3, '🥔', 'Kentang',0,200).
@@ -46,3 +46,35 @@ item(r6, '🐄', 'Sapi', 1500,750).
 item(r7, '📦', 'Crate', 300,150).
 item(r8, '✂️', 'Sheer', 600,300).
 item(r9, '🪣', 'Bucket', 800,400).
+
+equipments(i1, '⛏', 'Pick', 10, 0).
+equipments(i2, '🚛', 'Harvester', 2500, 0).
+equipments(fu1, '🎣', 'Normal Fishing Rod', 100,0).
+equipments(fu2, '🎣', 'Iron Fishing Rod', 1000,0).
+equipments(fu3, '🎣', 'Gold Fishing Rod', 2500,0).
+equipments(fu4, '🎣', 'Diamond Fishing Rod', 4000,0).
+equipments(r7, '📦', 'Crate', 300,150).
+equipments(r8, '✂️', 'Sheer', 600,300).
+equipments(r9, '🪣', 'Bucket', 800,400).
+
+sold(i1, '⛏', 'Pick', 10, 0).
+sold(i2, '🚛', 'Harvester', 2500, 0).
+sold(e10, '🌱','Bibit Padi',30,0).
+sold(e11, '🌱','Bibit Wortel',80,0).
+sold(e12, '🌱','Bibit Kentang',120,0).
+sold(e13, '🌱','Bibit Tomat',45,0).
+sold(e14, '🌱','Bibit Bawang',80,0).
+sold(e15, '🌱','Bibit Jagung',150,0).
+sold(e16, '🌱','Bibit Brokoli',40,0).
+sold(e17, '🌱','Bibit Terong',90,0).
+sold(e18, '🌱','Bibit Cabai',150,0).
+sold(fu1, '🎣', 'Normal Fishing Rod', 100,0).
+sold(fu2, '🎣', 'Iron Fishing Rod', 1000,0).
+sold(fu3, '🎣', 'Gold Fishing Rod', 2500,0).
+sold(fu4, '🎣', 'Diamond Fishing Rod', 4000,0).
+sold(r4, '🐔', 'Ayam', 500,250).
+sold(r5, '🐑', 'Domba', 1000,500).
+sold(r6, '🐄', 'Sapi', 1500,750).
+sold(r7, '📦', 'Crate', 300,150).
+sold(r8, '✂️', 'Sheer', 600,300).
+sold(r9, '🪣', 'Bucket', 800,400).
