@@ -52,14 +52,45 @@ ranch :-
 		X =:= 2 -> take;
         X =:= 3 -> s,nl,write('Kamu telah berada di luar ranch')),!.
 
+ranchCountDays([]).
 ranchAll([]).
+
 % isThere(ID, Days, List, Index)
 headRanch([H|_], H).
 isThere(ID, D,[H|_], 0) :- headRanch(H, ID).
+isThere(ID, D, [H|_], Index) :- isThere(ID, D, [H|_], Index1), Index is Index1+1.
 
-insert_ranch(ID, Amount, Days) :-
-	ranchAll(Ranch).
+isInRanch(ID, [H|_], 0) :- head(H, ID).
+isInRanch(ID, [_|T], Index) :- isInRanch(ID, T, Index1), Index1 is Index+1.
 
+% Append(el, list, listnew)
+append(El, [], [El]) :- !.
+append(El, [H|T1], [H|T2]) :- append(El, T1, T2).
+
+% yang dipindahin pasti semua, no same id and days so no need buat yang udah ada
+insert_ranchDays(ID, Amount, Days) :-
+	ranchCountDays(Ranch),
+	\+isThere(ID, Days, Ranch, _),
+	append([ID, Amount, Days], Ranch, NewRanch),
+	assertz(ranchCountDays(newRanch)),
+	retract(ranchCountDays(Ranch)).
+
+insert_ranchCount(ID, Amount) :-
+	ranchAll(Ranch),
+	\+isInRanch(ID, Ranch, _),
+	append([ID, Amount], Ranch, NewRanch),
+	assertz(ranchAll(newRanch)),
+	retract(ranchAll(Ranch)).
+
+insert_ranchCount(ID, Amount) :-
+	ranchAll(Ranch),
+	isInRanch(ID, Ranch, Idx),
+	select_nth(Ranch, Idx, [ID|Amount]),
+	N1 is N+Amount,
+	set_nth(Ranch, Idx, [ID|N1], newRanch),
+	assertz(ranchAll(newRanch)),
+	retract(ranchAll(Ranch)).
+	
 
 printRanch([]) :- !.
 
@@ -97,13 +128,13 @@ takeHewan(r6) :-
 	write('Kamu tidak memiliki bucket, silahkan beli dulu!'), nl.
 
 takeHewan(r4) :-
-	ranch(Ranch),
+	ranchCountDays(Ranch),
 	isThere(r4, Ranch, _),
 	is_member(r7, CurrentInventory, _).
 
 take :-
 	write('Kamu memiliki : '), nl,
-	ranch(Ranch),
+	ranchAll(Ranch),
 	printRanch(Ranch),
 	write('Ketik kode hewan yang akan diambil produknya : '), read(Kode),
 	takeHewan(Kode).
@@ -130,6 +161,9 @@ moved :-
 	\+is_member(r3, CurrentInventory, _),
 	getItemAmount(Idx, CurrentInventory, Amount),
 	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r1, Amount, Days),
+	insert_ranchCount(r1, Amount),
 	!, 
 	format('Berhasil menambahkan ~w Ayam ke dalam Ranch!', [Amount]), nl.
 moved :-
@@ -137,10 +171,10 @@ moved :-
 	is_member(r2, CurrentInventory, Idx),
 	\+is_member(r3, CurrentInventory, _),
 	getItemAmount(Idx, CurrentInventory, Amount),
-	ranch(_, R2, _),
-	R2new is R2 + Amount,
-	asserta(ranch(_, R2new, _)),
-	retract(ranch(_, R2, _)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r2, Amount, Days),
+	insert_ranchCount(r2, Amount),
 	!, 
 	format('Berhasil menambahkan ~w Domba ke dalam Ranch!', [Amount]), nl.
 moved :-
@@ -148,10 +182,10 @@ moved :-
 	\+is_member(r2, CurrentInventory, _),
 	is_member(r3, CurrentInventory, Idx),
 	getItemAmount(Idx, CurrentInventory, Amount),
-	ranch(_, _, R3),
-	R3new is R3 + Amount,
-	asserta(ranch(_, _, R3new)),
-	retract(ranch(_, _, R3)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r3, Amount, Days),
+	insert_ranchCount(r3, Amount),
 	!, 
 	format('Berhasil menambahkan ~w Sapi ke dalam Ranch!', [Amount]), nl.
 moved :-
@@ -160,11 +194,12 @@ moved :-
 	\+is_member(r3, CurrentInventory, _),
 	getItemAmount(Idx, CurrentInventory, Amount),
 	getItemAmount(Idx2, CurrentInventory, Amount2),
-	ranch(R1, R2, _),
-	R1new is R1 + Amount,
-	R2new is R2 + Amount2,
-	asserta(ranch(R1new, R2new, _)),
-	retract(ranch(R1, R2, _)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r1, Amount, Days),
+	insert_ranchDays(r2, Amount2, Days),
+	insert_ranchCount(r1, Amount),
+	insert_ranchCount(r2, Amount2),
 	!, 
 	format('Berhasil menambahkan ~w Ayam dan ~w Domba ke dalam Ranch!', [Amount], [Amount2]), nl.
 moved :-
@@ -173,11 +208,12 @@ moved :-
 	is_member(r3, CurrentInventory, Idx3),
 	getItemAmount(Idx, CurrentInventory, Amount),
 	getItemAmount(Idx3, CurrentInventory, Amount3),
-	ranch(R1, _, R3),
-	R1new is R1 + Amount,
-	R3new is R3 + Amount3,
-	asserta(ranch(R1new, _, R3new)),
-	retract(ranch(R1, _, R3)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r1, Amount, Days),
+	insert_ranchDays(r3, Amount3, Days),
+	insert_ranchCount(r1, Amount),
+	insert_ranchCount(r3, Amount3),
 	!, 
 	format('Berhasil menambahkan ~w Ayam dan ~w Sapi ke dalam Ranch!', [Amount], [Amount3]), nl.
 moved :-
@@ -186,11 +222,12 @@ moved :-
 	is_member(r3, CurrentInventory, Idx3),
 	getItemAmount(Idx, CurrentInventory, Amount),
 	getItemAmount(Idx3, CurrentInventory, Amount3),
-	ranch(_, R2, R3),
-	R2new is R2 + Amount,
-	R3new is R3 + Amount3,
-	asserta(ranch(_, R2new, R3new)),
-	retract(ranch(_, R2, R3)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r2, Amount, Days),
+	insert_ranchDays(r3, Amount3, Days),
+	insert_ranchCount(r2, Amount),
+	insert_ranchCount(r3, Amount3),
 	!, 
 	format('Berhasil menambahkan ~w Domba dan ~w Sapi ke dalam Ranch!', [Amount], [Amount3]), nl.
 moved :-
@@ -200,12 +237,14 @@ moved :-
 	getItemAmount(Idx, CurrentInventory, Amount),
 	getItemAmount(Idx2, CurrentInventory, Amount2),
 	getItemAmount(Idx3, CurrentInventory, Amount3),
-	ranch(R1, R2, R3),
-	R1new is R1 + Amount,
-	R2new is R2 + Amount2,
-	R3new is R3 + Amount3,
-	asserta(ranch(R1new, R2new, R3new)),
-	retract(ranch(R1, R2, R3)),
+	time(_,Day,Season,_,_),
+	Days is (Season-1)*30+Day,
+	insert_ranchDays(r1, Amount, Days),
+	insert_ranchDays(r2, Amount2, Days),
+	insert_ranchDays(r3, Amount3, Days),
+	insert_ranchCount(r1, Amount),
+	insert_ranchCount(r2, Amount2),
+	insert_ranchCount(r3, Amount3),
 	!, 
 	format('Berhasil menambahkan ~w Ayam, ~w Domba, ~w Sapi ke dalam Ranch!', [Amount], [Amount2], [Amount3]), nl.
 	
