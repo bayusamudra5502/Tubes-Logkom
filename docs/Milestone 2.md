@@ -1,34 +1,41 @@
 # Next Step
 
-## Perintah yg belum
+## Todo List
 
 <!-- - [ ] saveGame dan LoadGame ( Terakhiran ) -->
 
-- [ ] Status
-- [ ] Quest : Pake dummy aja dulu
+- [x] Status
+- [x] Quest
 
-- [ ] Move (W,A,S,D)
+- [x] Move (W,A,S,D)
 
 - [ ] Ranch : Yg dapet kemaren
 - [ ] Farm : Yg dapet kemaren
 - [ ] Fish : yg dapet kemaren
 
-- [ ] Market
+- [x] Market
 - [ ] Alchemist
-- [ ] House
+- [x] House
 
 - [ ] cekInventory
 - [ ] Throw Inventory
+
 - [ ] Equipment
+- [x] Quest
+- [ ] Time
+- [ ] Add Test
+- [ ] levelUp -> setiap dapet exp dari action
+- [ ] checkQuest. -> simpen di setiap action yang mendapat product
+- [ ] updata energi dan ++kegiatan
+- [ ] ganti Time
+- [ ] retract Exit
 
-## Todo List
-
-- [ ] Set Role
-- [ ] State Game : Rada segera!
-- [ ] Color Printer
-- [ ] Quest Ranch
-- [ ] Quest Farm
-- [ ] Quest Fish
+- [x] Set Role
+- [x] State Game : Rada segera!
+- [x] Color Printer
+- [x] Quest Ranch
+- [x] Quest Farm
+- [x] Quest Fish
 
 ## State Game
 
