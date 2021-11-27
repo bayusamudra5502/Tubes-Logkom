@@ -4,7 +4,16 @@ alchemistItem(a1, '🍾', 'Speciality Potion').
 alchemistItem(a2, '🍾', 'Time Potion').
 
 alchemistPrice(a1, 2000).
-alchemistPrice(a1, 3000).
+alchemistPrice(a2, 3000).
+
+isPotionAvailable :-
+	inventory(CurrentInventory)
+	is_member(a1, CurrentInventory, _);
+	inventory(CurrentInventory)
+	is_member(a2, CurrentInventory, _).
+
+printPotionList(ID) :-
+	isPotionAvailable, !.
 
 usePotion :- 
 	runProgram(_).

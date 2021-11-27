@@ -350,3 +350,6 @@ print_first_item:-
     inventory(X),
     select_nth(X,0,Y1),
     write(Y1).
+
+% Get Amount
+getItemAmount(List, Idx, Amount) :- select_nth(List, Idx, [_, Amount]).
