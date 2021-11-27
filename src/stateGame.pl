@@ -199,19 +199,19 @@ gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah)
 
 gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 1,
-                asserta(time('Siang',Bnew,C+1,'Spring 🍀',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Spring',E)),!.
 
 gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 2,
-                asserta(time('Siang',Bnew,C+1,'Fall 🍂',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Fall',E)),!.
 
 gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 3,
-                asserta(time('Siang',Bnew,C+1,'Winter ☃️',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Winter',E)),!.
 
 gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
                 C > 4, Cnew is C mod 4, 
-                asserta(time('Siang',B+1,Cnew,'Summer ☀️', E+1)),!.
+                asserta(time('Siang',B+1,Cnew,'Summer', E+1)),!.
 
 gantiTime :- !.
 
