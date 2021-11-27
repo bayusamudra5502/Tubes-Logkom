@@ -328,6 +328,24 @@ insert_item(ID, Amount) :- inventory(CurrentInventory),
     assertz(inventory(NewInventory)),
     retract(inventory(CurrentInventory)), !.
 
+% mengurangi item yang sudah ada di inventory
+delete_item(ID, Amount) :-
+    inventory(CurrentInventory),
+    is_member(ID, CurrentInventory, Idx),
+    NNew is N - Amount,
+    NNew > 0,
+    set_nth(CurrentInventory, Index, [ID,N1], NewInventory),
+    assertz(inventory(NewInventory)),
+    retract(inventory(CurrentInventory)), !.
+
+delete_item(ID, Amount) :-
+    inventory(CurrentInventory),
+    is_member(ID, CurrentInventory, Idx),
+    NNew is N - Amount,
+    delete_at_n(Idx, CurrentInventory, NewInventory),
+    assertz(inventory(NewInventory)),
+    retract(inventory(CurrentInventory)), !.
+
 print_first_item:-
     inventory(X),
     select_nth(X,0,Y1),

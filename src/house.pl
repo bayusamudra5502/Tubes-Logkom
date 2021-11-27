@@ -26,7 +26,7 @@ house :-
 	write('Masukkan angka : '),read(X),
        	(X =:= 1 -> tidur 
         ;X =:= 2 -> diaryWriter;
-        X =:= 3 -> sleepMessage;
+        X =:= 3 -> diaryReader;
         X =:= 4 -> s,nl,write('Kamu telah berada di luar house')),!.
 
 /* yg diatas ubah aja yaa heehehheeee sesuain ajaaa itu cuman dummy biar program lain jalan heheeh */

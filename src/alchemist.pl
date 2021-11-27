@@ -1,4 +1,14 @@
 :- dynamic(inAlchemist/1).
+
+alchemistItem(a1, '🍾', 'Speciality Potion').
+alchemistItem(a2, '🍾', 'Time Potion').
+
+alchemistPrice(a1, 2000).
+alchemistPrice(a1, 3000).
+
+usePotion :- 
+	runProgram(_).
+
 /* alchemist masih belum sampai */
 alchemist :-
 	runProgram(_),
@@ -7,22 +17,18 @@ alchemist :-
 	!.
 
 /* pemain sudah di alchemist */
-
 alchemist :-
 	runProgram(_),
 	inAlchemist(_),
 	nl,nl,
-	write('#################  Alchemist  ###############'),nl,
-    write('# 1. Sleep 🌙                               #'),nl,
-    write('# 2. WriteDiary 📚                          #'),nl,
-    write('# 3. ReadDiary 📚                           #'),nl,
-    write('# 4. Exit                                   #'),nl,
-	write('# Apa yang ingin Kamu lakukan?              #'),nl,
-	write('#                                           #'),nl,
-	write('#############################################'),nl,nl,
+	write('--- Alchemist ---'), nl,
+	write('1. Beli 🍾 Speciality Potion (2000 G)'),nl,
+	write('2. Beli 🍾 Time Potion (3000 G)'),nl,
+	write('3. Detail Item'), nl,
+	write('4. Keluar'), nl,nl,
 	write('Masukkan angka : '),read(X),
-       	(X =:= 1 -> write('sleep')
-        ;X =:= 2 -> write('sleep');
-        X =:= 3 -> write('sleep');
-        X =:= 4 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
+       	(X =:= 1 -> write('sleep');
+				 X =:= 2 -> write('sleep');
+				 X =:= 3 -> write('sleep');
+         X =:= 4 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
 
