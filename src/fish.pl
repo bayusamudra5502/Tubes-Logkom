@@ -101,39 +101,27 @@ fishExp(f13, 150).
 fishLevelRequirement(f1, 1).
 fishLevelRequirement(f2, 1).
 fishLevelRequirement(f3, 1).
-fishLevelRequirement(f4, 25).
-fishLevelRequirement(f5, 20).
-fishLevelRequirement(f6, 40).
-fishLevelRequirement(f7, 60).
-fishLevelRequirement(f8, 100).
-fishLevelRequirement(f9, 100).
-fishLevelRequirement(f10, 110).
-fishLevelRequirement(f11, 100).
-fishLevelRequirement(f12, 150).
-fishLevelRequirement(f13, 150).
+fishLevelRequirement(f4, 1).
+fishLevelRequirement(f5, 1).
+fishLevelRequirement(f6, 2).
+fishLevelRequirement(f7, 2).
+fishLevelRequirement(f8, 3).
+fishLevelRequirement(f9, 3).
+fishLevelRequirement(f10, 4).
+fishLevelRequirement(f11, 4).
+fishLevelRequirement(f12, 5).
+fishLevelRequirement(f13, 5).
 
 /* Fish Utility */
-
-/* Utilitas */
-resetFishLevel :- changeFishingLevel(1, 0).
-
-changeFishingLevel(X, EXP) :- player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-                  retract(player(A,B,C,D,E,F,G,H,I,J,K,L,M)), 
-                  asserta(player(A,B,C,D,E,X,EXP,H,I,J,K,L,M)).
-
-% Fishing Level
-getLevelFish(X) :- player(_,_,_,_,_,_,_,_,X,_,_,_,_), !.
-
-% Update XP
+getLevelFish(X) :- player(_,_,_,_,_,X,_,_,_,_,_,_,_), !.
 getFishingXP(X) :- player(_,_,_,_,_,_,X,_,_,_,_,_,_), !.
 
 % Update XP
-addFishingXP(Add) :- player(_,_,_,_,_,_,VAL,_,_,_,_,LEXP,_),
+addFishingXP(Add) :- player(A,B,C,D,E,F,VAL,H,I,J,K,LEXP,M),
                       NewXP is VAL + Add,
-                      NewLExp is  LEXP + Add,
+                      NewLExp is LEXP + Add,
                       retract(player(_,_,_,_,_,_,VAL,_,_,_,_,LEXP,_)),
-                      asserta(player(_,_,_,_,_,_,NewXP,_,_,_,_,NewLExp,_)),
-                      levelUp.
+                      asserta(player(A,B,C,D,E,F,NewXP,H,I,J,K,NewLExp,M)).
 
 % Harga Beli ikan
 getFishSellPrice(X, Price) :- fishAlias(X, I), 
@@ -166,9 +154,9 @@ questFishRandomizer(X, Cnt) :-
             random(1,4, Cnt), !.
 
 /* Penghitung Jumlah Probabilitas */
-sumCounter([], _, 0).
+sumCounter([], _, 0) :- !.
 sumCounter([H|T], Level, Sum) :- fishLevelRequirement(H, Lvl),
-                            Lvl >= Level, sumCounter(T, Level, LastSum),
+                            Lvl =< Level, sumCounter(T, Level, LastSum),
                             fishProbability(H, Prob, Multiplier),
                             Sum is LastSum + Prob + Multiplier * Level, !.
 
@@ -178,14 +166,14 @@ levelSum(L, Level, Result) :- sumCounter(L, Level, Result).
 
 fishFinder([H|_], Weight, Level, H) :- 
             fishLevelRequirement(H, Lvl),
-            Lvl >= Level,
+            Lvl =< Level,
             fishProbability(H, Prob, Multiplier),
             ItemProb is Prob + Multiplier * Level,
             Weight =< ItemProb, !.
 
 fishFinder([H|T], Weight, Level, Result) :- 
             fishLevelRequirement(H, Lvl),
-            Lvl >= Level,
+            Lvl =< Level,
             fishProbability(H, Prob, Multiplier),
             ItemProb is Prob + Multiplier * Level,
             NewWeight is Weight - ItemProb,
@@ -195,7 +183,8 @@ getFishRandom(Result) :-
       getLevelFish(_Level),
       fishItemRandomable(1, _List),
       levelSum(_List, _Level, _Sum),
-      random(0, _Sum, _Weight),
+      _Upper is _Sum + 1,
+      random(0, _Upper, _Weight),
       fishFinder(_List, _Weight, _Level, Result).
 
 
@@ -224,7 +213,8 @@ afterFishing :-
     retract(kegiatan(K)),
     retract(energi(E)),
     asserta(kegiatan(KNew)),
-    asserta(kegiatan(ENew)).
+    asserta(energi(ENew)),
+    levelUp.
   
 % Driver Pengubah XP Equipment
 addRodExp(Item, Exp) :-
@@ -238,11 +228,11 @@ addRodExp(Item, Exp) :-
 
 getEquipmentLevel(Item, Level) :-
     rodLevel(Item, Exp),
-    Exp < 600,
-    Level is (Exp div 300) + 1, !.
+    Exp < 300,
+    Level is (Exp div 150) + 1, !.
 
 getEquipmentLevel(Item, 3) :- rodLevel(Item, Exp),
-    Exp > 600.
+    Exp > 300, !.
 
 getEquipmentLevel(Item, 1) :- 
     \+ rodLevel(Item, _).
@@ -271,50 +261,57 @@ addFishInventory(Item, Qty) :-
 % Helper Pemeriksa Item
 isThereFishingRod :- 
     inventory(CurrentInventory),
-    member(fu1, CurrentInventory),
+    is_member(fu1, CurrentInventory,_),
     !.
 
 isThereFishingRod :- 
     inventory(CurrentInventory),
-    member(fu2, CurrentInventory),
+    is_member(fu2, CurrentInventory, _),
     !.
 
 isThereFishingRod :- 
     inventory(CurrentInventory),
-    member(fu3, CurrentInventory),
+    is_member(fu3, CurrentInventory, _),
     !.
 
 isThereFishingRod :- 
     inventory(CurrentInventory),
-    member(fu4, CurrentInventory),
+    is_member(fu4, CurrentInventory, _),
     !.
 
 isThereFishingRod :- 
     fail,!.
 
 % Helper Pencari jumlah ikan yang didapat
-fishCatchCount(X) :- 
+fishCatchCount(X, fu1) :- 
     inventory(CurrentInventory),
-    member(fu1, CurrentInventory),
-    X is 1.
+    is_member(fu1, CurrentInventory, _),
+    X is 1, !.
 
-fishCatchCount(X) :- 
+fishCatchCount(X, fu2) :- 
     inventory(CurrentInventory),
-    member(fu2, CurrentInventory),
-    random(1, 3, X).
+    is_member(fu2, CurrentInventory,_),
+    random(1, 3, X), !.
 
-fishCatchCount(X) :- 
+fishCatchCount(X, fu3) :- 
     inventory(CurrentInventory),
-    member(fu3, CurrentInventory),
-    random(1, 6, X).
+    is_member(fu3, CurrentInventory,_),
+    random(1, 6, X), !.
 
-fishCatchCount(X) :- 
+fishCatchCount(X, fu4) :- 
     inventory(CurrentInventory),
-    member(fu4, CurrentInventory),
-    random(1, 10, X).
+    is_member(fu4, CurrentInventory,_),
+    random(1, 10, X), !.
 
 % Helper penghitung XP
 getAdderXP(f1, 5) :- !.
+
+getAdderXP(Item, Exp) :-
+    player('Fisherman',_,_,_,_,_,_,_,_,_,_,_,_),
+    getLevelFish(_L),
+    fishExp(Item, _ExpBase),
+    Exp is  _ExpBase + 5 * _L + 10, !.
+
 getAdderXP(Item, Exp) :-
     getLevelFish(_L),
     fishExp(Item, _ExpBase),
@@ -322,16 +319,54 @@ getAdderXP(Item, Exp) :-
 
 fishable :-
     posisi(_X,_Y),
-    isWater(_X,_Y), !.
+    NextX is _X + 1,
+    isWater(NextX,_Y), !.
+
+fishable :-
+    posisi(_X,_Y),
+    LastX is _X - 1,
+    isWater(LastX,_Y), !.
+
+fishable :-
+    posisi(_X,_Y),
+    NextY is _Y + 1,
+    isWater(_X,NextY), !.
+
+fishable :-
+    posisi(_X,_Y),
+    LastY is _Y - 1,
+    isWater(_X,LastY), !.
+
+fishable :-
+    posisi(_X,_Y),
+    LastX is _X - 1,
+    LastY is _Y - 1,
+    isWater(LastX,LastY), !.
+fishable :-
+    posisi(_X,_Y),
+    LastX is _X + 1,
+    LastY is _Y - 1,
+    isWater(LastX,LastY), !.
+fishable :-
+    posisi(_X,_Y),
+    LastX is _X + 1,
+    LastY is _Y + 1,
+    isWater(LastX,LastY), !.
+
+fishable :-
+    posisi(_X,_Y),
+    LastX is _X - 1,
+    LastY is _Y + 1,
+    isWater(LastX,LastY), !.
 
 writeRodData(Item) :-
     inventory(X),
     is_member(Item, X, _),
     fishItem(Item, Icon, Name),
     getEquipmentLevel(Item, Level),
-    format('~w. ~w ~w (Level ~w)', [Item, Icon, Name, Level]), !.
+    format('~w. ~w ~w (Level ~w)', [Item, Icon, Name, Level]), nl, !.
 
-writeRodData(_) :- !, fail.
+writeRodData(_) :- !.
 
 validateRod(Item) :-
     inventory(X),
@@ -343,15 +378,15 @@ validateRod(_) :- !, fail.
 
 selectRod(SelectedRod) :- 
     write('Pilih alat pancing yang ingin kamu gunakan'), nl,
-    writeRodData(fu1), nl,
-    writeRodData(fu2), nl,
-    writeRodData(fu3), nl,
-    writeRodData(fu4), nl,
+    writeRodData(fu1),
+    writeRodData(fu2),
+    writeRodData(fu3),
+    writeRodData(fu4),
     nl,
-    repeat,
-    write('Masukan kode alat pancing : '),
-    read(X), nl, validateRod(X),
-    SelectedRod is X, !. 
+    (
+        repeat,
+        write('Masukan kode alat pancing : '),
+        read(SelectedRod), validateRod(SelectedRod)), !. 
 
 /* Fishing */
 fish :- \+ fishable,
@@ -368,26 +403,19 @@ fish :- runProgram(_),
         selectRod(Rod),
         write('[Suara Alat Pancing]'), nl,
         write('Tunggu sebentar'),
+        write('........'),
         delayMancing(Rod, Time),
         sleep(Time),
-        write('.'),
-        sleep(1),
-        write('.'),
-        sleep(Time),
-        write('.'),
-        sleep(1),
-        write('.'),
-        sleep(Time),
-        write('.'),
         nl, nl,
-        fishCatchCount(Cnt),
+        fishCatchCount(Cnt, Rod),
         getFishRandom(FishID),
-        printMessage(FishID, Cnt),
         getAdderXP(FishID, AddExp),
         additionalExp(Rod, ItemExp),
         NettoExp is AddExp + ItemExp,
         addFishingXP(NettoExp),
         addFishInventory(FishID, Cnt),
         addRodExp(Rod, NettoExp),
+        printMessage(FishID, Cnt),
+        afterFishing,
         !.
     

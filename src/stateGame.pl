@@ -25,7 +25,7 @@ getFarm :- runProgram(_),
 
 % getter untuk role
 getRole :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Role Anda pada game kali ini adalah sebagai '),write(A),write(','),nl,!.
+        write('Role Anda pada game kali ini adalah sebagai '),write(A),write('.'),nl,!.
         
 % getter untuk gold
 getGold :- runProgram(_),gold(Gold),
@@ -40,11 +40,11 @@ getExpFarmer :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Exp Anda saat ini adalah '),write(D),write('.'),nl,!.
 
 % getter untuk exp ranching
-getExpRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
+getExpFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Exp Anda saat ini adalah '),write(G),write('.'),nl,!.
 
 % getter untuk exp fishing
-getExpFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
+getExpRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Exp Anda saat ini adalah '),write(J),write('.'),nl,!.
 
 % getter untuk level
@@ -56,11 +56,11 @@ getLevelFarmer :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Anda sekarang berada di level farming '),write(C),write('.'),nl,!.
 
 % getter untuk level ranching
-getLevelRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
+getLevelFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Anda sekarang berada di level ranching '),write(F),write('.'),nl,!.
 
 % getter untuk level fishing
-getLevelFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
+getLevelRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Anda sekarang berada di level fishing '),write(I),write('.'),nl,!.
 
 % getter untuk energi

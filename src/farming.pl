@@ -1,6 +1,7 @@
 /* Farming */
 
 :- dynamic(crops/5).
+:- dynamic(planted_list/1).
 
 /* Base Farming item for Non-Farmer Speciality*/
 
@@ -34,22 +35,31 @@ tool(i2,'🚛','Harvester', 2500, 1, 0, 250).
 
 getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
     player('Fisherman',L,_,_,_,_,_,_,_,_,_,_,_),
-    EXP is E + 5 * L,
-    GOLD is G + 5 * L,!.
+    REXP is E + 5 * L,
+    RGOLD is G + 5 * L,
+    EXP is REXP,
+    GOLD is RGOLD, !.
 
 getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
     player('Rancher',L,_,_,_,_,_,_,_,_,_,_,_),
-    EXP is E + 5 * L,
-    GOLD is G + 5 * L,!.
+    REXP is E + 5 * L,
+    RGOLD is G + 5 * L,
+    EXP is REXP,
+    GOLD is RGOLD, !.
+
 
 getHarvestExpGold(ID, EXP, GOLD) :- crops(ID,_,_,_,G,E),
     player('Farmer',L,FL,_,_,_,_,_,_,_,_,_,_),
-    EXP is E + 5 * (L+FL),
-    GOLD is G + 5 * (L+FL),!.
+    REXP is E + 5 * (L+FL),
+    RGOLD is G + 5 * (L+FL),
+    EXP is REXP,
+    GOLD is RGOLD, !.
+
 
 /* Farming actions */
 % list ID item seed
 seed_list([e10,e11,e12,e13,e14,e15,e16,e17,e18]).
+planted_list([]).
 
 % mengecek apakah kooordinat X,Y adalah tile soid/seed/plant
 % soilTile(X, Y)
@@ -62,19 +72,20 @@ isPlantTile(X,Y) :- plantTile(X,Y,_).
 
 % print semua seed yang ada di inventory
 
+is_in_seed(X, [X|_],0):- !.
+is_in_seed(X, [_|T],Index) :- is_in_seed(X,T,Index1), Index is Index1 + 1.
 
-is_in_inventory :- inventory(CurrentInventory),
+is_not_in_inventory :- inventory(CurrentInventory),
     traverse_search(CurrentInventory),!.
 
 traverse_search([]) :- !.
 traverse_search([[A,B]|T]) :-
     seed_list(Seed),
-    is_member(A,Seed,_),!,fail,
-    traverse_search(T).
+    is_in_seed(A,Seed,_),!,fail.
 
 traverse_search([[A,B]|T]) :-
     seed_list(Seed),
-    \+is_member(A,Seed,_),
+    \+is_in_seed(A,Seed,_),
     traverse_search(T).
 
 search_seed([]) :-!.
@@ -99,7 +110,7 @@ plant :- runProgram(_),
 plant :- runProgram(_),
     posisi(X,Y),
     isSoilTile(X,Y),
-    \+is_in_inventory,
+    is_not_in_inventory,
     write('-------------- \33\[38;5;202mKamu tidak punya bibit di inventory !\33\[0m -------------- '),nl,!.
 
 plant :- runProgram(_),
@@ -119,10 +130,14 @@ plant :- runProgram(_),
     w,
     kegiatan(K), K1 is K + 1,
     energi(E), E1 is E-1, 
+    planted_list(PL),
+    insert_last([X,Y],PL,NewPL),
+    retract(planted_list(PL)),
     retract(kegiatan(K)),
     retract(soilTile(X,Y)),
     retract(inventory(CurrentInventory)),
     retract(energi(E)),
+    asserta(planted_list(NewPL)),
     asserta(kegiatan(K1)),
     asserta(energi(E1)),
     assertz(inventory(NewInventory)),
@@ -142,8 +157,6 @@ dig :- runProgram(_),
     \+is_member(i1,CurrentInventory,Index),
     write('-------------- \33\[38;5;202mKamu belum punya item Pick di inventory untuk menggali, kamu bisa membelinya di Market !\33\[0m --------------'),nl,!.
 
-
-
 harvest :- runProgram(_),
     posisi(X,Y),
     plantTile(X,Y,ID),
@@ -156,59 +169,73 @@ harvest :- runProgram(_),
             getHarvestExpGold(ID,EXP,GOLD),
             kegiatan(K), K1 is K + 1,
             energi(E), E1 is E-1, 
-            player(_,_,_,D,_,_,_,_,_,_,_,L,_),
+            player(A,B,C,D,E2,F,G,H,I,J,K2,L,M),
             D1 is D + EXP,
             L1 is L + EXP,
-            levelUp,
             write('-------------- \33\[38;5;76mKamu memanen : '), write(Nama), write(' '), write(U), write(' 1 X'),write('\33\[0m --------------'),nl,
             write('-------------- \33\[38;5;111m+\33\[0m '), write(EXP), write(' \33\[38;5;111mExp\33\[0m --------------'),nl,
-            asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
+            asserta(player(A,B,C,D1,E2,F,G,H,I,J,K2,L1,M)),
             asserta(kegiatan(K1)),
             asserta(energi(E1)),
             retract(kegiatan(K)),
             retract(energi(E)),
             retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
-            retract(plantTile(X,Y,ID)),!
+            retract(plantTile(X,Y,ID)),!,
+            levelUp
         );
         (
             is_member(i2,CurrentInventory,Index),
-            tool(i2,_,_,_,LV,EHarvest,_),
+            tool(i2,T1,T2,T3,LV,EHarvest,T4),
             N is 1 + LV,
             insert_item(ID,N),
             getHarvestExpGold(ID,EXP,GOLD),
             kegiatan(K), K1 is K + 1,
             energi(E), E1 is E-1, 
-            player(_,_,_,D,_,_,_,_,_,_,_,L,_),
+            player(A,B,C,D,E2,F,G,H,I,J,K2,L,M),
             D1 is D + (EXP * N),
             L1 is L + (EXP * N),
             EHarvest1 is EHarvest + 50,
             levelUpHarvester,
-            levelUp,
             NEXP is EXP * N,
             write('-------------- \33\[38;5;76mKamu memanen : '), write(Nama), write(' '), write(U),write(' '),write(N), write(' X'),write('\33\[0m --------------'),nl,
             write('-------------- \33\[38;5;111m+\33\[0m '), write(NEXP), write(' \33\[38;5;111mExp\33\[0m --------------'),nl,
-            asserta(player(_,_,_,D1,_,_,_,_,_,_,_,L1,_)),
+            asserta(player(A,B,C,D1,E2,F,G,H,I,J,K2,L1,M)),
             asserta(kegiatan(K1)),
             asserta(energi(E1)),
+            asserta(tool(i2,T1,T2,T3,LV,EHarvest1,T4)),
+            asserta(tool(i2,_,_,_,LV,EHarvest,_)),
             retract(kegiatan(K)),
             retract(energi(E)),
             retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
-            retract(plantTile(X,Y,ID)),!
+            retract(plantTile(X,Y,ID)),!,
+            levelUp
         )
     ).
 
+harvest :-
+    posisi(X,Y),
+    seedTile(X,Y,ID,T),
+    seed(ID,U,N,_,_,_),
+    write('-------------- \33\[38;5;202m'),write(N),write(' '),write(U),write(' belum dapat dipanen !\33\[0m'),
+    write(' -------------- '),nl,
+    write('-------------- \33\[38;5;202m'),write('Sisa hari sampai dapat dipanen : \33\[0m'),write(T),write(' -------------- '),nl,!.
 
+harvest :-
+    posisi(X,Y),
+    \+seedTile(X,Y,_,_),
+    \+plantTile(X,Y,_),
+    write('-------------- \33\[38;5;202mTidak ada crops di lokasi ini \33\[0m'),nl,!.
 
 /* Update waktu sisa seed sampai siap panen */
 /* dipake di ganti time */
 
-update_seed_tile([]) :- !.
+update_seed_tile([]).
 
-update_seed_tile([Head|Tail]) :- 
+update_seed_tile([[X,Y]|Tail]) :- 
     \+seedTile(X,Y,Head,W),
     update_seed_tile(Tail).
 
-update_seed_tile([Head|Tail]) :- 
+update_seed_tile([[X,Y]|Tail]) :- 
     seedTile(X,Y,Head,W),
     W > 1,
     W1 is W - 1,
@@ -216,16 +243,21 @@ update_seed_tile([Head|Tail]) :-
     retract(seedTile(X,Y,Head,W)),
     update_seed_tile(Tail).
 
-update_seed_tile([Head|Tail]) :- 
+update_seed_tile([[X,Y]|Tail]) :- 
     seedTile(X,Y,Head,W),
     W = 1,
     crops(ID,Head,_,_,_,_),
+    planted_list(PL),
+    is_member_XY([X,Y],PL,Idx),
+    delete_at_n(Idx,PL,NPL),
+    asserta(planted_list(NPL)),
     asserta(plantTile(X,Y,ID)),
     retract(seedTile(X,Y,Head,W)),
+    retract(planted_list(PL)),
     update_seed_tile(Tail).
 
 updateSeed :-
-    seed_list(X),
+    planted_list(X),
     update_seed_tile(X), !.
 
 levelUpHarvester :- 

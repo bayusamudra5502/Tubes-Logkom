@@ -395,5 +395,5 @@ cekArea(X,Y) :-
     \+isHouse(X,Y),
     \+isMarket(X,Y),
     \+isQuest(X,Y),
-    \+isBorder(X,Y).
+    \+isBorder(X,Y),
     \+isAlchemist(X,Y).
