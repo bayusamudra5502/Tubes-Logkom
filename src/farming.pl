@@ -134,19 +134,14 @@ plant :- runProgram(_),
                     N1 is N - 1,
                     set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
                     write('-------------- \33\[38;5;76mKamu telah menanam : \33\[0m'),write(Nama),write(' --------------'),nl,
-                    w,
-                    kegiatan(K), K1 is K + 1,
-                    energi(E), E1 is E-1, 
+                    w, 
                     planted_list(PL),
                     insert_last([X,Y],PL,NewPL),
+                    updateStat,
                     retract(planted_list(PL)),
-                    retract(kegiatan(K)),
                     retract(soilTile(X,Y)),
                     retract(inventory(CurrentInventory)),
-                    retract(energi(E)),
                     asserta(planted_list(NewPL)),
-                    asserta(kegiatan(K1)),
-                    asserta(energi(E1)),
                     assertz(inventory(NewInventory)),
                     assertz(seedTile(X,Y,Input,W))
                 );
@@ -173,6 +168,7 @@ dig :- runProgram(_),
     posisi(X,Y),
     cekArea(X,Y),
     asserta(soilTile(X,Y)),
+    updateStat,
     write('-------------- \33\[38;5;76mKamu menggali tanah ini !\33\[0m --------------'),nl, 
     w,!.
 
@@ -205,7 +201,7 @@ harvest :- runProgram(_),
             retract(energi(E)),
             retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
             retract(plantTile(X,Y,ID)),!,
-            levelUp
+            levelUp,updateStat
         );
         (
             is_member(i2,CurrentInventory,Index),
@@ -232,7 +228,7 @@ harvest :- runProgram(_),
             retract(energi(E)),
             retract(player(_,_,_,D,_,_,_,_,_,_,_,L,_)),
             retract(plantTile(X,Y,ID)),!,
-            levelUp
+            levelUp,updateStat
         )
     ).
 

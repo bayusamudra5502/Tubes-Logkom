@@ -194,27 +194,51 @@ initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum ber
 gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 10, retract(time(A,B,C,D,E)),
                 asserta(time('Malam',B,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
-                asserta(time('Siang',B+1,C,D,E)),!.
+gantiTime :- runProgram(_),time('Malam',B,C,D,E),kegiatan(Jumlah), Jumlah < 10,retract(time(_,B,C,D,E)),
+                asserta(time('Siang',B+1,C,D,E)),!, updater.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,retract(time(_,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 1,
-                asserta(time('Siang',Bnew,C+1,'Summer',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Summer',E)),!, updater.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,retract(time(_,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 2,
-                asserta(time('Siang',Bnew,C+1,'Fall',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Fall',E)),!, updater.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,retract(time(_,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 3,
-                asserta(time('Siang',Bnew,C+1,'Winter',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Winter',E)),!, updater.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,retract(time(_,B,C,D,E)),
                 C > 4, Cnew is C mod 4, 
-                asserta(time('Siang',B+1,Cnew,'Spring', E+1)),!.
+                asserta(time('Siang',B+1,Cnew,'Spring', E+1)),!, updater.
 
 gantiTime :- !.
 
-updater :- updateSeed.
+updater :- updateSeed, retract(kegiatan(_)), asserta(kegiatan(0)), retract(energi(E)), asserta(energi(50)).
+updateStat :- gantiTime, updateKegiatan, updateEnergi.
+
+updateEnergi :- energi(E),
+        E =:= 1,
+        mati.
+
+updateEnergi :- energi(E),
+        E >1,
+        E1 is E-1, 
+        retract(energi(E)),
+        asserta(energi(E1)).
+
+mati :- story1,quitGame,!.
 
 updateKegiatan :- kegiatan(Jumlah), retract(kegiatan(_)), New is Jumlah + 1, asserta(kegiatan(New)),!.
+
+winState :- !.
+winState :- gold(Gold), Gold >= 20000, time(A,B,C,D,E), E is 1, 
+                write('------------------- \33\[38;5;76m Congratulation 🎉 \33\[0m--------------'),nl,
+                write('Kamu telah berhasil mengumpulkan 20000 Gold dalam waktu 1 tahun'),nl,
+                write('------------------- \33\[38;5;76m 🎉 You Win 🎉 \33\[0m -----------------'),!.
+loseState :- !.
+loseState :- gold(Gold), Gold =< 20000, time(A,B,C,D,E), E is 2, 
+                write('----------------------- \33\[38;5;76m OOOOOWWW \33\[0m--------------------------'),nl,
+                write('Kamu tidak berhasil mengumpulkan 20000 Gold dalam waktu 1 tahun'),nl,
+                write('----------------------- \33\[38;5m  You Lose \33\[0m--------------------'),!.

@@ -56,7 +56,7 @@ tidur :- \+ runProgram(_), !, fail.
 tidur :- posisi(X,Y), \+ isHouse(X, Y), !, fail.
 tidur :- time('Malam', 30, 3, _, T),
          inHouse(_),
-         write('🌙 Selamat Malam...'), sleep(1),
+         write('🌙 Selamat Malam...'), nl, sleep(1),
          periTidur,
          retract(time(_,_,_,_,_)),
          NewT is T + 1,

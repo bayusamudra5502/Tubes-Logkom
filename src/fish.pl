@@ -208,12 +208,7 @@ printMessage(X, Cnt) :-
 /* State Game Driver */
 % Driver setelah melakukan memancing
 afterFishing :-
-    kegiatan(K), KNew is K + 1,
-    energi(E), ENew is E - 1,
-    retract(kegiatan(K)),
-    retract(energi(E)),
-    asserta(kegiatan(KNew)),
-    asserta(energi(ENew)),
+    updateStat,
     levelUp.
   
 % Driver Pengubah XP Equipment
@@ -397,9 +392,13 @@ fish :- \+ isThereFishingRod,
         write('Kamu ga punya alat pancing di inventori..'),
         nl,  write('Beli dulu sana..'), !, fail.
 
+fish :- time(_,_,_,'Winter',_), 
+    write('Duh danau beku, kamu ga bisa mancing.'), nl,
+    !, fail.
+
 fish :- runProgram(_),
         fishable,
-        write('--- Daerah Pemancingan ---'), nl,
+        write('-oooo- Daerah Pemancingan -oooo-'), nl,
         selectRod(Rod),
         write('[Suara Alat Pancing]'), nl,
         write('Tunggu sebentar'),

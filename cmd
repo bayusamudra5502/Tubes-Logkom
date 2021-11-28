@@ -6,9 +6,9 @@ startGame.
 2.
 1.
 retract(posisi(_,_)).
-asserta(posisi(15,16)).
-asserta(inMarket(1)).
-market.
+asserta(posisi(16,4)).
+asserta(inHouse(1)).
+
 ---
 [main].
 startGame.
@@ -42,11 +42,12 @@ startGame.
 1.
 retract(posisi(_,_)).
 asserta(posisi(3,17)).
-asserta(inRanch(1)),
+asserta(inRanch(1)).
 insert_item(r4,2), insert_item(r7,1).
 ranch.
 1.
 retract(time(A,B,C,D,E)), asserta(time(A,11,C,D,E)).
+ranchCountDays(X), checkRanch(X, r4, Y), retract(time(A,B,C,D,E)), asserta(time(A,12,C,D,E)), checkRanch(Y, r4,Z).
 ranch.
 2.
 r4.
@@ -65,7 +66,6 @@ startGame.
 1.
 1.
 retract(posisi(_,_)).
-asserta(posisi(18,11)).
-asserta(inAlchemist(1)).
+asserta(posisi(16,16)).
 retract(gold(_)).
 asserta(gold(10000)).

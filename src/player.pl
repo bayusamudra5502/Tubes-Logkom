@@ -361,6 +361,9 @@ getItemAmount(List, Idx, Amount) :- select_nth(List, Idx, [_, Amount]).
 print_inventory([]).
 print_inventory([[ID, Amount]|T]) :-
     item(ID, UCode, Nama, _, Harga),
-    format('- ~w. ~w ~w ~w (~w / satuan)', [ID, Amount, Ucode, Nama, Harga]), nl,
+    write(ID), write('. '),
+    write(Amount), write(' x '),
+    write(Nama), write(' ('),
+    write(Harga),write(' Gold / item)'), nl,
     print_inventory(T).
 

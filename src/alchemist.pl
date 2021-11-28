@@ -58,11 +58,11 @@ specialityEffect :-
 goToMorning :-
 	% inEffect(_),
 	isPotionAvailable(a2),
-	time(Waktu, Hari, Musim, NamaMusim, Tahun),
-	retract(time('Siang', Hari, Musim, NamaMusim, Tahun)),
+	time(_, Hari, Musim, NamaMusim, Tahun),
+	retract(time(_, _, _, _, _)),
 	retract(kegiatan(_)),
 	asserta(kegiatan(0)),
-	asserta(time(Waktu, Hari, Musim, NamaMusim, Tahun)), !.
+	asserta(time('Siang', Hari, Musim, NamaMusim, Tahun)), !.
 
 timeEffect :-
 	inEffect(_),

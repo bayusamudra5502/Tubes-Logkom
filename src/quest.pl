@@ -168,6 +168,8 @@ submitQuest :-
 	Y1 is 0,
 	write('-------------- \33\[38;5;76mSelamat, Kamu telah menyelesaikan quest ! \33\[0m --------------'),nl,
 	write('-------------- \33\[38;5;220m + '),write(Sum),write(' Gold\33\[0m -------------- '),
+	winState,
+	loseState,
 	asserta(onQuest(Y1)),
 	retract(onQuest(Y)),
 	asserta(gold(G2)),

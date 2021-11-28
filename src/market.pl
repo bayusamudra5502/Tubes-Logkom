@@ -1,4 +1,3 @@
-
 :- dynamic(inMarket/1).
 
 /* market masih belum sampai */
@@ -29,8 +28,9 @@ buyItem(1) :-
 	market.
 
 buyItem(Pil) :-
+	inventory(CurrentInventory),
 	is_member(Pil, CurrentInventory, _),
-	equipment(Pil, _, _, _, _),
+	equipments(Pil, _, _, _, _),
 	write('Kamu sudah memiliki equipment itu! Silakan beli yang lain :D'), nl.
 buyItem(Pil) :- 
 		sold(Pil,Ucode,Nama,Harga,_),
@@ -102,46 +102,56 @@ sellNambah(Kode) :-
 	write('Masukkan jumlah yang mau dijual : '), read(Amount),
 	sellLagi(Kode, Amount).
 
-selllagi(Kode, Amount) :-
+sellLagi(Kode, Amount) :-
+	inventory(CurrentInventory),
 	is_member(Kode, CurrentInventory, Idx),
 	getItemAmount(CurrentInventory, Idx, Qty),
 	Amount > Qty,
 	item(Kode, _, Nama, _, _),
 	format('Kamu hanya memiliki ~w ~w :(', [Qty, Nama]).
 
-selllagi(Kode, Amount) :-
+sellLagi(Kode, Amount) :-
+	inventory(CurrentInventory),
 	isFish(Kode),
 	is_member(Kode, CurrentInventory, Idx),
 	getItemAmount(CurrentInventory, Idx, Qty),
 	Amount =< Qty,
 	gold(UangSekarang),
 	getFishSellPrice(Kode, Harga),
-	Baru is UangSekarang + Harga*Qty,
+	SubTotal is Harga*Qty,
+	Baru is UangSekarang + SubTotal,
 	NewQty is Qty - Amount,
+	winState,
+	loseState,
 	retractall(gold(_)),
 	asserta(gold(Baru)),
-	format('Kamu berhasil menjual write ~w ~w seharga ~w', [Amount, Nama, Baru]), nl,
-	set_nth(CurrentInventory, Idx, NewQty, NewInventory),
+	format('Kamu berhasil menjual ~w ~w seharga ~w Gold', [Amount, Nama, SubTotal]), nl,
+	set_nth(CurrentInventory, Idx, [Kode,NewQty], NewInventory),
 	assertz(inventory(NewInventory)),
 	retract(inventory(CurrentInventory)), !.
 
-selllagi(Kode, Amount) :-
+sellLagi(Kode, Amount) :-
+	inventory(CurrentInventory),
 	is_member(Kode, CurrentInventory, Idx),
 	getItemAmount(CurrentInventory, Idx, Qty),
 	Amount =< Qty,
 	gold(UangSekarang),
 	item(Kode, _, Nama, _, Harga),
-	Baru is UangSekarang + Harga*Qty,
+	SubTotal is Harga*Qty,
+	Baru is UangSekarang + SubTotal,
 	NewQty is Qty - Amount,
 	retractall(gold(_)),
 	asserta(gold(Baru)),
-	format('Kamu berhasil menjual write ~w ~w seharga ~w', [Amount, Nama, Baru]), nl,
-	set_nth(CurrentInventory, Idx, NewQty, NewInventory),
+	winState,
+	loseState,
+	format('Kamu berhasil menjual ~w ~w seharga ~w Gold', [Amount, Nama, SubTotal]), nl,
+	set_nth(CurrentInventory, Idx, [Kode,NewQty], NewInventory),
 	assertz(inventory(NewInventory)),
 	retract(inventory(CurrentInventory)), !.
 
 
 sell :-
+	inventory(CurrentInventory),
 	write('Kamu memiliki item ini :'), nl,
 	print_inventory(CurrentInventory),
 	write('Ketik kode barang yang kamu mau jual (contoh : e1, e2, e3) : '), nl,

@@ -59,25 +59,30 @@ ranch :-
 ranchCountDays([]).
 ranchAll([]).
 
+isInRanch(I)
+
 insertCountDays(ID, Amount, Days) :- 
 	ranchCountDays(Ranch),
 	insert_last([ID, Amount, Days], Ranch, NewRanch),
-	assertz(ranchCountDays(NewRanch)),
-	retract(ranchCountDays(Ranch)), !.
+	retract(ranchCountDays(Ranch)), 
+	asserta(ranchCountDays(NewRanch)),
+	!.
 insertAll(ID, Amount) :-
 	ranchAll(CurRanch),
 	\+is_member(ID, CurRanch, _),
 	insert_last([ID, Amount], CurRanch, NewCur),
-	assertz(ranchAll(NewCur)),
-	retract(ranchAll(CurRanch)), !.
+	retract(ranchAll(CurRanch)), 
+	asserta(ranchAll(NewCur)),
+	!.
 insertAll(ID, Amount) :-
 	ranchAll(CurRanch),
 	is_member(ID, CurRanch, Index),
 	select_nth(CurRanch, Index, [X,N]),
 	N1 is N+Amount,
 	set_nth(CurRanch, Index, [ID, N1], NewRanch),
-	assertz(ranchAll(NewRanch)),
-	retract(ranchAll(CurRanch)), !.
+	retract(ranchAll(CurRanch)), 
+	asserta(ranchAll(NewRanch)),
+	!.
 
 printRanch([]) :- !.
 
@@ -133,29 +138,26 @@ takeHewan(ID) :-
 	ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,Countz),
 	retract(ranchCountDays(Ranch)),
 	asserta(ranchCountDays(NewRanch)),
-	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]), nl,
 	insert_item(IDP,Countz),
-	kegiatan(K), K1 is K+1,
-	energi(En), En1 is En-1,
+	updateStat,
 	R1 is R+(EXP+10)*Countz,
 	E1 is E+((EXP+10) div 2)*Countz,
 	RPlus is R1 - R,
 	EPlus is E1 - E,
 	NIExp is IExp + 10,
-	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,R,_,E,_)), 
+	retract(ranchItem(_,_,_,_,_,_,_,_)),
 	asserta(player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9, R1, PL10, E1, PL11)),
-	asserta(kegitan(K1)),
-	asserta(energi(En1)),
 	/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
 	asserta(ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,0)),
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
 	asserta(ranchItem(ID, IDI, RI1, RI2, RI3, RI4, NIExp, RI5)),
 	levelUp,
 	levelUpItem(ID),
-	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
-	retract(kegiatan(K)),
-	retract(energi(En)),
-	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,R,_,E,_)), !.
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]), nl,
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	!.
 
 takeHewan(ID) :-
 	player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9,R,PL10,E,PL11),
@@ -165,58 +167,53 @@ takeHewan(ID) :-
 	is_member(ID, Ranch, _),
 	is_member(IDI, CurrentInventory, _),
 	checkRanch(Ranch, ID, NewRanch),
-	ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,Countz),
-	asserta(ranchCountDays(NewRanch)),
-	retract(ranchCountDays(Ranch)),
-	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),nl,
-	insert_item(IDP, Countz),
-	kegiatan(K), K1 is K+1,
-	energi(En), En1 is En-1,
+	ranchProduct(RP1,ID,RP2,RP3,RP4,RP5,RP6, RP7),
+	write('-----'),
+	insert_item(RP1, RP7),
+	updateStat,
 	R1 is R+(EXP)*Countz,
 	E1 is E+((EXP) div 2)*Countz,
 	RPlus is R1 - R,
 	EPlus is E1 - E,
 	NIExp is IExp + 10,
-	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_)),
+	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
+	retract(ranchItem(ID,_,_,_,_,_,_,_)),
+	retract(ranchCountDays(Ranch)),
+	asserta(ranchCountDays(NewRanch)),
 	asserta(player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9, R1, PL10, E1, PL11)),
-	asserta(kegitan(K1)),
-	asserta(energi(En1)),
 	/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
 	asserta(ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,0)),
 	asserta(ranchItem(ID, IDI, RI1, RI2, RI3, RI4, NIExp, RI5)),
 	levelUp,
-	levelUpItem(ID),
-	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
-	retract(kegiatan(K)),
-	retract(energi(En)),
-	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,R,_,E,_)), !.
+	levelUpItem(IDI),
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),nl,
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	!.
 
 % addItems(ID, Amount, Day, Hari ini, Day origin, set day baru)
-addItems(r4, Amount, C, Today, DayAwal, NewDay) :-
+addItems(r4, Amount, C) :-
 	C > 0,
-	NewDay is Today - DayAwal,
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
 	ranchItem(r4,r7, _,_,_,L,_,_),
 	ranchProduct(R1,r4,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
-	asserta(ranchProduct(R1,r4,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r4,R2,R3,R4,R5,R6,A)).
-addItems(r5, Amount, C, Today, DayAwal, NewDay) :-
+	asserta(ranchProduct(R1,r4,R2,R3,R4,R5,R6,NewA)),
+addItems(r5, Amount, C) :-
 	C > 0,
-	NewDay is Today - DayAwal,
 	ranchItem(r5,r8, _,_,_,L,_,_),
 	ranchProduct(R1,r5,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
-	asserta(ranchProduct(R1,r5,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r5,R2,R3,R4,R5,R6,A)).
-addItems(r6, Amount, C, Today, DayAwal, NewDay) :-
+	asserta(ranchProduct(R1,r5,R2,R3,R4,R5,R6,NewA)),
+addItems(r6, Amount, C) :-
 	C > 0,
-	NewDay is Today - DayAwal,
 	ranchItem(r6,r9, _, _, _, L, _, _),
 	ranchProduct(R1,r6,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
-	asserta(ranchProduct(R1,r6,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r6,R2,R3,R4,R5,R6,A)).
+	asserta(ranchProduct(R1,r6,R2,R3,R4,R5,R6,NewA)),
 addItems(_, Amount, C) :-
 	C = 0,
 	write('Produk belum siap! Kembali lain kali :D'),
@@ -230,7 +227,9 @@ checkRanch([[ID, Amount, Days]|T], ID, ListBaru) :-
 	ranchProduct(_,ID,_,_,_,_,CD,_),
 	Today is ((S-1)*30+D+120*(Y-1)),
 	C is (Today-Days) div CD,
-	addItems(ID, Amount, C, Today, Days, NewDays),
+	C > 0,
+	addItems(ID, Amount, C),
+	NewDays is Today,
 	NewHead = [ID, Amount, NewDays],
 	checkRanch(T, ID, ListLast),
 	ListBaru = [NewHead | ListLast], !.
@@ -359,17 +358,17 @@ moved :-
 
 % Level Up
 levelUpItem(ID) :- 
-	ranchItem(ID,_,_,Nama,_, L, E, B),
+	ranchItem(RI1,ID, RI2,Nama, RI3, L, E, B),
 	E >= B,
 	Lnew is L+1,
 	Enew is E-B,
 	Bnew is B+100,
-	retract(ranchItem(ID,_,_,_,_,L,E,B)),
-	asserta(ranchItem(ID,_,_,_,_,Lnew,Enew,Bnew)),
+	retract(ranchItem(_,ID,_,_,_,_,_,_)),
+	asserta(ranchItem(RI1, ID, RI2,Nama, RI3, Lnew, Enew, Bnew)),
 	write(Nama), write(' level up! Sekarang level '), write(Lnew), nl.
 
 levelUpItem(ID) :-
-	ranchItem(ID,_,_,Nama,_, L, E, B),
+	ranchItem(_,ID,_,Nama,_, L, E, B),
 	E < B, !.
 
 ranch_product_list([r1,r2,r3]).
