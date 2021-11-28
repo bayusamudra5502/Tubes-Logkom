@@ -1,14 +1,14 @@
 /* Ranching */
 :- dynamic(inRanch/1).
 :- dynamic(ranch/1).
-:- dynamic(code/1).
+:- dynamic(ranchProduct/8).
 
 /*Facts*/
 /*Product Ranching*/
-/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu */
-ranchProduct(r1, r4, '🥚', 'Telur', 50, 10, 3).
-ranchProduct(r2, r5, '🧶', 'Wool', 100, 20, 4).
-ranchProduct(r3, r6, '🥛', 'Susu', 200, 40, 5).
+/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
+ranchProduct(r1, r4, '🥚', 'Telur', 50, 10, 3, 0).
+ranchProduct(r2, r5, '🧶', 'Wool', 100, 20, 4, 0).
+ranchProduct(r3, r6, '🥛', 'Susu', 200, 40, 5, 0).
 
 /*Animals*/
 /*ID Animals, Icon, Nama, harga, waktu untuk harvest*/
@@ -18,9 +18,9 @@ ranchAnimals(r6, '🐄', 'Sapi', 1500).
 
 /* Util */
 /*ID Item, icon, nama, price, level, exp, base exp*/
-ranchItem(r7, '📦', 'Crate', 1, 300, 5, 100).
-ranchItem(r8, '✂️', 'Sheer', 1, 600, 5, 150).
-ranchItem(r9, '🪣', 'Bucket', 1, 800, 5, 200).
+ranchItem(r7, '📦', 'Crate', 300, 1, 5, 100).
+ranchItem(r8, '✂️', 'Sheer', 600, 1, 5, 150).
+ranchItem(r9, '🪣', 'Bucket', 800, 1, 5, 200).
 
 /* ranch masih belum sampai */
 ranch :-
@@ -129,28 +129,88 @@ takeHewan(r6) :-
 	write('Kamu tidak memiliki bucket, silahkan beli dulu!'), nl.
 
 %%% Masih belum bisa iterasi buat cek yg mana yg bisa diambil
-takeHewan(r4) :-
+takeHewan(ID) :-
 	ranchCountDays(Ranch),
-	isThere(r4, Ranch, _),
-	is_member(r7, CurrentInventory, _),
-	checkRanch(),
-	write('Kamu berhasil mendapatkan xx Telur!'),
-	insert_item([r1, /xx/])
+	ranchProduct(IDP,ID,_,Nama,_,_,Countz)
+	isThere(ID, Ranch, _),
+	is_member(ID, CurrentInventory, _),
+	checkRanch(Ranch, 0, ID),
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),
+	insert_item([IDP, Countz])
 	kegiatan(K), K1 is K+1,
 	energi(E), E1 is E-1,
-	ranchProduct(_, r4, _, _, _, Ranch, _),
+	ranchProduct(_, ID, _, _, _, EXP, _, _),
 	player("Rancher",_,_,_,_,_,_,_,_,R,_,E,_),
-	R1 is R+(10*/xx/),
-	E1 is E+(20*/xx/),
+	R1 is R+(EXP+10)*Countz,
+	E1 is E+((EXP+10)/2)*Countz,
 	levelUp,
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [R1-R, E1-E]),
 	asserta(Player(_, _, _, _, _, _, _, _, _, R1, _, E1, _)),
 	asserta(kegitan(K1)),
 	asserta(energi(E1)),
+	asserta(ranchProduct(_,r4,_,_,_,_,0)),
+	retract(ranchProduct(_,r4,_,_,_,_,Countz)),
 	retract(kegiatan(K)),
 	retract(energi(E)),
 	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_).
 
-% checkRanch(List, Total Product, Itung-itung Day, Kode)
+takeHewan(r4) :-
+	ranchCountDays(Ranch),
+	ranchProduct(_,r4,_,_,_,_,Countz)
+	isThere(r4, Ranch, _),
+	is_member(r7, CurrentInventory, _),
+	checkRanch(Ranch, 0, r4),
+	format('Kamu berhasil mendapatkan ~w Telur!', [Countz]),
+	insert_item([r1, Countz])
+	kegiatan(K), K1 is K+1,
+	energi(E), E1 is E-1,
+	ranchProduct(_, r4, _, _, _, EXP, _, _),
+	player(_,_,_,_,_,_,_,_,_,R,_,E,_),
+	R1 is R+(EXP)*Countz,
+	E1 is E+((EXP)/2)*Countz,
+	levelUp,
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [R1-R, E1-E]),
+	asserta(Player(_, _, _, _, _, _, _, _, _, R1, _, E1, _)),
+	asserta(kegitan(K1)),
+	asserta(energi(E1)),
+	asserta(ranchProduct(_,r4,_,_,_,_,0)),
+	retract(ranchProduct(_,r4,_,_,_,_,Countz)),
+	retract(kegiatan(K)),
+	retract(energi(E)),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_).
+
+% addItems(ID, Amount, Day)
+addItems(r4, Amount, 0) :-
+	ranchItem(r7, _,_,L,_,_),
+	ranchProduct(_,r4,_,_,_,_,_,A),
+	NewA is (Amount*(3+L)+A),
+	asserta(ranchProduct(_,r4,_,_,_,_,_,NewA),
+	retract(ranchProduct(_,r4,_,_,_,_,_,A)).
+addItems(r5, Amount, 0) :-
+	ranchItem(r8, _,_,L,_,_),
+	ranchProduct(_,r5,_,_,_,_,_,A),
+	NewA is (Amount*(3+L)+A),
+	asserta(ranchProduct(_,r5,_,_,_,_,_,NewA),
+	retract(ranchProduct(_,r5,_,_,_,_,_,A)).
+addItems(r6, Amount, 0) :-
+	ranchItem(r9, _,_,L,_,_),
+	ranchProduct(_,r6,_,_,_,_,_,A),
+	NewA is (Amount*(3+L)+A),
+	asserta(ranchProduct(_,r6,_,_,_,_,_,NewA),
+	retract(ranchProduct(_,r6,_,_,_,_,_,A)).
+addItems(_, Amount, _) :-
+	!.
+% checkRanch(List, Increments, Kode)
+checkRanch([], _, _) :- !.
+checkRanch([H|T], Increments, ID) :-
+	select_nth([H|T], Increments, [ID, Amount, Days]),
+	time(_,D,S,_,_),
+	ranchProduct(_,ID,_,_,_,_,CD,_)
+	C is mod(((S-1)*30+D-Days, CD)),
+	addItems(ID, Amount, C),
+	NewIn is Increments + 1,
+	checkRanch(T, NewIn, ID).
+
 
 take :-
 	write('Kamu memiliki : '), nl,
