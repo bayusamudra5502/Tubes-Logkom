@@ -188,30 +188,30 @@ initTime :- write('Halo '), nama(Username),write(Username), write(', sebelum ber
             write('1. lanjutkan game dengan aktifkan waktu ⏰'),nl,
             write('Silakan masukkan angka 1 untuk melanjutkan'),nl,
             write('Masukkan angka : '), read(X),nl,
-            (X =:= 1 ->asserta(time('Siang',1,1,'Summer',1))).
+            (X =:= 1 ->asserta(time('Siang',1,1,'Spring',1))).
 
 /* implementasi gantiTime masi belom dicoba karena sleep belum diimplementasikan */
-gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 5, retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), kegiatan(Jumlah), Jumlah >= 10, retract(time(A,B,C,D,E)),
                 asserta(time('Malam',B,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
                 asserta(time('Siang',B+1,C,D,E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 1,
-                asserta(time('Siang',Bnew,C+1,'Spring',E)),!.
+                asserta(time('Siang',Bnew,C+1,'Summer',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 2,
                 asserta(time('Siang',Bnew,C+1,'Fall',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
                 B > 30, Bnew is B mod 30, C is 3,
                 asserta(time('Siang',Bnew,C+1,'Winter',E)),!.
 
-gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 5,retract(time(A,B,C,D,E)),
+gantiTime :- runProgram(_),time(A,B,C,D,E), tidur,A is 'Malam', kegiatan(Jumlah), Jumlah < 10,retract(time(A,B,C,D,E)),
                 C > 4, Cnew is C mod 4, 
-                asserta(time('Siang',B+1,Cnew,'Summer', E+1)),!.
+                asserta(time('Siang',B+1,Cnew,'Spring', E+1)),!.
 
 gantiTime :- !.
 

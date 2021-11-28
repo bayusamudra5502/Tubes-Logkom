@@ -92,25 +92,35 @@ help :- runProgram(_),
         write('\33\[38;5;31m    inventory.          \33\[0m: cek inventory'), nl,!.
 
 % save game
+writeString(String) :- format('\'~w\'',[String]).
+cm :- write(',').
+dot :- write('.').
+
 diaryWritterTranversal([]) :- !.
-diaryWritterTranversal([H|T]) :- 
+diaryWritterTranversal([[A,B,C,D]|T]) :- 
     write('diary('),
-    write(H),
-    write(').'),
+    write(A), cm,
+    writeString(B), cm,
+    write(C), cm,
+    writeString(D),
+    write(').'),nl,
     diaryWritterTranversal(T).
 
-diaryWriter :-
+diaryFileWriter :-
     findall([A,B,C,D], diary(A,B,C,D), Result),
     diaryWritterTranversal(Result).
 
 snapshotWritterTranversal([]) :- !.
-snapshotWritterTranversal([H|T]) :- 
+snapshotWritterTranversal([[A,B,C,D]|T]) :- 
     write('daySnapshot('),
-    write(H),
-    write(').'),
+    write(A),cm,
+    writeString(B), cm,
+    write(C), cm,
+    write(D),
+    write(').'),nl,
     snapshotWritterTranversal(T).
 
-snapshotWritter :- 
+snapshotFileWritter :- 
     findall([A,B,C,D], daySnapshot(A,B,C,D), Result),
     snapshotWritterTranversal(Result).
 
@@ -123,35 +133,46 @@ saveGame :-
     write('Masukkan nama file (format .txt diapit tanda kutip) : '),read(FileName),
     tell(FileName),
         nama(Username),
-        write(nama(Username)),write('.'),nl,
+        write('nama('),writeString(Username),write(').'),nl,
+        length(LL),
+        write(length(LL)),write('.'),nl,
+        width(WW),
+        write(width(WW)),write('.'),nl,
         gold(Gold),
         write(gold(Gold)),write('.'),nl,
         energi(Energi),
         write(energi(Energi)),write('.'),nl,
         player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write(player(A,B,C,D,E,F,G,H,I,J,K,L,M)),write('.'),nl,
+        write('player('),writeString(A),cm,write(B),cm,write(C),cm,
+        write(D),cm,write(E),cm,write(F),cm,
+        write(G),cm,write(H),cm,write(I),cm,
+        write(J),cm,write(K),cm,write(L),cm,write(M),write(').'),nl,
         posisi(X,Y),
         write(posisi(X,Y)),write('.'),nl,
         kegiatan(K1),
         write(kegiatan(K1)),write('.'),nl,
         time(T1,T2,T3,T4,T5),
-        write(time(T1,T2,T3,T4,T5)),write('.'),nl,
+        write('time('),writeString(T1),cm,write(T2),cm,write(T3),cm,
+        writeString(T4),cm,write(T5),write(').'),nl,
         inventory(V1),
         write('inventory('), write(V1),write(').'),nl,
         planted_list(P1),
         write(planted_list(P1)),write('.'),nl,
-        % diaryWriter,
-        % snapshotWritter,
+        diaryFileWriter,
+        snapshotFileWritter,
         questList(Q1),
         write(questList(Q1)),write('.'),nl,
         tool(AA,BB,CC,DD,EE,FF,GG),
-        write(tool(AA,BB,CC,DD,EE,FF,GG)),write('.'),nl,
+        write('tool('),write(AA),cm,writeString(BB),cm,writeString(CC),cm,
+        write(DD),cm,write(EE),cm,write(FF),cm,write(GG),write(').'),nl,
         ranchProduct(R1,R2,R3,R4,R5,R6,R7,R8),
-        write(ranchProduct(R1,R2,R3,R4,R5,R6,R7,R8)),write('.'),nl,
+        write('ranchProduct('),write(R1),cm,write(R2),cm,writeString(R3),cm,
+        writeString(R4),cm,write(R5),cm,write(R6),cm,
+        write(R7),cm,write(R8),write(').'),nl,
         ranchAll(RA),
         write(ranchAll(RA)),write('.'),nl,
         ranchCountDays(RC),
-        write(ranchAll(RC)),write('.'),nl,
+        write(ranchCountDays(RC)),write('.'),nl,
     told,
     write('File telah disimpan dengan nama : '), write(FileName),
     !.
@@ -208,6 +229,7 @@ quitGame :-
             retractall(inventory(_)),
             retractall(inAlchemist(_)),
             retractall(item(_,_,_,_,_)),
+            retractall(onQuest(_)),
             deallocateFish,
             write('------------------Thank You For Playing----------------'),nl,
             write('Please Come and Play Again to Try Other Roles and Items'),nl,

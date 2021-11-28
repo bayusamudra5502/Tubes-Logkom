@@ -1,15 +1,16 @@
 :- dynamic(inAlchemist/1).
-:- dynamic(inEffect/0).
+:- dynamic(inEffect/1).
 
 alchemistItem(a1, '🍾', 'Speciality Potion').
 alchemistItem(a2, '🍾', 'Time Potion').
 
 alchemistPrice(a1, 2000).
-alchemistPrice(a2, 3000).
+alchemistPrice(a2, 500).
+energiPrice(a3, 2000).
 
 isPotionAvailable(ID) :-
 	inventory(CurrentInventory),
-	is_member(ID, CurrentInventory, _).
+	is_member(ID, CurrentInventory, _), !.
 
 isAnyPotionInventory :-
 	isPotionAvailable(a1) ; isPotionAvailable(a2).
@@ -36,91 +37,79 @@ addXPSpeciality('Rancher') :-
 	levelUp, !.
 
 specialityEffect :-
-	inEffect,
+	% inEffect(_),
+	inventory(CurrentInventory),
 	isPotionAvailable(a1),
 	player(A,_,_,_,_,_,_,_,_,_,_,_,_),
 	write('Menerapkan Speciality Potion'),nl,
-	addXPSpeciality(A).
+	addXPSpeciality(A), 
+	is_member(a1,CurrentInventory, Idx),
+	select_nth(CurrentInventory,Idx,[C,B]),
+	NewVal is B - 1,
+	set_nth(CurrentInventory, Idx,[C,NewVal],NewInventory),
+	asserta(inventory(NewInventory)),
+	retract(inventory(CurrentInventory)),
+	levelUp.
 
 specialityEffect :-
 	\+ isPotionAvailable(al),
-	write('Anda tidak memiliki Speciality Potion'), nl, !, fail.
+	write('Anda tidak memiliki Speciality Potion'), nl, !.
 
-moveOneSeasonBackward :-
-	inEffect,
+goToMorning :-
+	% inEffect(_),
 	isPotionAvailable(a2),
-	time(Waktu, Hari, 1, 'Spring', 1),
-	retract(Waktu, Hari, 1, 'Spring', 1),
-	asserta(time(Waktu, 1, 1, 'Spring', 1)), !.
-
-moveOneSeasonBackward :-
-	inEffect,
-	isPotionAvailable(a2),
-	time(Waktu, Hari, 1, 'Spring', Year),
-	retract(time(Waktu, Hari, 1, 'Spring', Year)),
-	asserta(time(Waktu, Hari, 4, 'Winter', Year)), !.
-
-moveOneSeasonBackward :-
-	inEffect,
-	isPotionAvailable(a2),
-	time(Waktu, Hari, 2, 'Summer', Year),
-	retract(time(Waktu, Hari, 2, 'Summer', Year)),
-	asserta(time(Waktu, Hari, 1, 'Spring', Year)), !.
-
-moveOneSeasonBackward :-
-	inEffect,
-	isPotionAvailable(a2),
-	time(Waktu, Hari, 3, 'Fall', Year),
-	retract(time(Waktu, Hari, 3, 'Fall', Year)),
-	asserta(time(Waktu, Hari, 2, 'Summer', Year)), !.
-
-moveOneSeasonBackward :-
-	inEffect,
-	isPotionAvailable(a2),
-	time(Waktu, Hari, 4, 'Winter', Year),
-	retract(time(Waktu, Hari, 4, 'Winter', Year)),
-	NewYear is Year - 1,
-	asserta(time(Waktu, Hari, 3, 'Fall', NewYear)), !.
+	time(Waktu, Hari, Musim, NamaMusim, Tahun),
+	retract(time('Siang', Hari, Musim, NamaMusim, Tahun)),
+	retract(kegiatan(_)),
+	asserta(kegiatan(0)),
+	asserta(time(Waktu, Hari, Musim, NamaMusim, Tahun)), !.
 
 timeEffect :-
-	inEffect,
+	inEffect(_),
+	inventory(CurrentInventory),
 	isPotionAvailable(a2),
 	write('Menerapkan Time Potion'), nl,
-	moveOneSeasonBackward, !.
+	goToMorning,
+	is_member(a2,CurrentInventory, Idx),
+	select_nth(CurrentInventory,Idx,[A,B]),
+	NewVal is B - 1,
+	set_nth(CurrentInventory, Idx, [A,NewVal], NewInventory),
+	asserta(inventory(NewInventory)),
+	retract(inventory(CurrentInventory)), !.
 
 timeEffect :-
 	\+ isPotionAvailable(a2),
-	write('Anda tidak memiliki Time Potion'), nl, !, fail.
+	write('Anda tidak memiliki Time Potion'), nl, !.
 
 getPotionAmount(ID, Amount) :-
 	inventory(CurrentInventory),
 	is_member(ID, CurrentInventory, IDX),
 	getItemAmount(CurrentInventory, IDX, Amount), !.
+	
 
-printPotionStatus(ID) :-
-	getPotionAmount(ID, Amount),
-	alchemistItem(ID, Icon, Label),
-	write(Icon),
-	write(' '),
-	write(Label),
-	write(' ('),
-	write(Amount),
-	write('x)'), nl, !.
+printPotionStatus(ID) :- 
+	inventory(CurrentInventory),
+	is_member(ID, CurrentInventory,Idx),
+	select_nth(CurrentInventory,Idx, [_,B]),
+	alchemistItem(ID,Icon,Nama),
+	write(ID), write('. '), write(Icon), write(' '),
+	write(Nama), nl, !.
+	
+printPotionStatus(ID) :- !.
+
+applyingPotion(a1) :- specialityEffect, !.
+applyingPotion(a2) :- timeEffect, !.
+applyingPotion(3) :- !.
+applyingPotion(_) :- write('ID Tidak tepat. Silahkan coba lagi.'), nl, !, fail.
 
 usePotion :- 
 	write('Daftar Potion:'), nl,
-	write('1. '),
 	printPotionStatus(a1),
-	write('2. '),
-	printPotionStatus(a2),
-	write('3. Keluar'), nl,nl,
-	write('Pilihan : '), read(X),
-	asserta(inEffect),
-	(
-		X =:= 1 -> specialityEffect,
-		X =:= 2 -> timeEffect,
-		X =:= 3 -> s,write('Kamu telah berada di luar alchemist')),
-	retract(inEffect),!.
+	printPotionStatus(a2),nl,
+	write('Pilihan (masukan ID item) : '), read(X), nl,
+	asserta(inEffect(1)),
+	applyingPotion(X),
+	retractall(inEffect(_)),!.
 
 usePotion :-
 	write('Saat ini kamu masih belum punya potion.'),
@@ -147,6 +136,25 @@ buyPotion(ID) :-
 	asserta(gold(NewGold)),
 	!.
 
+buyEnergi(ID) :-
+	energiPrice(ID, Price),
+	gold(Gold),
+	Price > Gold,
+	write('Uang kamu tidak cukup untuk membeli energi'),
+	!, fail.
+
+buyEnergi(ID) :-
+	energiPrice(ID, Price),
+	gold(Gold), energi(Energi),
+	write('Berhasil Membeli energi'),nl,
+	write('Energi Anda sekarang bertambah 50 '),
+	NewGold is Gold - Price,
+	NewEnergi is Energi + 50,
+	retract(energi(Energi)),
+	asserta(energi(NewEnergi)),
+	retract(gold(Gold)),
+	asserta(gold(NewGold)),
+	!.
 
 /* alchemist masih belum sampai */
 alchemist :-
@@ -160,12 +168,14 @@ alchemist :-
 	runProgram(_),
 	inAlchemist(_),
 	nl,nl,
-	write('--- Alchemist ---'), nl,
+	write('------------ Alchemist --------------'), nl,
 	write('1. Beli 🍾 Speciality Potion (2000 G)'),nl,
-	write('2. Beli 🍾 Time Potion (3000 G)'),nl,
-	write('3. Keluar'), nl,nl,
+	write('2. Beli 🍾 Time Potion (500 G)'),nl,
+	write('3. Beli 🍾 Energy Potion (2000 G)'),nl,
+	write('4. Keluar'), nl,nl,
 	write('Masukkan angka : '),read(X),
        	(X =:= 1 -> buyPotion(a1);
 				 X =:= 2 -> buyPotion(a2);
-         X =:= 3 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
+				 X =:= 3 -> buyEnergi(a3);
+         X =:= 4 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
 

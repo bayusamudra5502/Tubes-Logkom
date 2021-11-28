@@ -1,5 +1,6 @@
 :- dynamic(inQuest/1).
 :- dynamic(questList/1).
+:- dynamic(onQuest/1).
 /* quest masih belum sampai */
 quest :-
 	runProgram(_),
@@ -18,7 +19,7 @@ quest :-
 
 /* pemain sudah di quest */
 
-questList([[e1,1]]).
+questList([]).
 
 isSufficient(ID, N) :-
 	inventory(CurrentInventory),
@@ -29,7 +30,7 @@ isSufficient(ID, N) :-
 checkQuest :-
 	questList(X),
 	traverseQuest(X), 
-	write('Quest sudah terpenuhi !'),!.
+	write('Quest sudah terpenuhi !'),nl,!.
 
 traverseQuest([]) :- !.
 traverseQuest([[ID,N]|T]) :- 
@@ -50,12 +51,12 @@ traversePrintQuest([[ID,N]|T]) :-
 	traversePrintQuest(T).
 
 traversePrintQuest([[ID,N]|T]) :-
-	ranchProduct(ID,_,UR,NamaR,_,_,_),
+	ranchProduct(ID,_,UR,NamaR,_,_,_,_),
 	write(ID),write('. '), write(NamaR), write(' : '), write(N), write(' X'),nl,
 	traversePrintQuest(T).
 
 printQuest :-
-	write('-------------- \33\[38;5;202mKamu harus mengumpulkan :\33\[0m -------------- '),nl,
+	write('-------------- \33\[38;5;76mKamu harus mengumpulkan :\33\[0m -------------- '),nl,
 	questList(X),
 	traversePrintQuest(X),!.
 	
@@ -84,8 +85,9 @@ traverseValueQuest([[ID,N]|T],Sum) :-
 
 questValue(Sum) :-
 	questList(X),
-	traverseValueQuest(X,Sum), !.
-
+	traverseValueQuest(X,G), 
+	G1 is G * 0.2,
+	Sum is G1 + G,!.
 
 traverseTakeItem([]) :- !.
 traverseTakeItem([[ID,N]|T]) :-
@@ -111,7 +113,7 @@ traverseTakeItem([[ID,N]|T]) :-
 	traverseTakeItem(T).
 	
 traverseTakeItem([[ID,N]|T]) :-
-	ranchProduct(ID,_,UR,NamaR,_,_,_),
+	ranchProduct(ID,_,UR,NamaR,_,_,_,_),
 	inventory(CurrentInventory),
 	is_member(ID,CurrentInventory,Index),
 	select_nth(CurrentInventory,Index,[ID,M]),
@@ -128,19 +130,52 @@ takeItemFromInv :-
 	retract(questList(X)),
 	assertz(questList([])),!.
 
+onQuest(0).
+
 takeQuest :- 
+	onQuest(Y),
+	Y =:= 0,
 	questFarmRandomizer(A,B),
 	questFishRandomizer(C,D),
 	questRanchRandomizer(E,F),
 	questList(List),
 	insert_quest(A,B),
 	insert_quest(C,D),
-	insert_quest(E,F),!.
+	insert_quest(E,F),
+	printQuest,
+	questValue(X), 
+	Y1 is 1,
+	asserta(onQuest(Y1)),
+	retract(onQuest(Y)),
+	write('\33\[38;5;207mReward : '),write(X),write(' Gold\33\[0m'),!.
+
+takeQuest :- 
+	onQuest(Y),
+	Y =:= 1,
+	write('-------------- \33\[38;5;202mKamu sudah mengambil Quest, selesaikan quest yang ada terlebih dahulu!\33\[0m --------------') ,!.	
 
 submitQuest :-
+	questList([]),
+	write('-------------- \33\[38;5;202mKamu sedang tidak mengambil Quest ! \33\[0m --------------'),!.
+	
+submitQuest :-
 	checkQuest,
+	questValue(Sum),
 	takeItemFromInv,
-	questValue(Sum).
+	gold(G1),
+	G2 is G1 + Sum,
+	onQuest(Y),
+	Y1 is 0,
+	write('-------------- \33\[38;5;76mSelamat, Kamu telah menyelesaikan quest ! \33\[0m --------------'),nl,
+	write('-------------- \33\[38;5;220m + '),write(Sum),write(' Gold\33\[0m -------------- '),
+	asserta(onQuest(Y1)),
+	retract(onQuest(Y)),
+	asserta(gold(G2)),
+	retract(gold(G1)),!.
+
+submitQuest :-
+	\+checkQuest,
+	write('-------------- \33\[38;5;202mSyarat quest belum terpenuhi ! \33\[0m --------------'),!.
 
 /* TODO : get total gold from quest */
 

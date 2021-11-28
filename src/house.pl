@@ -163,7 +163,8 @@ diaryWriter :-
         write('Petunjuk : Apitlah teks diarymu dengan petik tunggal (\') dan diakhiri titik'),
         nl,nl,
         read(Message),
-        writeDiary(Day, Season, Year, Message), !, fail.
+        writeDiary(Day, Season, Year, Message), 
+        writeCurrentSnapshot, !, fail.
 
 allDiary(Result) :- findall([Day, Season, Year], diary(Day, Season, Year, _), Result).
 
@@ -180,8 +181,7 @@ writeDiaries([[Day, Season, Year]|T], Iterator) :-
         write(Year),
         nl,
         NIterator is Iterator + 1,
-        writeDiaries(T, NIterator),
-        writeCurrentSnapshot, !.
+        writeDiaries(T, NIterator), !.
 
 getDiary(Idx, Day, Season, Year) :- 
         allDiary(DiaryData),

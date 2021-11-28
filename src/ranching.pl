@@ -1,4 +1,4 @@
-wr/* Ranching */
+/* Ranching */
 :- dynamic(inRanch/1).
 :- dynamic(ranchCountDays/1).
 :- dynamic(ranchAll/1).
@@ -118,98 +118,108 @@ takeHewan(r6) :-
 	write('Kamu tidak memiliki bucket, silahkan beli dulu!'), nl, !.
 
 %%% Masih belum bisa iterasi buat cek yg mana yg bisa diambil
+
+
 takeHewan(ID) :-
+	player('Rancher',PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9,R,PL10,E,PL11),
 	inventory(CurrentInventory),
 	ranchCountDays(Ranch),
 	/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
-	ranchProduct(IDP,ID,_,Nama,_,EXP,_,Countz),
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
-	ranchItem(ID, IDI, _, _, _, _, IExp, _),
+	ranchItem(ID, IDI, RI1, RI2, RI3, RI4, IExp, RI5),
 	is_member(ID, Ranch, _),
-	is_member(ID, CurrentInventory, _),
-	checkRanch(Ranch, 0, ID, NewRanch),
+	is_member(IDI, CurrentInventory, _),
+	checkRanch(Ranch, ID, NewRanch),
+	ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,Countz),
+	retract(ranchCountDays(Ranch)),
 	asserta(ranchCountDays(NewRanch)),
-	retract(ranchcountDays(Ranch)),
-	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),
-	insert_item([IDP, Countz]),
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]), nl,
+	insert_item(IDP,Countz),
 	kegiatan(K), K1 is K+1,
-	energi(E), E1 is E-1,
-	player('Rancher',_,_,_,_,_,_,_,_,R,_,E,_),
+	energi(En), En1 is En-1,
 	R1 is R+(EXP+10)*Countz,
-	E1 is E+((EXP+10)/2)*Countz,
+	E1 is E+((EXP+10) div 2)*Countz,
+	RPlus is R1 - R,
+	EPlus is E1 - E,
 	NIExp is IExp + 10,
-	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [R1-R, E1-E]),
-	asserta(player(_, _, _, _, _, _, _, _, _, R1, _, E1, _)),
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	asserta(player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9, R1, PL10, E1, PL11)),
 	asserta(kegitan(K1)),
-	asserta(energi(E1)),
+	asserta(energi(En1)),
 	/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
-	asserta(ranchProduct(IDP,ID,_,Nama,_,_,_,0)),
+	asserta(ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,0)),
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
-	asserta(ranchItem(IDI, ID, _, _, _, _, NIExp, _)),
+	asserta(ranchItem(ID, IDI, RI1, RI2, RI3, RI4, NIExp, RI5)),
 	levelUp,
 	levelUpItem(ID),
 	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
 	retract(kegiatan(K)),
-	retract(energi(E)),
-	asserta(ranchItem(IDI, ID, _, _, _, _, IExp, _)),
-	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_)), !.
+	retract(energi(En)),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,R,_,E,_)), !.
 
 takeHewan(ID) :-
+	player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9,R,PL10,E,PL11),
 	inventory(CurrentInventory),
 	ranchCountDays(Ranch),
-	ranchProduct(IDP,ID,_,Nama,_,EXP,_,Countz),
-	ranchItem(ID, IDI, _, _, _, _, IExp, _),
+	ranchItem(ID, IDI, RI1, RI2, RI3, RI4, IExp, RI5),
 	is_member(ID, Ranch, _),
-	is_member(IDP, CurrentInventory, _),
-	checkRanch(Ranch, 0, ID, NewRanch),
+	is_member(IDI, CurrentInventory, _),
+	checkRanch(Ranch, ID, NewRanch),
+	ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,Countz),
 	asserta(ranchCountDays(NewRanch)),
-	retract(ranchcountDays(Ranch)),
-	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),
-	insert_item([IDP, Countz]),
+	retract(ranchCountDays(Ranch)),
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),nl,
+	insert_item(IDP, Countz),
 	kegiatan(K), K1 is K+1,
-	energi(E), E1 is E-1,
-	player(_,_,_,_,_,_,_,_,_,R,_,E,_),
+	energi(En), En1 is En-1,
 	R1 is R+(EXP)*Countz,
-	E1 is E+((EXP)/2)*Countz,
-	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [R1-R, E1-E]),
-	asserta(player(_, _, _, _, _, _, _, _, _, R1, _, E1, _)),
+	E1 is E+((EXP) div 2)*Countz,
+	RPlus is R1 - R,
+	EPlus is E1 - E,
+	NIExp is IExp + 10,
+	format('Kamu mendapatkan ~w Exp untuk Ranching dan ~w Exp!', [RPlus, EPlus]),
+	asserta(player(PL1,PL2,PL3,PL4,PL5,PL6,PL7,PL8,PL9, R1, PL10, E1, PL11)),
 	asserta(kegitan(K1)),
-	asserta(energi(E1)),
+	asserta(energi(En1)),
 	/* ID Item, AnimalCode, Icon, Nama, Harga, EXP gained, waktu,jumlah sekarang */
-	asserta(ranchProduct(IDP,ID,_,Nama,_,_,_,0)),
+	asserta(ranchProduct(IDP,ID,RP1,Nama,RP2,EXP,RP3,0)),
+	asserta(ranchItem(ID, IDI, RI1, RI2, RI3, RI4, NIExp, RI5)),
 	levelUp,
 	levelUpItem(ID),
 	retract(ranchProduct(IDP,ID,_,Nama,_,_,_,Countz)),
 	retract(kegiatan(K)),
-	retract(energi(E)),
-	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_)), !.
+	retract(energi(En)),
+	retract(player(_,_,_,_,_,_,_,_,_,_,_,_,R,_,E,_)), !.
 
-% addItems(ID, Amount, Day)
-addItems(r4, Amount, C) :-
+% addItems(ID, Amount, Day, Hari ini, Day origin, set day baru)
+addItems(r4, Amount, C, Today, DayAwal, NewDay) :-
 	C > 0,
+	NewDay is Today - DayAwal,
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
 	ranchItem(r4,r7, _,_,_,L,_,_),
 	ranchProduct(R1,r4,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
 	asserta(ranchProduct(R1,r4,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r4,R2,R3,R4,R5,R6,A)).
-addItems(r5, Amount, C) :-
+addItems(r5, Amount, C, Today, DayAwal, NewDay) :-
 	C > 0,
-	New is Today,
+	NewDay is Today - DayAwal,
 	ranchItem(r5,r8, _,_,_,L,_,_),
 	ranchProduct(R1,r5,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
 	asserta(ranchProduct(R1,r5,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r5,R2,R3,R4,R5,R6,A)).
-addItems(r6, Amount, C) :-
+addItems(r6, Amount, C, Today, DayAwal, NewDay) :-
 	C > 0,
-	New is Today,
+	NewDay is Today - DayAwal,
 	ranchItem(r6,r9, _, _, _, L, _, _),
 	ranchProduct(R1,r6,R2,R3,R4,R5,R6,A),
 	NewA is (Amount*(3+L)+A),
 	asserta(ranchProduct(R1,r6,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r6,R2,R3,R4,R5,R6,A)).
 addItems(_, Amount, C) :-
+	C = 0,
+	write('Produk belum siap! Kembali lain kali :D'),
 	!.
 
 % checkRanch(List, Kode, Result)
@@ -220,7 +230,6 @@ checkRanch([[ID, Amount, Days]|T], ID, ListBaru) :-
 	ranchProduct(_,ID,_,_,_,_,CD,_),
 	Today is ((S-1)*30+D+120*(Y-1)),
 	C is (Today-Days) div CD,
-	write(C),
 	addItems(ID, Amount, C, Today, Days, NewDays),
 	NewHead = [ID, Amount, NewDays],
 	checkRanch(T, ID, ListLast),
