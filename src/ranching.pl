@@ -131,7 +131,7 @@ takeHewan(r6) :-
 %%% Masih belum bisa iterasi buat cek yg mana yg bisa diambil
 takeHewan(ID) :-
 	ranchCountDays(Ranch),
-	ranchProduct(IDP,ID,_,Nama,_,_,Countz)
+	ranchProduct(IDP,ID,_,Nama,EXP,_,Countz)
 	isThere(ID, Ranch, _),
 	is_member(ID, CurrentInventory, _),
 	checkRanch(Ranch, 0, ID),
@@ -139,7 +139,6 @@ takeHewan(ID) :-
 	insert_item([IDP, Countz])
 	kegiatan(K), K1 is K+1,
 	energi(E), E1 is E-1,
-	ranchProduct(_, ID, _, _, _, EXP, _, _),
 	player("Rancher",_,_,_,_,_,_,_,_,R,_,E,_),
 	R1 is R+(EXP+10)*Countz,
 	E1 is E+((EXP+10)/2)*Countz,
@@ -154,17 +153,16 @@ takeHewan(ID) :-
 	retract(energi(E)),
 	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_).
 
-takeHewan(r4) :-
+takeHewan(ID) :-
 	ranchCountDays(Ranch),
-	ranchProduct(_,r4,_,_,_,_,Countz)
-	isThere(r4, Ranch, _),
-	is_member(r7, CurrentInventory, _),
-	checkRanch(Ranch, 0, r4),
-	format('Kamu berhasil mendapatkan ~w Telur!', [Countz]),
+	ranchProduct(IDP,ID,_,Nama,EXP,_,Countz)
+	isThere(ID, Ranch, _),
+	is_member(IDP, CurrentInventory, _),
+	checkRanch(Ranch, 0, ID),
+	format('Kamu berhasil mendapatkan ~w ~w!', [Countz, Nama]),
 	insert_item([r1, Countz])
 	kegiatan(K), K1 is K+1,
 	energi(E), E1 is E-1,
-	ranchProduct(_, r4, _, _, _, EXP, _, _),
 	player(_,_,_,_,_,_,_,_,_,R,_,E,_),
 	R1 is R+(EXP)*Countz,
 	E1 is E+((EXP)/2)*Countz,
