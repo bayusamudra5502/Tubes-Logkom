@@ -62,12 +62,23 @@ printQuest :-
 traverseValueQuest([],0) :- !.	
 traverseValueQuest([[ID,N]|T],Sum) :-
 	crops(ID,_,U,Nama,_,_),
-	\+fishItem(ID,UF,NamaF),
-	\+ranchProduct(ID,_,UR,NamaR,_,_,_),
 	getHarvestExpGold(ID,EXP,GOLD),
 	GOLDC is GOLD * N,
 	traverseValueQuest(T,Sum1),
-	Sum1 is Sum, !.
+	Sum is Sum1 + GOLDC, !.
+
+traverseValueQuest([[ID,N]|T],Sum) :-
+	fishItem(ID,UF,NamaF),
+	getFishSellPrice(ID,GOLD),
+	GOLDC is GOLD * N,
+	traverseValueQuest(T,Sum1),
+	Sum is Sum1 + GOLDC, !.
+
+traverseValueQuest([[ID,N]|T],Sum) :-
+	ranchProduct(ID,_,UR,NamaR,GOLD,_,_,_),
+	GOLDC is GOLD * N,
+	traverseValueQuest(T,Sum1),
+	Sum is Sum1 + GOLDC, !.
 
 /* TODO : traverse untuk fish dan ranch, masih butuh getter untuk tiap produknya */
 

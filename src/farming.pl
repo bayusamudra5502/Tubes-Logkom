@@ -2,6 +2,7 @@
 
 :- dynamic(crops/5).
 :- dynamic(planted_list/1).
+:- dynamic(tool/7).
 
 /* Base Farming item for Non-Farmer Speciality*/
 
@@ -121,27 +122,50 @@ plant :- runProgram(_),
     print_Seed,nl,
     write('Apa yang ingin kamu tanam ? ( masukan id )'),nl,
     read(Input),
-    is_member(Input,CurrentInventory,Index),
-    seed(Input,U,Nama,W,H,M),
-    select_nth(CurrentInventory,Index,[ID,N]),
-    N1 is N - 1,
-    set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
-    write('-------------- \33\[38;5;76mKamu telah menanam : \33\[0m'),write(Nama),write(' --------------'),nl,
-    w,
-    kegiatan(K), K1 is K + 1,
-    energi(E), E1 is E-1, 
-    planted_list(PL),
-    insert_last([X,Y],PL,NewPL),
-    retract(planted_list(PL)),
-    retract(kegiatan(K)),
-    retract(soilTile(X,Y)),
-    retract(inventory(CurrentInventory)),
-    retract(energi(E)),
-    asserta(planted_list(NewPL)),
-    asserta(kegiatan(K1)),
-    asserta(energi(E1)),
-    assertz(inventory(NewInventory)),
-    assertz(seedTile(X,Y,Input,W)),!.
+    (
+        (
+            is_member(Input,CurrentInventory,Index),
+            seed(Input,U,Nama,W,H,M),
+            time(_,_,Season,Musim,_),
+            (
+                (
+                    Season =:= M,
+                    select_nth(CurrentInventory,Index,[ID,N]),
+                    N1 is N - 1,
+                    set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
+                    write('-------------- \33\[38;5;76mKamu telah menanam : \33\[0m'),write(Nama),write(' --------------'),nl,
+                    w,
+                    kegiatan(K), K1 is K + 1,
+                    energi(E), E1 is E-1, 
+                    planted_list(PL),
+                    insert_last([X,Y],PL,NewPL),
+                    retract(planted_list(PL)),
+                    retract(kegiatan(K)),
+                    retract(soilTile(X,Y)),
+                    retract(inventory(CurrentInventory)),
+                    retract(energi(E)),
+                    asserta(planted_list(NewPL)),
+                    asserta(kegiatan(K1)),
+                    asserta(energi(E1)),
+                    assertz(inventory(NewInventory)),
+                    assertz(seedTile(X,Y,Input,W))
+                );
+                (
+                    Season =\= M,
+                    write('-------------- \33\[38;5;202mKamu tidak bisa menanam '),write(Nama),write(' di Musim '),write(Musim),write(' \33\[0m--------------'),nl
+                )
+            )
+        );
+        (
+            \+is_member(Input,CurrentInventory,Index),
+            seed(Input,U,Nama,W,H,M),
+            \+is_in_seed(Input,CurrentInventory,_),
+            write('-------------- \33\[38;5;202mBibit tersebut tidak ada di inventory  : \33\[0m'),write(Nama),write(' --------------'),nl
+        )
+    ),
+    !.
+    
+
 
 dig :- runProgram(_),
     inventory(CurrentInventory),

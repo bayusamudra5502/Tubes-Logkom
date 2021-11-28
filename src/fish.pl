@@ -418,4 +418,6 @@ fish :- runProgram(_),
         printMessage(FishID, Cnt),
         afterFishing,
         !.
-    
+
+deallocateFish :-
+    retractall(rodLevel(_,_)), !.

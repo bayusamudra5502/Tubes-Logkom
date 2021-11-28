@@ -10,21 +10,21 @@
 - [x] Move (W,A,S,D)
 
 - [ ] Ranch : Yg dapet kemaren
-- [ ] Farm : Yg dapet kemaren
-- [ ] Fish : yg dapet kemaren
+- [x] Farm : Yg dapet kemaren
+- [x] Fish : yg dapet kemaren
 
 - [x] Market
 - [ ] Alchemist
 - [x] House
 
-- [ ] cekInventory
+- [x] cekInventory
 - [ ] Throw Inventory
 
 - [ ] Equipment
 - [x] Quest
-- [ ] Time
+- [x] Time
 - [ ] Add Test
-- [ ] levelUp -> setiap dapet exp dari action
+- [x] levelUp -> setiap dapet exp dari action
 - [ ] checkQuest. -> simpen di setiap action yang mendapat product
 - [ ] updata energi dan ++kegiatan
 - [ ] ganti Time
@@ -36,6 +36,7 @@
 - [x] Quest Ranch
 - [x] Quest Farm
 - [x] Quest Fish
+- [x] Save game
 
 ## State Game
 
