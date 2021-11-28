@@ -185,9 +185,8 @@ takeHewan(ID) :-
 	retract(player(_,_,_,_,_,_,_,_,_,_,_,_R,_,E,_)), !.
 
 % addItems(ID, Amount, Day)
-addItems(r4, Amount, C, Today, Days, New) :-
+addItems(r4, Amount, C) :-
 	C > 0,
-	New is Today,
 	/*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
 	ranchItem(r4,r7, _,_,_,L,_,_),
 	ranchProduct(R1,r4,R2,R3,R4,R5,R6,A),
@@ -210,9 +209,7 @@ addItems(r6, Amount, C) :-
 	NewA is (Amount*(3+L)+A),
 	asserta(ranchProduct(R1,r6,R2,R3,R4,R5,R6,NewA)),
 	retract(ranchProduct(R1,r6,R2,R3,R4,R5,R6,A)).
-addItems(_, Amount, C, _, Days, New) :-
-	C = 0,
-	New is Days,
+addItems(_, Amount, C) :-
 	!.
 
 % checkRanch(List, Kode, Result)
