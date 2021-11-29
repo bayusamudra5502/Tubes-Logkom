@@ -22,7 +22,11 @@ market :-
 	write('Masukkan angka : '),read(X),
         (X =:= 1 -> buy;
 		X =:= 2 -> sell;
-        X =:= 3 -> s,nl,write('Kamu telah berada di luar market')),!.
+        X =:= 3 -> 
+		retract(inMarket(_)), s,
+		nl,
+		write('Kamu telah berada di luar market')
+		),!.
 
 buyItem(1) :- 
 	market.
@@ -77,11 +81,11 @@ buy :-
     	write('# fu3. 🎣 Gold Fishing Rod (2500 G)           #'),nl,
     	write('# fu4. 🎣 Diamond Fishing Rod (4000 G)        #'),nl,
     	write('# r7. 📦 Crate (300 G)                        #'),nl,
-    	write('# r8. ✂️ Sheer (600 G)                        #'),nl,
-    	write('# r9. 🪣 Bucket (800 G)                       #'),nl,
-    	write('# r4. 🐔 Chicken (500 G)                      #'),nl,
-    	write('# r5. 🐑 Sheep (1000 G)                       #'),nl,
-    	write('# r6. 🐄 Cow (1500 G)                         #'),nl,
+    	write('# r8. ✂️ Sheer (350 G)                        #'),nl,
+    	write('# r9. 🪣 Bucket (400 G)                       #'),nl,
+    	write('# r4. 🐔 Chicken (50 G)                      #'),nl,
+    	write('# r5. 🐑 Sheep (500 G)                       #'),nl,
+    	write('# r6. 🐄 Cow (750 G)                         #'),nl,
     	write('# 1. Back                                      #'),nl,
 		write('#                                              #'),nl,
 		write('# Apa yang ingin Kamu beli ?                   #'),nl,
@@ -121,12 +125,12 @@ sellLagi(Kode, Amount) :-
 	SubTotal is Harga*Qty,
 	Baru is UangSekarang + SubTotal,
 	NewQty is Qty - Amount,
-	winState,
-	loseState,
 	retractall(gold(_)),
 	asserta(gold(Baru)),
 	format('Kamu berhasil menjual ~w ~w seharga ~w Gold', [Amount, Nama, SubTotal]), nl,
 	set_nth(CurrentInventory, Idx, [Kode,NewQty], NewInventory),
+	winState,
+	loseState,
 	assertz(inventory(NewInventory)),
 	retract(inventory(CurrentInventory)), !.
 
@@ -142,10 +146,10 @@ sellLagi(Kode, Amount) :-
 	NewQty is Qty - Amount,
 	retractall(gold(_)),
 	asserta(gold(Baru)),
-	winState,
-	loseState,
 	format('Kamu berhasil menjual ~w ~w seharga ~w Gold', [Amount, Nama, SubTotal]), nl,
 	set_nth(CurrentInventory, Idx, [Kode,NewQty], NewInventory),
+	winState,
+	loseState,
 	assertz(inventory(NewInventory)),
 	retract(inventory(CurrentInventory)), !.
 

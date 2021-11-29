@@ -14,15 +14,15 @@ ranchProduct(r3, r6, '🥛', 'Susu', 200, 40, 5, 0).
 
 /*Animals*/
 /*ID Animals, Icon, Nama, harga, waktu untuk harvest*/
-ranchAnimals(r4, '🐔', 'Ayam', 500).
-ranchAnimals(r5, '🐑', 'Domba', 1000).
-ranchAnimals(r6, '🐄', 'Sapi', 1500).
+ranchAnimals(r4, '🐔', 'Ayam', 50).
+ranchAnimals(r5, '🐑', 'Domba', 500).
+ranchAnimals(r6, '🐄', 'Sapi', 750).
 
 /* Util */
 /*ID Hewan, ID Item, icon, nama, price, level, exp, base exp*/
 ranchItem(r4, r7, '📦', 'Crate', 300, 1, 5, 100).
-ranchItem(r5, r8, '✂️', 'Sheer', 600, 1, 5, 150).
-ranchItem(r6, r9, '🪣', 'Bucket', 800, 1, 5, 200).
+ranchItem(r5, r8, '✂️', 'Sheer', 350, 1, 5, 150).
+ranchItem(r6, r9, '🪣', 'Bucket', 400, 1, 5, 200).
 
 /* ranch masih belum sampai */
 ranch :-
@@ -53,7 +53,11 @@ ranch :-
 	write('Masukkan angka : '),read(X),
         (X =:= 1 -> moved;
 		X =:= 2 -> take;
-        X =:= 3 -> s,nl,write('Kamu telah berada di luar ranch')),!.
+        X =:= 3 -> 
+		retract(inRanch(_)),
+		s,
+		nl,
+		write('Kamu telah berada di luar ranch')),!.
 
 % ranchCountDays([ID, Amount, Days])
 ranchCountDays([]).

@@ -1,5 +1,14 @@
 /* Final State -> Bergerak ke arah utara */
 w :-
+    (inAlchemist(_);
+    inRanch(_);
+    inQuest(_);
+    inHouse(_);
+    inMarket(_)),
+    write('Kamu saat ini sedang ada di sebuah bangunan'),nl,
+    write('Silahkan akses commandnya dan keluar dari bangunan tersebut'), !.
+
+w :-
     runProgram(_),
     posisi(A,B),
     isWater(A,B-1),
@@ -96,6 +105,15 @@ w :-
     !.
 
 /* Final State -> Bergerak ke arah selatan */
+s :-
+    (inAlchemist(_);
+    inRanch(_);
+    inQuest(_);
+    inHouse(_);
+    inMarket(_)),
+    write('Kamu saat ini sedang ada di sebuah bangunan'),nl,
+    write('Silahkan akses commandnya dan keluar dari bangunan'), !.
+
 s :-
     runProgram(_),
     posisi(A,B),
@@ -194,6 +212,15 @@ s :-
 
 /* Final State -> Bergerak ke arah timur */
 d :-
+    (inAlchemist(_);
+    inRanch(_);
+    inQuest(_);
+    inHouse(_);
+    inMarket(_)),
+    write('Kamu saat ini sedang ada di sebuah bangunan'),nl,
+    write('Silahkan akses commandnya dan keluar dari bangunan'), !.
+
+d :-
     runProgram(_),
     posisi(A,B),
     isWater(A+1,B),
@@ -291,6 +318,15 @@ d :-
 
 
 /* Final State -> Bergerak ke arah barat */
+a :-
+    (inAlchemist(_);
+    inRanch(_);
+    inQuest(_);
+    inHouse(_);
+    inMarket(_)),
+    write('Kamu saat ini sedang ada di sebuah bangunan'),nl,
+    write('Silahkan akses commandnya dan keluar dari bangunan'), !.
+
 a :-
     runProgram(_),
     posisi(A,B),

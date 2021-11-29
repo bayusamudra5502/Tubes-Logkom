@@ -14,7 +14,6 @@ house :-
 house :-
 	runProgram(_),
 	inHouse(_),
-        repeat,
 	nl,
 	write('##################  House  ##################'),nl,
     	write('# 1. Sleep 🌙                               #'),nl,
@@ -24,8 +23,9 @@ house :-
 	write('# Apa yang ingin Kamu lakukan?              #'),nl,
 	write('#                                           #'),nl,
 	write('#############################################'),nl,nl,
+        repeat,
 	write('Masukkan angka : '),read(X),nl,
-       	(X =:= 1 -> tidur 
+       	(X =:= 1 -> tidur
         ;X =:= 2 -> diaryWriter;
         X =:= 3 -> diaryReader;
         X =:= 4 -> s,
@@ -54,54 +54,54 @@ dayStat(Day, Season, Year) :-
 
 tidur :- \+ runProgram(_), !, fail.
 tidur :- posisi(X,Y), \+ isHouse(X, Y), !, fail.
-tidur :- time('Malam', 30, 3, _, T),
+tidur :- time('Malam', 30, 4, _, T),
          inHouse(_),
          write('🌙 Selamat Malam...'), nl, sleep(1),
          periTidur,
          retract(time(_,_,_,_,_)),
          NewT is T + 1,
-         asserta(time('Siang', 1, 0, 'Spring', NewT)),
+         asserta(time('Siang', 1, 1, 'Spring', NewT)),
          sleepMessage, nl,
-         dayStat(1, 'Spring', NewT), updater, !.
+         dayStat(1, 'Spring', NewT), updaterTidur, !.
+
+tidur :- time('Malam', 30, 3, _, T), 
+         inHouse(_),
+         write('🌙 Selamat Malam...'), nl, sleep(1),
+         periTidur,
+         retract(time(_,_,_,_,_)),
+         asserta(time('Siang', 1, 4, 'Winter', T)),
+         sleepMessage, nl,
+         dayStat(1, 'Winter', T), updaterTidur, !.
 
 tidur :- time('Malam', 30, 2, _, T), 
          inHouse(_),
-         write('🌙 Selamat Malam...'), sleep(1),
+         write('🌙 Selamat Malam...'), nl, sleep(1),
          periTidur,
          retract(time(_,_,_,_,_)),
-         asserta(time('Siang', 1, 3, 'Winter', T)),
+         asserta(time('Siang', 1, 3, 'Fall', T)),
          sleepMessage, nl,
-         dayStat(1, 'Winter', T), updater, !.
+         dayStat(1, 'Fall', T), updaterTidur, !.
 
 tidur :- time('Malam', 30, 1, _, T), 
          inHouse(_),
-         write('🌙 Selamat Malam...'), sleep(1),
-         periTidur,
-         retract(time(_,_,_,_,_)),
-         asserta(time('Siang', 1, 2, 'Fall', T)),
-         sleepMessage, nl,
-         dayStat(1, 'Fall', T), updater, !.
-
-tidur :- time('Malam', 30, 0, _, T), 
-         inHouse(_),
-         write('🌙 Selamat Malam...'), sleep(1),
+         write('🌙 Selamat Malam...'), nl, sleep(1),
          periTidur,
          retract(time(_,_,_,_,_)),
          asserta(time('Siang', 1, 2, 'Summer', T)),
          sleepMessage, nl,
-         dayStat(1, 'Summer', T), updater,!.
+         dayStat(1, 'Summer', T), updaterTidur,!.
 
 tidur :- time('Malam', D, S, SL, T),
          inHouse(_),
-         write('🌙 Selamat Malam...'), sleep(1),
+         write('🌙 Selamat Malam...'), nl, sleep(1),
          periTidur,
          retract(time(_,_,_,_,_)),
          NewDay is D + 1,
          asserta(time('Siang', NewDay, S, SL, T)),
          sleepMessage, nl,
-         dayStat(NewDay, SL, T), updater, !.
+         dayStat(NewDay, SL, T), updaterTidur, !.
 
-tidur :- write('Hari masih siang. Kamu belum bisa tidur'), !, fail.
+tidur :- write('Hari masih siang. Kamu belum bisa tidur'), nl, !.
 
 /* Diary Utility */
 writeDiary(Day, Season, Year, Message) :-
@@ -161,7 +161,7 @@ diaryWriter :-
         nl,nl,
         read(Message),
         writeDiary(Day, Season, Year, Message), 
-        writeCurrentSnapshot, !, fail.
+        writeCurrentSnapshot, !.
 
 allDiary(Result) :- findall([Day, Season, Year], diary(Day, Season, Year, _), Result).
 
@@ -204,4 +204,4 @@ diaryReader :-
         read(Idx),
         nl, nl,
         getDiary(Idx, Day, Season, Year),
-        printDiaryData(Day, Season, Year), !, fail.
+        printDiaryData(Day, Season, Year), !.

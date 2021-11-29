@@ -203,13 +203,13 @@ printMessage(X, Cnt) :-
       write('Nama Item : '), write(Label), write(' '),
       write(Name), nl, 
       write('Jumlah : '), write(Cnt), nl, nl,
-      write('🎉 Selamatt...').
+      write('🎉 Selamatt...'),nl,nl.
 
 /* State Game Driver */
 % Driver setelah melakukan memancing
 afterFishing :-
-    updateStat,
-    levelUp.
+    levelUp,
+    updateStat.
   
 % Driver Pengubah XP Equipment
 addRodExp(Item, Exp) :-
@@ -398,9 +398,9 @@ fish :- time(_,_,_,'Winter',_),
 
 fish :- runProgram(_),
         fishable,
-        write('-oooo- Daerah Pemancingan -oooo-'), nl,
+        write('\33\[38;5;85m-oooo-\33\[0m Daerah Pemancingan \33\[38;5;85m-oooo-\33\[0m'), nl,
         selectRod(Rod),
-        write('[Suara Alat Pancing]'), nl,
+        nl,write('[🎣 Suara Alat Pancing]'), nl,
         write('Tunggu sebentar'),
         write('........'),
         delayMancing(Rod, Time),
@@ -412,9 +412,9 @@ fish :- runProgram(_),
         additionalExp(Rod, ItemExp),
         NettoExp is AddExp + ItemExp,
         addFishingXP(NettoExp),
-        addFishInventory(FishID, Cnt),
-        addRodExp(Rod, NettoExp),
         printMessage(FishID, Cnt),
+        addRodExp(Rod, NettoExp),
+        addFishInventory(FishID, Cnt),
         afterFishing,
         !.
 

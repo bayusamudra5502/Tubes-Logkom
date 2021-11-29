@@ -14,8 +14,12 @@ quest :-
 	write('# Selamat datang di Quest #'),nl,
 	write('# 1. Ambil Quest #'),nl,
 	write('# 2. Sumbit Quest #'),nl,
+	write('# 3. Exit #'),nl,
 	write('# Apa yang ingin Kamu lakukan? #'),nl,
-	read(X),(X =:= 1 -> takeQuest; X =:= 2 -> submitQuest),!.
+	read(X),(X =:= 1 -> takeQuest; X =:= 2 -> submitQuest; X=:=3 -> nl,
+		write('Kamu telah berada di luar quest'),nl, 
+		retract(inQuest(_)),s
+		),!.
 
 /* pemain sudah di quest */
 
@@ -86,7 +90,7 @@ traverseValueQuest([[ID,N]|T],Sum) :-
 questValue(Sum) :-
 	questList(X),
 	traverseValueQuest(X,G), 
-	G1 is G * 0.2,
+	G1 is G div 5,
 	Sum is G1 + G,!.
 
 traverseTakeItem([]) :- !.
@@ -168,11 +172,11 @@ submitQuest :-
 	Y1 is 0,
 	write('-------------- \33\[38;5;76mSelamat, Kamu telah menyelesaikan quest ! \33\[0m --------------'),nl,
 	write('-------------- \33\[38;5;220m + '),write(Sum),write(' Gold\33\[0m -------------- '),
-	winState,
-	loseState,
 	asserta(onQuest(Y1)),
 	retract(onQuest(Y)),
 	asserta(gold(G2)),
+	winState,
+	loseState,
 	retract(gold(G1)),!.
 
 submitQuest :-

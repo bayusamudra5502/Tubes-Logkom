@@ -215,8 +215,9 @@ gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,
 
 gantiTime :- !.
 
-updater :- updateSeed, retract(kegiatan(_)), asserta(kegiatan(0)), retract(energi(E)), asserta(energi(50)).
-updateStat :- gantiTime, updateKegiatan, updateEnergi.
+updater :- updateSeed, winState, loseState.
+updaterTidur :- update, retract(kegiatan(_)), asserta(kegiatan(0)), retract(energi(E)), asserta(energi(50)).
+updateStat :- gantiTime, updateKegiatan, updateEnergi, winState, loseState.
 
 updateEnergi :- energi(E),
         E =:= 1,
@@ -232,13 +233,14 @@ mati :- story1,quitGame,!.
 
 updateKegiatan :- kegiatan(Jumlah), retract(kegiatan(_)), New is Jumlah + 1, asserta(kegiatan(New)),!.
 
-winState :- !.
 winState :- gold(Gold), Gold >= 20000, time(A,B,C,D,E), E is 1, 
                 write('------------------- \33\[38;5;76m Congratulation 🎉 \33\[0m--------------'),nl,
                 write('Kamu telah berhasil mengumpulkan 20000 Gold dalam waktu 1 tahun'),nl,
-                write('------------------- \33\[38;5;76m 🎉 You Win 🎉 \33\[0m -----------------'),!.
-loseState :- !.
+                write('------------------- \33\[38;5;76m 🎉 You Win 🎉 \33\[0m -----------------'),nl, quitGame,!.
+winState :- !.
+
 loseState :- gold(Gold), Gold =< 20000, time(A,B,C,D,E), E is 2, 
                 write('----------------------- \33\[38;5;76m OOOOOWWW \33\[0m--------------------------'),nl,
                 write('Kamu tidak berhasil mengumpulkan 20000 Gold dalam waktu 1 tahun'),nl,
-                write('----------------------- \33\[38;5m  You Lose \33\[0m--------------------'),!.
+                write('----------------------- \33\[38;5m  You Lose \33\[0m--------------------'),nl,quitGame,!.
+loseState :- !.

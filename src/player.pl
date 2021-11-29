@@ -318,6 +318,9 @@ inv_len([_|T],L) :- inv_len(T,LT), L is LT + 1.
 
 % menambah item yang belum ada ke inventory
 insert_item(ID, Amount) :- inventory(CurrentInventory), 
+    inv_len(CurrentInventory,L),
+    L1 is L + Amount,
+    L1 =< 100,
     \+is_member(ID,CurrentInventory,_),
     insert_last([ID,Amount],CurrentInventory,NewInventory),
     assertz(inventory(NewInventory)),
@@ -327,10 +330,29 @@ insert_item(ID, Amount) :- inventory(CurrentInventory),
 insert_item(ID, Amount) :- inventory(CurrentInventory), 
     is_member(ID,CurrentInventory,Index),
     select_nth(CurrentInventory, Index, [X,N]),
+    inv_len(CurrentInventory,L),
     N1 is N + Amount,
+    L1 is L + Amount,
+    L1 =< 100,
     set_nth(CurrentInventory, Index, [ID,N1], NewInventory),
     assertz(inventory(NewInventory)),
     retract(inventory(CurrentInventory)), !.
+    
+insert_item(ID, Amount) :- inventory(CurrentInventory), 
+    inv_len(CurrentInventory,L),
+    L1 is L + Amount,
+    L1 > 100,
+    write('Inventory tidak cukup, proses dibatalkan'), !,fail.
+
+% menambah item yang sudah ada ke inventory
+insert_item(ID, Amount) :- inventory(CurrentInventory), 
+    is_member(ID,CurrentInventory,Index),
+    select_nth(CurrentInventory, Index, [X,N]),
+    inv_len(CurrentInventory,L),
+    N1 is N + Amount,
+    L1 is L + Amount,
+    L1 > 100,
+    write('Inventory tidak cukup, proses dibatalkan'), !,fail.
 
 % mengurangi item yang sudah ada di inventory
 delete_item(ID, Amount) :-
@@ -367,3 +389,37 @@ print_inventory([[ID, Amount]|T]) :-
     write(Harga),write(' Gold / item)'), nl,
     print_inventory(T).
 
+throwItem :-
+    inventory(CurrentInventory),
+    print_inventory(CurrentInventory),
+    write('Apa yang ingin anda buang (masukan ID) : '),nl,
+    read(ID), 
+    is_member(ID,CurrentInventory, Index),
+    select_nth(CurrentInventory,Index,[ID,N]),
+    item(ID,_,Nama,_,_),
+    write('Kamu punya '),write(N), write(' Buah '), write(Nama),nl,
+    write('Berapa yang ingin kamu buang : '), read(Amount),nl,
+    Amount =< N,
+    N1 is N - Amount,
+    set_nth(CurrentInventory,Index,[ID,N1],NewInventory),
+    assertz(inventory(NewInventory)),
+    retract(inventory(CurrentInventory)),
+    write('Kamu membuang '),write(Amount), write(' '), write(Nama),!.
+
+throwItem :-
+    inventory(CurrentInventory),
+    print_inventory(CurrentInventory),
+    write('Apa yang ingin anda buang (masukan ID) : '),nl,
+    read(ID), 
+    is_member(ID,CurrentInventory, Index),
+    select_nth(CurrentInventory,Index,[ID,N]),
+    item(ID,_,Nama,_,_),
+    write('Kamu punya '),write(N), write(' Buah '), write(Nama),nl,
+    write('Berapa yang ingin kamu buang : '), read(Amount),nl,
+    Amount > N,
+    write('Kamu hanya punya '),write(N), write(' '), write(Nama),!.
+
+
+show_inventory :-
+    inventory(CurrentInventory),
+    print_inventory(CurrentInventory),!.

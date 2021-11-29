@@ -177,5 +177,5 @@ alchemist :-
        	(X =:= 1 -> buyPotion(a1);
 				 X =:= 2 -> buyPotion(a2);
 				 X =:= 3 -> buyEnergi(a3);
-         X =:= 4 -> s,nl,write('Kamu telah berada di luar alchemist')),!.
+         X =:= 4 -> nl,write('Kamu telah berada di luar alchemist'), nl, retract(inAlchemist(_)), s),!.
 

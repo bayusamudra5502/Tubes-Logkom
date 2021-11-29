@@ -62,6 +62,8 @@ newGame:- write('let me know, who are you? (tulis di antara tanda petik dan diak
           asserta(kegiatan(0)),
           asserta(inventory([])),
           insert_item(fu1,1),
+          insert_item(r4,1),
+          insert_item(r7,1),
           initPemain,
           initTime,
           initMap,
@@ -89,7 +91,8 @@ help :- runProgram(_),
         write('\33\[38;5;31m    ranch.              \33\[0m: Melihat apa saja yang dilakukan di ranch'), nl,
         write('\33\[38;5;31m    fish.               \33\[0m: Melihat apa saja yang dilakukan di fish'), nl,
         write('\33\[38;5;31m    alchemist.          \33\[0m: Melihat apa saja yang dilakukan di alchemist'), nl,
-        write('\33\[38;5;31m    inventory.          \33\[0m: cek inventory'), nl,!.
+        write('\33\[38;5;31m    inventory.          \33\[0m: cek inventory'), nl,
+        write('\33\[38;5;31m    usePotion.          \33\[0m: menggunakan potion yang sudah dibeli'), nl,!.
 
 % save game
 writeString(String) :- format('\'~w\'',[String]).

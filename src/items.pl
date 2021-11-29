@@ -40,12 +40,12 @@ item(fu4, '🎣', 'Diamond Fishing Rod', 4000,0).
 item(r1, '🥚', 'Telur', 0,50).
 item(r2, '🧶', 'Wool', 0,100).
 item(r3, '🥛', 'Susu', 0,200).
-item(r4, '🐔', 'Ayam', 500,250).
-item(r5, '🐑', 'Domba', 1000,500).
-item(r6, '🐄', 'Sapi', 1500,750).
+item(r4, '🐔', 'Ayam', 50,25).
+item(r5, '🐑', 'Domba', 500,250).
+item(r6, '🐄', 'Sapi', 750,375).
 item(r7, '📦', 'Crate', 300,150).
-item(r8, '✂️', 'Sheer', 600,300).
-item(r9, '🪣', 'Bucket', 800,400).
+item(r8, '✂️', 'Sheer', 350,175).
+item(r9, '🪣', 'Bucket', 400,200).
 
 equipments(i1, '⛏', 'Pick', 10, 0).
 equipments(i2, '🚛', 'Harvester', 2500, 0).
@@ -72,9 +72,9 @@ sold(fu1, '🎣', 'Normal Fishing Rod', 100,0).
 sold(fu2, '🎣', 'Iron Fishing Rod', 1000,0).
 sold(fu3, '🎣', 'Gold Fishing Rod', 2500,0).
 sold(fu4, '🎣', 'Diamond Fishing Rod', 4000,0).
-sold(r4, '🐔', 'Ayam', 500,250).
-sold(r5, '🐑', 'Domba', 1000,500).
-sold(r6, '🐄', 'Sapi', 1500,750).
+sold(r4, '🐔', 'Ayam', 50,25).
+sold(r5, '🐑', 'Domba', 500,250).
+sold(r6, '🐄', 'Sapi', 750,375).
 sold(r7, '📦', 'Crate', 300,150).
-sold(r8, '✂️', 'Sheer', 600,300).
-sold(r9, '🪣', 'Bucket', 800,400).
+sold(r8, '✂️', 'Sheer', 350,175).
+sold(r9, '🪣', 'Bucket', 400,200).
