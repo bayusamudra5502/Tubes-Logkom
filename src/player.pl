@@ -401,7 +401,7 @@ throwItem :-
     item(ID,_,Nama,_,_),
     write('Kamu punya '),write(N), write(' Buah '), write(Nama),nl,
     write('Berapa yang ingin kamu buang : '), read(Amount),nl,
-    throw(Amount,N),!.
+    throw(Amount,N,Nama),!.
 
 throwItem :-
     inventory(CurrentInventory),
@@ -413,7 +413,7 @@ throwItem :-
     item(ID,_,Nama,_,_),
     write('Kamu punya '),write(N), write(' Buah '), write(Nama),nl,
     write('Berapa yang ingin kamu buang : '), read(Amount),nl,
-    throw(Amount,N),!.
+    throw(Amount,N,Nama),!.
 
 
 show_inventory :-
@@ -421,7 +421,7 @@ show_inventory :-
     print_inventory(CurrentInventory),!.
 
 
-throw(Amount,N) :- 
+throw(Amount,N, Nama) :- 
     inventory(CurrentInventory),    
     Amount =< N,
     N1 is N - Amount,
@@ -430,7 +430,7 @@ throw(Amount,N) :-
     retract(inventory(CurrentInventory)),
     write('Kamu membuang '),write(Amount), write(' '), write(Nama),!.
 
-throw(Amount,N) :- 
+throw(Amount,N, Nama) :- 
     inventory(CurrentInventory),    
     Amount > N,
     write('Kamu hanya punya '),write(N), write(' '), write(Nama),!.
