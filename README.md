@@ -1,17 +1,20 @@
 # Harvest HBYG
+### IF2121 Logika Komputasional
 
-> Dibuat oleh : Kelompok 6 K-03 IF2121 Logika Komputasional "Canon HBYG03" dengan anggota :
+
+Harvest HBYG adalah sebuah game berbasis Role-Player dimana user dapat memilih role yang mereka inginkan lalu melakukan banyak kegiatan seperti fishing, ranching, dan harvest untuk mendapatkan gold.
+
+Game akan selesai saat user berhasil mengumpulkan 20000 Gold.
+
+Dibuat oleh : Kelompok 6 K-03 IF2121 Logika Komputasional "Canon HBYG03" dengan anggota :
 
 - Bayu Samudra 13520128
 - Febryola Kurnia Putri 13520140
 - Aloysius Gilang Pramudya 13520147
 - Hilda Carissa Widelia 13520164
-
-> Harvest HBYG adalah sebuah game berbasis Role-Player dimana user dapat memilih role yang mereka inginkan lalu melakukan banyak kegiatan seperti fishing, ranching, dan harvest untuk mendapatkan gold.
-> Game akan selesai saat user berhasil mengumpulkan 20000 Gold.
-
+- 
 ## Table of Contents
-
+- [Screenshoot](#screenshoot)
 - [General Info](#general-information)
 - [Features](#features)
 - [Setup](#setup)
@@ -20,6 +23,10 @@
 - [Acknowledgements](#acknowledgements)
 - [Contact](#contact-us)
 <!-- * [License](#license) -->
+
+
+## Screenshoot
+<img src="docs/image.png" />
 
 ## General Information
 
