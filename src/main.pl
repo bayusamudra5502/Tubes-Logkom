@@ -3,7 +3,6 @@
 :- dynamic(posisi/2).
 :- dynamic(gold/1).
 :- dynamic(energi/1).
-:- dynamic(sleep/1).
 :- dynamic(kegiatan/1).
 :- dynamic(time/5).
 :- dynamic(item/5).

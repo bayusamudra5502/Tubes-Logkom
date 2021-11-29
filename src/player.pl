@@ -358,6 +358,7 @@ insert_item(ID, Amount) :- inventory(CurrentInventory),
 delete_item(ID, Amount) :-
     inventory(CurrentInventory),
     is_member(ID, CurrentInventory, Idx),
+    getItemAmount(CurrentInventory, Idx, N),
     NNew is N - Amount,
     NNew > 0,
     set_nth(CurrentInventory, Index, [ID,N1], NewInventory),
@@ -367,6 +368,7 @@ delete_item(ID, Amount) :-
 delete_item(ID, Amount) :-
     inventory(CurrentInventory),
     is_member(ID, CurrentInventory, Idx),
+    getItemAmount(CurrentInventory, Idx, N),
     NNew is N - Amount,
     delete_at_n(Idx, CurrentInventory, NewInventory),
     assertz(inventory(NewInventory)),

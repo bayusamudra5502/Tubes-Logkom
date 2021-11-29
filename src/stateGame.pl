@@ -216,7 +216,7 @@ gantiTime :- runProgram(_),time('Malam',B,C,D,E), kegiatan(Jumlah), Jumlah < 10,
 gantiTime :- !.
 
 updater :- updateSeed, winState, loseState.
-updaterTidur :- update, retract(kegiatan(_)), asserta(kegiatan(0)), retract(energi(E)), asserta(energi(50)).
+updaterTidur :- updater, retract(kegiatan(_)), asserta(kegiatan(0)), retract(energi(E)), asserta(energi(50)).
 updateStat :- gantiTime, updateKegiatan, updateEnergi, winState, loseState.
 
 updateEnergi :- energi(E),

@@ -38,7 +38,7 @@ insert_item(fu2,1).
 startGame.
 1.
 'a'.
-1.
+3.
 1.
 retract(posisi(_,_)).
 asserta(posisi(3,17)).
@@ -69,3 +69,4 @@ retract(posisi(_,_)).
 asserta(posisi(16,16)).
 retract(gold(_)).
 asserta(gold(10000)).
+
