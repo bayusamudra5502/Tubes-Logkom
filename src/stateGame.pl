@@ -37,15 +37,15 @@ getExp :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
 
 % getter untuk exp farming
 getExpFarmer :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Exp Anda saat ini adalah '),write(D),write('.'),nl,!.
+        write('Exp farmer Anda saat ini adalah '),write(D),write('.'),nl,!.
 
-% getter untuk exp ranching
+% getter untuk exp fisher
 getExpFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Exp Anda saat ini adalah '),write(G),write('.'),nl,!.
+        write('Exp fisher Anda saat ini adalah '),write(G),write('.'),nl,!.
 
-% getter untuk exp fishing
+% getter untuk exp rancher
 getExpRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Exp Anda saat ini adalah '),write(J),write('.'),nl,!.
+        write('Exp rancher Anda saat ini adalah '),write(J),write('.'),nl,!.
 
 % getter untuk level
 getLevel :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
@@ -55,13 +55,13 @@ getLevel :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
 getLevelFarmer :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
         write('Anda sekarang berada di level farming '),write(C),write('.'),nl,!.
 
-% getter untuk level ranching
-getLevelFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Anda sekarang berada di level ranching '),write(F),write('.'),nl,!.
-
 % getter untuk level fishing
+getLevelFisher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
+        write('Anda sekarang berada di level fishing '),write(F),write('.'),nl,!.
+
+% getter untuk level ranching
 getLevelRancher :- runProgram(_),player(A,B,C,D,E,F,G,H,I,J,K,L,M),
-        write('Anda sekarang berada di level fishing '),write(I),write('.'),nl,!.
+        write('Anda sekarang berada di level ranching '),write(I),write('.'),nl,!.
 
 % getter untuk energi
 getEnergi :- runProgram(_),energi(Energi),
