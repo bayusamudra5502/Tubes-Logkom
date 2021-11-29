@@ -28,10 +28,10 @@ house :-
        	(X =:= 1 -> tidur
         ;X =:= 2 -> diaryWriter;
         X =:= 3 -> diaryReader;
-        X =:= 4 -> s,
-                   nl,
+        X =:= 4 -> nl,
                    write('Kamu telah berada di luar house'),
-                   retract(inHouse(_))
+                   retract(inHouse(_)),
+                   s
         ),!.
 
 /* yg diatas ubah aja yaa heehehheeee sesuain ajaaa itu cuman dummy biar program lain jalan heheeh */
