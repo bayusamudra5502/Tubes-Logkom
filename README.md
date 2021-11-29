@@ -47,6 +47,9 @@ Beberapa contoh kegiatan yang dapat dilakukan di dalam game
 
 ### Cara Setup :
 
+> **Notes:** Disarankan untuk menggunakan Windows Terminal ataupun menggunakan
+> Gnome Terminal untuk hasil yang terbaik.
+
 1. Clone repository github ini 'https://github.com/bayusamudra5502/Tubes-Logkom.git'
 2. Jalankan perintah berikut pada terminal anda:
 ```bash
