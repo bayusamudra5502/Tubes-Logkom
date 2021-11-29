@@ -303,8 +303,8 @@ set_nth([H|T1], N, X, [H|T2]):-N1 is N-1, set_nth(T1, N1, X, T2).
 % cek apakah item dengan id ID atau idx Index sudah ada di inventory
 % is_member(ID,list,index)
 head([H|_], H).
-is_member(X, [Y|_],0) :- head(Y,X).
-is_member(X, [_|T],Index) :- is_member(X,T,Index1), Index is Index1 + 1.
+is_member(X, [Y|_],0) :- head(Y,X), !.
+is_member(X, [_|T],Index) :- is_member(X,T,Index1), Index is Index1 + 1, !.
 
 is_same_coordinate([X,Y],X1,Y1) :- X =:= X1, Y =:= Y1.
 is_member_XY([A,B], [Y|_],0) :- is_same_coordinate(Y,A,B).
