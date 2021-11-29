@@ -1,31 +1,37 @@
 # Harvest HBYG
-### IF2121 Logika Komputasional
 
+### IF2121 Logika Komputasional
 
 Harvest HBYG adalah sebuah game berbasis Role-Player dimana user dapat memilih role yang mereka inginkan lalu melakukan banyak kegiatan seperti fishing, ranching, dan harvest untuk mendapatkan gold.
 
 Game akan selesai saat user berhasil mengumpulkan 20000 Gold.
 
-Dibuat oleh : Kelompok 6 K-03 IF2121 Logika Komputasional "Canon HBYG03" dengan anggota :
+Project ini dibuat oleh Kelompok 6 K-03 IF2121 Logika Komputasional "Canon HBYG03"
+
+Anggota Kelompok:
 
 - Bayu Samudra 13520128
 - Febryola Kurnia Putri 13520140
 - Aloysius Gilang Pramudya 13520147
 - Hilda Carissa Widelia 13520164
-- 
-## Table of Contents
-- [Screenshoot](#screenshoot)
-- [General Info](#general-information)
-- [Features](#features)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Room for Improvement](#room-for-improvement)
-- [Acknowledgements](#acknowledgements)
-- [Contact](#contact-us)
-<!-- * [License](#license) -->
 
+## Table of Contents
+
+- [Harvest HBYG](#harvest-hbyg)
+  - [Table of Contents](#table-of-contents)
+  - [Screenshoot](#screenshoot)
+  - [General Information](#general-information)
+  - [Features](#features)
+  - [Setup](#setup)
+    - [Spesifikasi](#spesifikasi)
+    - [Cara Setup](#cara-setup)
+  - [Usage](#usage)
+  - [Room for Improvement](#room-for-improvement)
+  - [Acknowledgements](#acknowledgements)
+  - [Contact Us](#contact-us)
 
 ## Screenshoot
+
 <img src="docs/image.png" />
 
 ## General Information
@@ -47,23 +53,25 @@ Beberapa contoh kegiatan yang dapat dilakukan di dalam game
 
 ## Setup
 
-### Spesifikasi :
+### Spesifikasi
 
 1. GNU Prolog (Windows GUI program or Linux CLI program)
 2. GNU Prolog compiler (gplc, Linux CLI program)
 
-### Cara Setup :
+### Cara Setup
 
 > **Notes:** Disarankan untuk menggunakan Windows Terminal ataupun menggunakan
 > Gnome Terminal untuk hasil yang terbaik.
 
 1. Clone repository github ini 'https://github.com/bayusamudra5502/Tubes-Logkom.git'
 2. Jalankan perintah berikut pada terminal anda:
+
 ```bash
 prolog
 ```
 
 3. Jalankan perintah berikut saat telah masuk ke dalam prolog:
+
 ```prolog
 consult('src/main.pl').
 startGame.
@@ -98,8 +106,9 @@ Kami berterimakasih kepada :
 1. Dosen-dosen dan asisten dosen IF2121 Logika Komputasional,
 2. Orang tua yang telah membiayai kami untuk dapat berkuliah di ITB,
 3. Keluarga serta kerabat dekat yang selalu mendukung kami,
-4. Teman-teman seperjuangan yang bersama dengan kami melewati lautan tubes dan ujian di Semester 3 tahun 2021 ini, dan
-5. Anggota kelompok kami, yang sudah bersama-sama mengerjakan tubes ini, bersama-sama debugging hingga ditemukan errornya (karena prolog tidak menyatakan kesalahan dalam program).
+4. Repository kakak-kakak tingkat informatika angkatan 2019, 2018 dan atasnya, terimakasih karena sudah memberi kami referensi utama dalam mengerjakan tugas besar ini,
+5. Teman-teman seperjuangan yang bersama dengan kami melewati lautan tubes dan ujian di Semester 3 tahun 2021 ini, dan
+6. Anggota kelompok kami, yang sudah bersama-sama mengerjakan tubes ini, bersama-sama debugging (20 jam++ bersama men-_debug_ di google meet) hingga ditemukan errornya (karena prolog tidak menyatakan kesalahan dalam program).
 
 ## Contact Us
 
