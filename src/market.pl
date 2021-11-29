@@ -117,6 +117,7 @@ sellLagi(Kode, Amount) :-
 sellLagi(Kode, Amount) :-
 	inventory(CurrentInventory),
 	isFish(Kode),
+	item(Kode,_,Nama,_,_),
 	is_member(Kode, CurrentInventory, Idx),
 	getItemAmount(CurrentInventory, Idx, Qty),
 	Amount =< Qty,

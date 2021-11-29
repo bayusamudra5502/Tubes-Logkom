@@ -1,0 +1,18 @@
+nama('Claire').
+length(20).
+width(20).
+gold(19999).
+energi(1).
+player('Fisherman',2,1,101,150,3,556,600,2,176,300,335,500).
+posisi(3,17).
+kegiatan(1).
+time('Siang',30,4,'Spring',1).
+inventory([[fu1,1],[r7,1],[i1,1],[e13,1],[e1,3],[i2,1],[f3,1],[f5,1],[f6,1],[f4,1],[r1,12]]).
+planted_list([]).
+diary(1,'Spring',1,'Hari saya senang sekali, banyak pekerjaan yang lakukan hari ini.').
+daySnapshot(1,'Spring',1,[1306,2,275]).
+questList([[e3,3],[f5,2],[r2,2]]).
+tool(i2,'_321','_322',_323,1,0,_326).
+ranchProduct(r1,r4,'🥚','Telur',50,10,3,0).
+ranchAll([[r4,3]]).
+ranchCountDays([[r4,3,5]]).
