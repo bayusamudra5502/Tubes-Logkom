@@ -1,5 +1,12 @@
 # Harvest HBYG
 
+> Dibuat oleh : Kelompok 6 K-03 IF2121 Logika Komputasional "Canon HBYG03" dengan anggota :
+
+- Bayu Samudra 13520128
+- Febryola Kurnia Putri 13520140
+- Aloysius Gilang Pramudya 13520147
+- Hilda Carissa Widelia 13520164
+
 > Harvest HBYG adalah sebuah game berbasis Role-Player dimana user dapat memilih role yang mereka inginkan lalu melakukan banyak kegiatan seperti fishing, ranching, dan harvest untuk mendapatkan gold.
 > Game akan selesai saat user berhasil mengumpulkan 20000 Gold.
 
@@ -11,7 +18,7 @@
 - [Usage](#usage)
 - [Room for Improvement](#room-for-improvement)
 - [Acknowledgements](#acknowledgements)
-- [Contact](#contact)
+- [Contact](#contact-us)
 <!-- * [License](#license) -->
 
 ## General Information
@@ -41,8 +48,18 @@ Beberapa contoh kegiatan yang dapat dilakukan di dalam game
 ### Cara Setup :
 
 1. Clone repository github ini 'https://github.com/bayusamudra5502/Tubes-Logkom.git'
-2. Prolog ??
-3. sth
+2. Jalankan perintah berikut pada terminal anda:
+```bash
+prolog
+```
+
+3. Jalankan perintah berikut saat telah masuk ke dalam prolog:
+```prolog
+consult('src/main.pl').
+startGame.
+```
+
+4. Selamat bermain :D
 
 ## Usage
 
@@ -63,7 +80,6 @@ Masih banyak kekurangan yang kami miliki dalam pembuatan program ini. Beberapa h
 1. Message-message output dapat lebih dihias agar terlihat lebih menarik
 2. Harga-harga bisa lebih disesuaikan agar user tidak terlalu mudah / sulit untuk memenangkan game
 3. Penambahan sistem seperti pemberian makan pada hewan di ranching atau penyembelihan hewan agar produk dari ranching bisa lebih banyak seperti daging hewan
-4.
 
 ## Acknowledgements
 
@@ -75,11 +91,7 @@ Kami berterimakasih kepada :
 4. Teman-teman seperjuangan yang bersama dengan kami melewati lautan tubes dan ujian di Semester 3 tahun 2021 ini, dan
 5. Anggota kelompok kami, yang sudah bersama-sama mengerjakan tubes ini, bersama-sama debugging hingga ditemukan errornya (karena prolog tidak menyatakan kesalahan dalam program).
 
-## Contact
-
-Dibuat oleh :
-Kelompok 6 K-03 IF2121 Logika Komputasional
-"Canon HBYG03" :
+## Contact Us
 
 - [Bayu Samudra](https://github.com/bayusamudra5502)
 - [Febryola Kurnia Putri](https://github.com/febryola)
