@@ -115,4 +115,4 @@ Kami berterimakasih kepada :
 - [Bayu Samudra](https://github.com/bayusamudra5502)
 - [Febryola Kurnia Putri](https://github.com/febryola)
 - [Aloysius Gilang Pramudya](https://github.com/Aloysiusgilang)
-- [Hilda Carissa Widelia](https://github.com/bayusamudra5502)
+- [Hilda Carissa Widelia](https://github.com/hcarissa)
